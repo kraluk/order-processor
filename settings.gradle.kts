@@ -17,6 +17,9 @@ dependencyResolutionManagement {
       version("mockito", "5.4.0")
     }
     create("toolLibs") {
+      version("googleJavaFormat", "1.21.0")
+      version("checkstyle", "10.20.0")
+      version("pmd", "7.7.0")
     }
   }
 }

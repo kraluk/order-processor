@@ -2,8 +2,10 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
   idea
-  jacoco
   java
+
+  jacoco
+  pmd
 
   alias(libs.plugins.spring.boot)
   alias(libs.plugins.spring.dependencyManagement)
@@ -104,11 +106,17 @@ tasks.check { dependsOn(integrationTest) }
 
 spotless {
   java {
-    googleJavaFormat("1.21.0")
+    googleJavaFormat(toolLibs.versions.googleJavaFormat.get())
       .aosp()
       .reflowLongStrings()
       .formatJavadoc(false)
       .reorderImports(true)
       .groupArtifact("com.google.googlejavaformat:google-java-format")
   }
+}
+
+pmd {
+  toolVersion = toolLibs.versions.pmd.get()
+  isIgnoreFailures = false
+  isConsoleOutput = true
 }
