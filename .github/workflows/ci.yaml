@@ -20,4 +20,4 @@ jobs:
           distribution: 'adopt'
           java-version: '21'
       - name: Check
-        run: ./gradlew check
+        run: ./gradlew check --build-cache --no-daemon
