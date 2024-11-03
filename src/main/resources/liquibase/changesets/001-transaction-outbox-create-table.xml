@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <!--
+    Copy of the hardcoded migration scripts of com.gruelbox:transactionoutbox
+    https://github.com/gruelbox/transaction-outbox/blob/master/transactionoutbox-core/src/main/java/com/gruelbox/transactionoutbox/DefaultDialect.java
+    -->
+
+    <changeSet id="Create transaction outbox tables (#0)" author="Łukasz Krauzowicz">
+        <sql>
+            CREATE TABLE IF NOT EXISTS TXNO_VERSION
+            (
+                version
+                INT
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="Create transaction outbox tables (#1)" author="Łukasz Krauzowicz">
+        <sql>
+            CREATE TABLE transaction_outbox
+            (
+                id              VARCHAR(36) PRIMARY KEY,
+                invocation      TEXT,
+                nextAttemptTime TIMESTAMP(6),
+                attempts        INT,
+                blacklisted     BOOLEAN,
+                version         INT
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="Create transaction outbox tables (#2)" author="Łukasz Krauzowicz">
+        <sql>
+            ALTER TABLE transaction_outbox
+                ADD COLUMN uniqueRequestId VARCHAR(100) NULL UNIQUE
+        </sql>
+    </changeSet>
+
+    <changeSet id="Create transaction outbox tables (#3)" author="Łukasz Krauzowicz">
+        <sql>
+            ALTER TABLE transaction_outbox
+                ADD COLUMN processed BOOLEAN
+        </sql>
+    </changeSet>
+
+    <changeSet id="Create transaction outbox tables (#4)" author="Łukasz Krauzowicz">
+        <sql>
+            CREATE INDEX IX_TXNO_OUTBOX_1 ON transaction_outbox (processed, blacklisted, nextAttemptTime)
+        </sql>
+    </changeSet>
+
+    <changeSet id="Create transaction outbox tables (#5)" author="Łukasz Krauzowicz">
+        <sql>
+            ALTER TABLE transaction_outbox ALTER COLUMN uniqueRequestId TYPE VARCHAR(250)
+        </sql>
+    </changeSet>
+
+    <changeSet id="Create transaction outbox tables (#6)" author="Łukasz Krauzowicz">
+        <sql>
+            ALTER TABLE transaction_outbox RENAME COLUMN blacklisted TO blocked
+        </sql>
+    </changeSet>
+
+    <changeSet id="Create transaction outbox tables (#7)" author="Łukasz Krauzowicz">
+        <sql>
+            ALTER TABLE transaction_outbox
+                ADD COLUMN lastAttemptTime TIMESTAMP(6)
+        </sql>
+    </changeSet>
+
+    <changeSet id="Create transaction outbox tables (#8)" author="Łukasz Krauzowicz">
+        <sql>
+            -- empty, as in the source migration script
+        </sql>
+    </changeSet>
+
+    <changeSet id="Migration script of transaction outbox for version 5.5.447 (#9)" author="Łukasz Krauzowicz">
+        <sql>
+            ALTER TABLE transaction_outbox
+                ADD COLUMN topic VARCHAR(250) NOT NULL DEFAULT '*';
+        </sql>
+    </changeSet>
+
+    <changeSet id="Migration script of transaction outbox for version 5.5.447 (#10)" author="Łukasz Krauzowicz">
+        <sql>
+            ALTER TABLE transaction_outbox
+                ADD COLUMN seq BIGINT NULL;
+        </sql>
+    </changeSet>
+
+    <changeSet id="Migration script of transaction outbox for version 5.5.447 (#11)" author="Łukasz Krauzowicz">
+        <sql>
+            CREATE TABLE TXNO_SEQUENCE
+            (
+                topic VARCHAR(250) NOT NULL,
+                seq   BIGINT       NOT NULL,
+                PRIMARY KEY (topic, seq)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="Migration script of transaction outbox for version 5.5.447 (#12)" author="Łukasz Krauzowicz">
+        <sql>
+            CREATE INDEX IX_TXNO_OUTBOX_2 ON transaction_outbox (topic, processed, seq);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

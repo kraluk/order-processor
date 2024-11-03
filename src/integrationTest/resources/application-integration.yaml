@@ -12,3 +12,26 @@ spring:
     aws:
       region:
         static: us-east-1
+
+management:
+  metrics:
+    enable:
+      tomcat: false
+      jvm: false
+      process: false
+      hikaricp: false
+      system: false
+      jdbc: false
+      http: false
+      logback: false
+
+logging:
+  level:
+    io.kraluk.batchprocessor: DEBUG
+    org.jooq.Constants: WARN
+    org.jooq.tools.LoggerListener: INFO # DEBUG for SQL logs
+    com.gruelbox.transactionoutbox.TransactionOutboxImpl: INFO
+
+app:
+  transaction-outbox:
+    resumer-delay: PT1000H

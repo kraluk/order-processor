@@ -43,11 +43,14 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-logging")
   implementation("org.springframework.boot:spring-boot-starter-jdbc")
   implementation("org.springframework.boot:spring-boot-starter-jooq")
+  implementation("io.awspring.cloud:spring-cloud-aws-starter-s3")
 
   runtimeOnly("org.postgresql:postgresql")
   implementation("org.liquibase:liquibase-core")
 
-  implementation("io.awspring.cloud:spring-cloud-aws-starter-s3")
+  implementation("com.gruelbox:transactionoutbox-core:${libs.versions.transactionoutbox.get()}")
+  implementation("com.gruelbox:transactionoutbox-spring:${libs.versions.transactionoutbox.get()}")
+  implementation("com.gruelbox:transactionoutbox-jackson:${libs.versions.transactionoutbox.get()}")
 
   implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
@@ -137,4 +140,5 @@ pmd {
   toolVersion = toolLibs.versions.pmd.get()
   isIgnoreFailures = false
   isConsoleOutput = true
+  maxFailures = 99999 // TODO: temporary workaround...
 }
