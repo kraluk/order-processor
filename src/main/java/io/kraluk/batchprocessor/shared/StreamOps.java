@@ -10,7 +10,7 @@ public class StreamOps {
     throw new UnsupportedOperationException("This class should not be instantiated!");
   }
 
-  public static <T> Stream<List<T>> fixedWindow(Stream<T> stream, int windowSize) {
+  public static <T> Stream<List<T>> fixedWindow(final Stream<T> stream, final int windowSize) {
     final Iterator<T> streamIterator = stream.iterator();
     final Iterator<List<T>> windowIterator =
         new FixedWindowStreamIterator<>(streamIterator, windowSize);
@@ -24,7 +24,7 @@ public class StreamOps {
     private final Iterator<T> streamIterator;
     private final int windowSize;
 
-    public FixedWindowStreamIterator(Iterator<T> streamIterator, int windowSize) {
+    public FixedWindowStreamIterator(final Iterator<T> streamIterator, final int windowSize) {
       this.streamIterator = streamIterator;
       this.windowSize = windowSize;
     }
