@@ -123,7 +123,6 @@ tasks.check { dependsOn(integrationTest) }
 spotless {
   java {
     googleJavaFormat(toolLibs.versions.googleJavaFormat.get())
-      .aosp()
       .reflowLongStrings()
       .formatJavadoc(false)
       .reorderImports(true)

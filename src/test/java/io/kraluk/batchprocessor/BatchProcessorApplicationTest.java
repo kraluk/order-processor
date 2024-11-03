@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 
 class BatchProcessorApplicationTest {
 
-    @Test
-    void shouldBeTrue() {
-        assertThat(true).isTrue();
-    }
+  @Test
+  void shouldBeTrue() {
+    assertThat(true).isTrue();
+  }
 }

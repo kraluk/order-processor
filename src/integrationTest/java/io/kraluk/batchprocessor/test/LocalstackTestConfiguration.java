@@ -8,14 +8,13 @@ import org.testcontainers.utility.DockerImageName;
 @TestConfiguration
 public class LocalstackTestConfiguration {
 
-    private static final String LOCAL_STACK_VERSION = "3.8.1";
+  private static final String LOCAL_STACK_VERSION = "3.8.1";
 
-    // @ServiceConnection(name = "s3")
-    @Bean
-    LocalStackContainer localStackContainer() {
-        return new LocalStackContainer(
-                        DockerImageName.parse(
-                                String.format("localstack/localstack:%s", LOCAL_STACK_VERSION)))
-                .withServices(LocalStackContainer.Service.S3);
-    }
+  // @ServiceConnection(name = "s3")
+  @Bean
+  LocalStackContainer localStackContainer() {
+    return new LocalStackContainer(
+            DockerImageName.parse(String.format("localstack/localstack:%s", LOCAL_STACK_VERSION)))
+        .withServices(LocalStackContainer.Service.S3);
+  }
 }

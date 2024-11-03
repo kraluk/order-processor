@@ -13,6 +13,6 @@ indent_size = 2
 tab_width = 2
 
 [*.java]
-indent_size = 4
-tab_width = 4
+indent_size = 2
+tab_width = 2
 ij_java_names_count_to_use_import_on_demand = 9999
