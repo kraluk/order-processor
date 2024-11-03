@@ -33,17 +33,33 @@ repositories {
 }
 
 dependencies {
-  implementation("org.springframework.boot:spring-boot-starter")
-
-  implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+  implementation(platform("io.awspring.cloud:spring-cloud-aws-dependencies:${libs.versions.springCloudAws.get()}"))
 
   annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
-  testImplementation("org.springframework.boot:spring-boot-starter-test")
-  testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+  implementation("org.springframework.boot:spring-boot-starter")
+  implementation("org.springframework.boot:spring-boot-starter-web")
+  implementation("org.springframework.boot:spring-boot-starter-actuator")
+  implementation("org.springframework.boot:spring-boot-starter-logging")
+  implementation("org.springframework.boot:spring-boot-starter-jdbc")
+  implementation("org.springframework.boot:spring-boot-starter-jooq")
 
+  runtimeOnly("org.postgresql:postgresql")
+  implementation("org.liquibase:liquibase-core")
+
+  implementation("io.awspring.cloud:spring-cloud-aws-starter-s3")
+
+  implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
+  testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+  testImplementation("org.assertj:assertj-core")
+  testImplementation("org.mockito:mockito-core")
+  testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+  integrationTestImplementation("org.springframework.boot:spring-boot-testcontainers")
   integrationTestImplementation("org.testcontainers:junit-jupiter")
   integrationTestImplementation("org.testcontainers:postgresql")
+  integrationTestImplementation("org.testcontainers:localstack")
 }
 
 tasks.test {

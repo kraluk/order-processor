@@ -9,6 +9,7 @@ dependencyResolutionManagement {
       plugin("versions", "com.github.ben-manes.versions").version("0.51.0")
       plugin("spotless", "com.diffplug.spotless").version("7.0.0.BETA4")
 
+      version("springCloudAws", "3.2.1")
       version("transactionoutbox", "5.5.447") // BE AWARE: check migration scripts before bumping the version up
     }
     create("testLibs") {

@@ -1,0 +1,14 @@
+spring:
+  application.name: batch-processor-tests
+  datasource:
+    url: "jdbc:tc:postgresql:16-alpine:///batch-processor?TC_REUSABLE=true"
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 2
+  liquibase:
+    enabled: true
+    contexts: integration
+  cloud:
+    aws:
+      region:
+        static: us-east-1

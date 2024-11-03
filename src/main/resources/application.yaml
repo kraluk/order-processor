@@ -1,2 +1,22 @@
 spring:
   application.name: batch-processor
+  main:
+    web-application-type: servlet
+  profiles:
+    active: prod
+  threads:
+    virtual.enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/batch-processor
+    username: username
+    password: password
+  liquibase:
+    enabled: true
+    change-log: classpath:liquibase/changelog.xml
+  mvc:
+    problemdetails:
+      enabled: true
+
+server:
+  port: 8080
+  shutdown: graceful
