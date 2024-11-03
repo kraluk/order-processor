@@ -122,11 +122,14 @@ tasks.check { dependsOn(integrationTest) }
 
 spotless {
   java {
-    googleJavaFormat(toolLibs.versions.googleJavaFormat.get())
-      .reflowLongStrings()
-      .formatJavadoc(false)
-      .reorderImports(true)
-      .groupArtifact("com.google.googlejavaformat:google-java-format")
+    eclipse()
+      .configFile(rootProject.file("codeformat.xml"))
+    formatAnnotations()
+    trimTrailingWhitespace()
+    removeUnusedImports()
+    indentWithSpaces(2)
+    toggleOffOn()
+    importOrder()
   }
 }
 

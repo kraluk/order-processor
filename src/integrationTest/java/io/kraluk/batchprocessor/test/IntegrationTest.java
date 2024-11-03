@@ -9,4 +9,5 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ActiveProfiles("integration")
 @Testcontainers
 @Import(LocalstackTestConfiguration.class)
-public abstract class IntegrationTest {}
+public abstract class IntegrationTest {
+}

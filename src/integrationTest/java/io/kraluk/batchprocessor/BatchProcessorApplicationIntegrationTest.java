@@ -10,7 +10,8 @@ import org.springframework.core.env.Environment;
 
 class BatchProcessorApplicationIntegrationTest extends IntegrationTest {
 
-  @Autowired private Environment environment;
+  @Autowired
+  private Environment environment;
 
   @Test
   void shouldLoadContext() {

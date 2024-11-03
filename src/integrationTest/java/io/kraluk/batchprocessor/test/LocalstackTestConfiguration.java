@@ -13,8 +13,7 @@ public class LocalstackTestConfiguration {
   // @ServiceConnection(name = "s3")
   @Bean
   LocalStackContainer localStackContainer() {
-    return new LocalStackContainer(
-            DockerImageName.parse(String.format("localstack/localstack:%s", LOCAL_STACK_VERSION)))
+    return new LocalStackContainer(DockerImageName.parse(String.format("localstack/localstack:%s", LOCAL_STACK_VERSION)))
         .withServices(LocalStackContainer.Service.S3);
   }
 }
