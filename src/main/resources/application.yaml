@@ -22,6 +22,9 @@ server:
   shutdown: graceful
 
 app:
+  order:
+    event:
+      queue: order-updated-events
   transaction-outbox:
     resumer-delay: PT5M
     flush-batch-size: 2048

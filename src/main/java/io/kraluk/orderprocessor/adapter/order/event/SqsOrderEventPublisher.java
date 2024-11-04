@@ -1,0 +1,50 @@
+package io.kraluk.orderprocessor.adapter.order.event;
+
+import io.awspring.cloud.sqs.operations.SqsTemplate;
+import io.kraluk.orderprocessor.shared.contract.event.OrderUpdatedEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+class SqsOrderEventPublisher implements OrderEventPublisher {
+
+  private final SqsTemplate template;
+  private final OrderEventProperties properties;
+
+  SqsOrderEventPublisher(final SqsTemplate template, final OrderEventProperties properties) {
+    this.template = template;
+    this.properties = properties;
+  }
+
+  @Override
+  public void publish(final OrderUpdatedEvent event) {
+    template.send(to -> to
+        .queue(properties.queue())
+        .payload(event));
+  }
+}
+
+@Configuration
+class OrderEventPublisherConfiguration {
+  private static final Logger log = LoggerFactory.getLogger(OrderEventPublisherConfiguration.class);
+
+  @ConditionalOnProperty(
+      prefix = "spring.cloud.aws.sqs",
+      name = "enabled",
+      havingValue = "true"
+  )
+  @Bean
+  OrderEventPublisher orderEventPublisher(final SqsTemplate template, final OrderEventProperties properties) {
+    log.info("Using SQS implementation of the Order Event Publisher with the following properties - '{}'", properties);
+    return new SqsOrderEventPublisher(template, properties);
+  }
+}
+
+@ConfigurationProperties(prefix = "app.order.event")
+record OrderEventProperties(
+    String queue) {
+}
+

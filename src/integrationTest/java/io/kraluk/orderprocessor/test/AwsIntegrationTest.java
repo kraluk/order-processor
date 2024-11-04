@@ -9,7 +9,7 @@ import org.springframework.test.context.DynamicPropertySource;
  * @see <a href="https://docs.awspring.io/spring-cloud-aws/docs/3.2.0/reference/html/index.html#testing">spring cloud aws testing</a>
  */
 @Import(LocalstackTestConfiguration.class)
-public class AwsIntegrationTest extends IntegrationTest {
+public abstract class AwsIntegrationTest extends IntegrationTest {
 
   @DynamicPropertySource
   static void properties(DynamicPropertyRegistry registry) {
