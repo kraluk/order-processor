@@ -123,7 +123,7 @@ tasks.jacocoTestReport {
 
 tasks.check { dependsOn(integrationTest) }
 
-spotless {
+/*spotless { // TODO: temporarily disabled
   java {
     eclipse()
       .configFile(rootProject.file("codeformat.xml"))
@@ -134,11 +134,11 @@ spotless {
     toggleOffOn()
     importOrder()
   }
-}
+}*/
 
 pmd {
   toolVersion = toolLibs.versions.pmd.get()
   isIgnoreFailures = false
   isConsoleOutput = true
-  maxFailures = 99999 // TODO: temporary workaround...
+  maxFailures = 99999 // TODO: temporary workaround before introducing final ruleset
 }

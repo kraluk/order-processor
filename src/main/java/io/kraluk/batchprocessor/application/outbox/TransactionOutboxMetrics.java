@@ -1,50 +1,51 @@
 package io.kraluk.batchprocessor.application.outbox;
 
-import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
-
 import com.gruelbox.transactionoutbox.TransactionOutboxEntry;
 import com.gruelbox.transactionoutbox.TransactionOutboxListener;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
+
+import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
 
 class TransactionOutboxMetrics implements TransactionOutboxListener {
   private static final Logger log = LoggerFactory.getLogger(TransactionOutboxMetrics.class);
 
-  private final Counter scheduled;
-  private final Counter success;
-  private final Counter failure;
-  private final Counter blocked;
+  private final Counter scheduledCounter;
+  private final Counter successCounter;
+  private final Counter failureCounter;
+  private final Counter blockedCounter;
 
   TransactionOutboxMetrics(MeterRegistry registry) {
-    this.scheduled = registry.counter("outbox_status", List.of(Tag.of("outcome", "scheduled")));
-    this.success = registry.counter("outbox_status", List.of(Tag.of("outcome", "success")));
-    this.failure = registry.counter("outbox_status", List.of(Tag.of("outcome", "failure")));
-    this.blocked = registry.counter("outbox_status", List.of(Tag.of("outcome", "blocked")));
+    this.scheduledCounter = registry.counter("outbox_status", List.of(Tag.of("outcome", "scheduled")));
+    this.successCounter = registry.counter("outbox_status", List.of(Tag.of("outcome", "success")));
+    this.failureCounter = registry.counter("outbox_status", List.of(Tag.of("outcome", "failure")));
+    this.blockedCounter = registry.counter("outbox_status", List.of(Tag.of("outcome", "blocked")));
   }
 
   @Override
   public void scheduled(TransactionOutboxEntry entry) {
-    scheduled.increment();
+    scheduledCounter.increment();
   }
 
   @Override
   public void success(TransactionOutboxEntry entry) {
-    success.increment();
+    successCounter.increment();
   }
 
   @Override
   public void failure(TransactionOutboxEntry entry, Throwable cause) {
-    failure.increment();
+    failureCounter.increment();
     log.error("Processing Transaction Outbox entry ended with failure - '{}'", entry.description(), getRootCause(cause));
   }
 
   @Override
   public void blocked(TransactionOutboxEntry entry, Throwable cause) {
-    blocked.increment();
+    blockedCounter.increment();
     log.error("Processing Transaction Outbox entry is blocked - '{}'", entry.description(), getRootCause(cause));
   }
 }
