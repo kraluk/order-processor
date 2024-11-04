@@ -1,4 +1,4 @@
-package io.kraluk.batchprocessor.application.outbox;
+package io.kraluk.batchprocessor.configuration.outbox;
 
 import com.gruelbox.transactionoutbox.TransactionOutbox;
 import org.slf4j.Logger;

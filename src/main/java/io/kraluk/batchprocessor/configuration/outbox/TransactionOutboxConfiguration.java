@@ -1,4 +1,4 @@
-package io.kraluk.batchprocessor.application.outbox;
+package io.kraluk.batchprocessor.configuration.outbox;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gruelbox.transactionoutbox.DefaultPersistor;

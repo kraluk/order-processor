@@ -1,4 +1,4 @@
-package io.kraluk.batchprocessor.application;
+package io.kraluk.batchprocessor.configuration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

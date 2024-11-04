@@ -1,4 +1,4 @@
-package io.kraluk.batchprocessor.application.outbox;
+package io.kraluk.batchprocessor.configuration.outbox;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
