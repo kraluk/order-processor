@@ -1,7 +1,7 @@
 spring:
-  application.name: batch-processor-tests
+  application.name: order-processor-tests
   datasource:
-    url: "jdbc:tc:postgresql:16-alpine:///batch-processor?TC_REUSABLE=true"
+    url: "jdbc:tc:postgresql:16-alpine:///order-processor?TC_REUSABLE=true"
     hikari:
       minimum-idle: 2
       maximum-pool-size: 2
@@ -10,8 +10,10 @@ spring:
     contexts: integration
   cloud:
     aws:
-      region:
-        static: us-east-1
+      s3:
+        enabled: false
+      sqs:
+        enabled: false
 
 management:
   metrics:
@@ -27,7 +29,7 @@ management:
 
 logging:
   level:
-    io.kraluk.batchprocessor: DEBUG
+    io.kraluk.order.batchprocessor: DEBUG
     org.jooq.Constants: WARN
     org.jooq.tools.LoggerListener: INFO # DEBUG for SQL logs
     com.gruelbox.transactionoutbox.TransactionOutboxImpl: INFO

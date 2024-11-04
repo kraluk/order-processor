@@ -44,6 +44,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-jdbc")
   implementation("org.springframework.boot:spring-boot-starter-jooq")
   implementation("io.awspring.cloud:spring-cloud-aws-starter-s3")
+  implementation("io.awspring.cloud:spring-cloud-aws-starter-sqs")
 
   runtimeOnly("org.postgresql:postgresql")
   implementation("org.liquibase:liquibase-core")
@@ -53,6 +54,8 @@ dependencies {
   implementation("com.gruelbox:transactionoutbox-jackson:${libs.versions.transactionoutbox.get()}")
 
   implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+  implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
+  implementation("org.javamoney:moneta:${libs.versions.javaMoney.get()}")
 
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
   testImplementation("org.assertj:assertj-core")
@@ -63,6 +66,8 @@ dependencies {
   integrationTestImplementation("org.testcontainers:junit-jupiter")
   integrationTestImplementation("org.testcontainers:postgresql")
   integrationTestImplementation("org.testcontainers:localstack")
+  integrationTestImplementation("io.awspring.cloud:spring-cloud-aws-test")
+  integrationTestImplementation("io.awspring.cloud:spring-cloud-aws-testcontainers")
 }
 
 tasks.test {

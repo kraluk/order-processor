@@ -9,7 +9,7 @@ on:
       - released
 
 jobs:
-  test:
+  app-test:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code

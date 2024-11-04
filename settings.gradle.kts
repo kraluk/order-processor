@@ -1,4 +1,4 @@
-rootProject.name = "batch-processor"
+rootProject.name = "order-processor"
 
 dependencyResolutionManagement {
   versionCatalogs {
@@ -11,6 +11,7 @@ dependencyResolutionManagement {
 
       version("springCloudAws", "3.2.1")
       version("transactionoutbox", "5.5.447") // BE AWARE: check migration scripts before bumping the version up
+      version("javaMoney", "1.4.4")
     }
     create("testLibs") {
       version("springCloudContractWiremock", "4.1.4")
