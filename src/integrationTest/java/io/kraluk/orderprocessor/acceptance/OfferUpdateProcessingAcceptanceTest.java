@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 @Sql(scripts = "classpath:order/db/initial.sql")
-public class OfferUpdateProcessingAcceptanceTest extends AcceptanceTest {
+class OfferUpdateProcessingAcceptanceTest extends AcceptanceTest {
 
   @Test
   void shouldSaveCompletelyNewOrdersAndPublishThemToQueue() {

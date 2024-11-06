@@ -17,7 +17,7 @@ import static io.kraluk.orderprocessor.domain.order.entity.OrderFixtures.orderWi
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Sql(scripts = "classpath:order/db/initial.sql")
-public class JooqOrderRepositoryIntegrationTest extends IntegrationTest {
+class JooqOrderRepositoryIntegrationTest extends IntegrationTest {
 
   @Autowired
   private OrderRepository repository;

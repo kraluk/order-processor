@@ -17,7 +17,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Sql(scripts = "classpath:order/db/initial.sql")
-public class OrdersControllerIntegrationTest extends IntegrationTest {
+class OrdersControllerIntegrationTest extends IntegrationTest {
 
   @Autowired
   private RestClient testRestClient;
