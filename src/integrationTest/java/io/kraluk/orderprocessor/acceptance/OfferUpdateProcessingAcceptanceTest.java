@@ -4,7 +4,7 @@ import io.kraluk.orderprocessor.test.AcceptanceTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.jdbc.Sql;
 
-import static io.kraluk.orderprocessor.test.TestResourceOps.pathTo;
+import static io.kraluk.orderprocessor.test.TestOps.pathTo;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
