@@ -8,6 +8,7 @@ import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Table;
+import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,9 @@ import static io.kraluk.orderprocessor.adapter.order.repository.OrderSchema.UPDA
 import static io.kraluk.orderprocessor.adapter.order.repository.OrderSchema.VALUE;
 import static io.kraluk.orderprocessor.adapter.order.repository.OrderSchema.VERSION;
 import static io.kraluk.orderprocessor.shared.JooqOps.column;
+import static org.jooq.impl.DSL.currentDate;
+import static org.jooq.impl.DSL.currentInstant;
+import static org.jooq.impl.DSL.currentTimestamp;
 import static org.jooq.impl.DSL.excluded;
 import static org.jooq.impl.DSL.table;
 import static org.jooq.impl.DSL.val;
@@ -88,7 +92,7 @@ public class JooqOrderRepository implements OrderRepository {
                     column(CURRENCY.getDataType(), tempTable, CURRENCY.getName()),
                     column(NOTES.getDataType(), tempTable, NOTES.getName()),
                     val(1L).as(VERSION),
-                    column(CREATED_AT.getDataType(), tempTable, CREATED_AT.getName()),
+                    currentInstant().as(CREATED_AT), // only for new records
                     column(UPDATED_AT.getDataType(), tempTable, UPDATED_AT.getName()),
                     column(READ_AT.getDataType(), tempTable, READ_AT.getName())
                 )

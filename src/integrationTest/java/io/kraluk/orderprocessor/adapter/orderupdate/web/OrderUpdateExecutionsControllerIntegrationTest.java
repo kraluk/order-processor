@@ -38,7 +38,7 @@ class OrderUpdateExecutionsControllerIntegrationTest extends IntegrationTest {
         .matches(b -> b.timestamp() != null);
   }
 
-  private OrderUpdateExecutionsWebTestClient testClient() {
+  protected OrderUpdateExecutionsWebTestClient testClient() {
     return new OrderUpdateExecutionsWebTestClient(testRestClient);
   }
 }

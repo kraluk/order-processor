@@ -3,13 +3,13 @@ package io.kraluk.orderprocessor.test;
 import io.kraluk.orderprocessor.adapter.order.event.OrderEventPublisher;
 import io.kraluk.orderprocessor.adapter.orderupdate.repository.OrderUpdateDownloader;
 import io.kraluk.orderprocessor.test.adapter.orderupdate.repository.StaticOrderUpdateDownloader;
-import io.kraluk.orderprocessor.test.db.ClearDatabaseExtension;
 import io.kraluk.orderprocessor.test.event.LoggingOrderEventPublisher;
+import io.kraluk.orderprocessor.test.extension.ClearDatabaseExtension;
 import io.kraluk.orderprocessor.test.web.TestRestClientTestConfiguration;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -32,14 +32,22 @@ public abstract class IntegrationTest {
 class NoAwsTestConfiguration {
   private static final Logger log = LoggerFactory.getLogger(NoAwsTestConfiguration.class);
 
-  @ConditionalOnMissingBean(OrderEventPublisher.class)
+  @ConditionalOnProperty(
+      prefix = "spring.cloud.aws.sqs",
+      name = "enabled",
+      havingValue = "false"
+  )
   @Bean
   OrderEventPublisher orderEventPublisher() {
     log.warn("Using logging OrderEventPublisher for tests");
     return new LoggingOrderEventPublisher();
   }
 
-  @ConditionalOnMissingBean(OrderUpdateDownloader.class)
+  @ConditionalOnProperty(
+      prefix = "spring.cloud.aws.s3",
+      name = "enabled",
+      havingValue = "false"
+  )
   @Bean
   OrderUpdateDownloader orderUpdateDownloader() {
     log.warn("Using static OrderUpdateDownloader for tests");

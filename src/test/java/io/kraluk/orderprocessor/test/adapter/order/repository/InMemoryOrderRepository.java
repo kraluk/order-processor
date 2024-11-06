@@ -45,7 +45,8 @@ public final class InMemoryOrderRepository implements OrderRepository {
   }
 
   public Order save(final Order order) {
-    return orders.put(order.getId(), order);
+    final var toSave = order.getId() == null ? withId(order) : order;
+    return orders.put(toSave.getId(), toSave);
   }
 
   public List<Order> elements() {

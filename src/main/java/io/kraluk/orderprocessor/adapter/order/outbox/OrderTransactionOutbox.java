@@ -7,6 +7,9 @@ import io.kraluk.orderprocessor.shared.contract.event.OrderUpdatedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.springframework.transaction.annotation.Propagation.MANDATORY;
 
 public interface OrderTransactionOutbox {
   void add(Order order);
@@ -24,6 +27,7 @@ class DefaultOrderTransactionOutbox implements OrderTransactionOutbox {
     this.publisher = publisher;
   }
 
+  @Transactional(propagation = MANDATORY)
   @Override
   public void add(final Order order) {
     final var event = OrderUpdatedEvent.from(order);
@@ -34,7 +38,7 @@ class DefaultOrderTransactionOutbox implements OrderTransactionOutbox {
   }
 
   public void publish(final OrderUpdatedEvent event) { // has to be public due to outbox proxies
-    log.debug("Publishing event related to '{}' - '{}'", event.businessId(), event);
+    log.debug("Publishing event related to Order with business id '{}' - '{}'", event.businessId(), event);
     publisher.publish(event);
   }
 }

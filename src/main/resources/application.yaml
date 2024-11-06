@@ -25,11 +25,13 @@ logging:
   level:
     org.jooq.Constants: WARN
     org.javamoney.moneta: WARN
+    com.gruelbox.transactionoutbox.TransactionOutboxImpl: WARN
 
 app:
   order:
     event:
-      queue: order-updated-events
+      sqs:
+        queue-name: order-updated-events
     temporary-batch:
       size: ${app.order.orchestrator.chunk-size}
     batch:

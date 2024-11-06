@@ -1,4 +1,4 @@
-package io.kraluk.orderprocessor.test.db;
+package io.kraluk.orderprocessor.test.extension;
 
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -11,5 +11,6 @@ public class ClearDatabaseExtension implements AfterEachCallback {
   public void afterEach(final ExtensionContext context) {
     final var jdbc = SpringExtension.getApplicationContext(context).getBean(JdbcTemplate.class);
     jdbc.execute("TRUNCATE orders CASCADE");
+    jdbc.execute("TRUNCATE transaction_outbox CASCADE");
   }
 }

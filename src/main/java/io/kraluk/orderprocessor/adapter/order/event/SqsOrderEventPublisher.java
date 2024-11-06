@@ -13,9 +13,9 @@ class SqsOrderEventPublisher implements OrderEventPublisher {
   private static final Logger log = LoggerFactory.getLogger(SqsOrderEventPublisher.class);
 
   private final SqsTemplate template;
-  private final OrderEventProperties properties;
+  private final SqsOrderEventProperties properties;
 
-  SqsOrderEventPublisher(final SqsTemplate template, final OrderEventProperties properties) {
+  SqsOrderEventPublisher(final SqsTemplate template, final SqsOrderEventProperties properties) {
     this.template = template;
     this.properties = properties;
   }
@@ -23,7 +23,7 @@ class SqsOrderEventPublisher implements OrderEventPublisher {
   @Override
   public void publish(final OrderUpdatedEvent event) {
     final var result = template.send(to -> to
-        .queue(properties.queue())
+        .queue(properties.queueName())
         .payload(event));
 
     log.debug("Published with the result - '{}'", result);
@@ -40,14 +40,14 @@ class OrderEventPublisherConfiguration {
       havingValue = "true"
   )
   @Bean
-  OrderEventPublisher orderEventPublisher(final SqsTemplate template, final OrderEventProperties properties) {
+  OrderEventPublisher orderEventPublisher(final SqsTemplate template, final SqsOrderEventProperties properties) {
     log.info("Using SQS implementation of the Order Event Publisher with the following properties - '{}'", properties);
     return new SqsOrderEventPublisher(template, properties);
   }
 }
 
-@ConfigurationProperties(prefix = "app.order.event")
-record OrderEventProperties(
-    String queue) {
+@ConfigurationProperties(prefix = "app.order.event.sqs")
+record SqsOrderEventProperties(
+    String queueName) {
 }
 

@@ -62,6 +62,7 @@ dependencies {
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
   testImplementation("org.assertj:assertj-core")
   testImplementation("org.mockito:mockito-core")
+  testImplementation("org.awaitility:awaitility")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
 
   integrationTestImplementation("org.springframework.boot:spring-boot-testcontainers")
