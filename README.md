@@ -1,4 +1,4 @@
-# batch-processor
+# order-processor
 
 TBD...
 
@@ -18,3 +18,7 @@ Add following environment variables to your shell profile (e.g. `~/.bash_profile
 export DOCKER_HOST="unix:///Users/$USER/.colima/default/docker.sock"
 export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE="/var/run/docker.sock"
 ```
+
+## Issues
+
+1. limit Spring context reloads during integration tests to decrease their execution time
