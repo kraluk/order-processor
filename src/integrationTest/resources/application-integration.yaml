@@ -30,7 +30,6 @@ management:
 logging:
   level:
     io.kraluk.order.batchprocessor: DEBUG
-    org.jooq.Constants: WARN
     org.jooq.tools.LoggerListener: INFO # DEBUG for SQL logs
     com.gruelbox.transactionoutbox.TransactionOutboxImpl: INFO
 

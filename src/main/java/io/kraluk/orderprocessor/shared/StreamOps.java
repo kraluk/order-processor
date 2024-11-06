@@ -17,6 +17,10 @@ public class StreamOps {
     return StreamSupport.stream(Spliterators.spliteratorUnknownSize(windowIterator, Spliterator.ORDERED), false);
   }
 
+  public static <T> Stream<T> toStream(final Iterator<T> iterator) {
+    return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED), false);
+  }
+
   private static class FixedWindowStreamIterator<T> implements Iterator<List<T>> {
 
     private final Iterator<T> streamIterator;

@@ -10,7 +10,7 @@ public record SessionId(String value) {
     }
   }
 
-  static SessionId random() {
+  public static SessionId random() {
     return new SessionId(UUID.randomUUID().toString().replace("-", "_"));
   }
 }

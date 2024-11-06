@@ -14,12 +14,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 
+import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -80,4 +82,11 @@ class TransactionOutboxConfiguration {
         .listener(new TransactionOutboxMetrics(registry))
         .build();
   }
+}
+
+@ConfigurationProperties(prefix = "app.transaction-outbox")
+record TransactionOutboxProperties(
+    Duration resumerDelay,
+    int flushBatchSize,
+    Duration attemptFrequency) {
 }

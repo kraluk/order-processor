@@ -22,7 +22,7 @@ public final class JooqOps {
   }
 
   public static String temporaryTableName(SessionId sessionId) {
-    return format("$temp_table_%s", sessionId.value());
+    return format("temp_table_%s", sessionId.value());
   }
 
   public static Table<Record> temporaryTable(SessionId sessionId) {

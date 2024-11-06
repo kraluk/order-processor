@@ -60,4 +60,8 @@ public final class Order {
   public Instant getReadAt() {
     return readAt;
   }
+
+  public static Order fromUpdate(UUID businessId, Money value, String notes, Instant updatedAt, Instant readAt) {
+    return new Order(null, businessId, value, notes, null, null, updatedAt, readAt);
+  }
 }

@@ -12,6 +12,7 @@ plugins {
 
   alias(libs.plugins.versions)
   alias(libs.plugins.spotless)
+    kotlin("jvm")
 }
 
 group = "io.kraluk"
@@ -53,6 +54,7 @@ dependencies {
   implementation("com.gruelbox:transactionoutbox-spring:${libs.versions.transactionoutbox.get()}")
   implementation("com.gruelbox:transactionoutbox-jackson:${libs.versions.transactionoutbox.get()}")
 
+  implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8")
   implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
   implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
   implementation("org.javamoney:moneta:${libs.versions.javaMoney.get()}")
@@ -68,6 +70,7 @@ dependencies {
   integrationTestImplementation("org.testcontainers:localstack")
   integrationTestImplementation("io.awspring.cloud:spring-cloud-aws-test")
   integrationTestImplementation("io.awspring.cloud:spring-cloud-aws-testcontainers")
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 tasks.test {

@@ -21,10 +21,24 @@ server:
   port: 8080
   shutdown: graceful
 
+logging:
+  level:
+    org.jooq.Constants: WARN
+    org.javamoney.moneta: WARN
+
 app:
   order:
     event:
       queue: order-updated-events
+    temporary-batch:
+      size: ${app.order.orchestrator.chunk-size}
+    batch:
+      size: ${app.order.orchestrator.chunk-size}
+    orchestrator:
+      chunk-size: 500
+    update:
+      s3:
+        bucket-name: order-updates
   transaction-outbox:
     resumer-delay: PT5M
     flush-batch-size: 2048

@@ -15,7 +15,6 @@ public record OrderHttp(
     Instant createdAt,
     Instant updatedAt
 ) {
-
   public static OrderHttp from(Order order) {
     return new OrderHttp(
         order.getBusinessId(),

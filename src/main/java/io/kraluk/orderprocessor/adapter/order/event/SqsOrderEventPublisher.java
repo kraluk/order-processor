@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 class SqsOrderEventPublisher implements OrderEventPublisher {
+  private static final Logger log = LoggerFactory.getLogger(SqsOrderEventPublisher.class);
 
   private final SqsTemplate template;
   private final OrderEventProperties properties;
@@ -21,9 +22,11 @@ class SqsOrderEventPublisher implements OrderEventPublisher {
 
   @Override
   public void publish(final OrderUpdatedEvent event) {
-    template.send(to -> to
+    final var result = template.send(to -> to
         .queue(properties.queue())
         .payload(event));
+
+    log.debug("Published with the result - '{}'", result);
   }
 }
 

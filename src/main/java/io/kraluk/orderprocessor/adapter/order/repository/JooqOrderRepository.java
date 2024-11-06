@@ -2,6 +2,7 @@ package io.kraluk.orderprocessor.adapter.order.repository;
 
 import io.kraluk.orderprocessor.domain.order.entity.Order;
 import io.kraluk.orderprocessor.domain.order.port.OrderRepository;
+import io.kraluk.orderprocessor.domain.shared.TemporaryTable;
 import org.javamoney.moneta.Money;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -10,28 +11,41 @@ import org.jooq.Table;
 import org.jooq.impl.SQLDataType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static io.kraluk.orderprocessor.adapter.order.repository.OrderSchema.ALL_COLUMNS;
 import static io.kraluk.orderprocessor.adapter.order.repository.OrderSchema.BUSINESS_ID;
+import static io.kraluk.orderprocessor.adapter.order.repository.OrderSchema.CREATED_AT;
+import static io.kraluk.orderprocessor.adapter.order.repository.OrderSchema.CURRENCY;
 import static io.kraluk.orderprocessor.adapter.order.repository.OrderSchema.ID;
+import static io.kraluk.orderprocessor.adapter.order.repository.OrderSchema.NOTES;
 import static io.kraluk.orderprocessor.adapter.order.repository.OrderSchema.ORDER_TABLE;
+import static io.kraluk.orderprocessor.adapter.order.repository.OrderSchema.READ_AT;
+import static io.kraluk.orderprocessor.adapter.order.repository.OrderSchema.UPDATED_AT;
+import static io.kraluk.orderprocessor.adapter.order.repository.OrderSchema.VALUE;
+import static io.kraluk.orderprocessor.adapter.order.repository.OrderSchema.VERSION;
 import static io.kraluk.orderprocessor.shared.JooqOps.column;
+import static org.jooq.impl.DSL.excluded;
 import static org.jooq.impl.DSL.table;
+import static org.jooq.impl.DSL.val;
 
 @Repository
 public class JooqOrderRepository implements OrderRepository {
   private static final Logger log = LoggerFactory.getLogger(JooqOrderRepository.class);
 
   private final DSLContext dsl;
+  private final OrderBatchProperties properties;
 
-  public JooqOrderRepository(DSLContext dsl) {
+  public JooqOrderRepository(final DSLContext dsl, final OrderBatchProperties properties) {
     this.dsl = dsl;
+    this.properties = properties;
   }
 
   @Override
@@ -50,6 +64,46 @@ public class JooqOrderRepository implements OrderRepository {
         .from(ORDER_TABLE)
         .where(BUSINESS_ID.equal(businessId))
         .fetchOptional(OrderSchema::toOrder);
+  }
+
+  @Override
+  public Stream<Order> upsertFromTempTable(final TemporaryTable temporaryTable) {
+    final var tempTable = temporaryTable.getName();
+
+    return dsl.insertInto(ORDER_TABLE)
+        .columns(
+            BUSINESS_ID,
+            VALUE,
+            CURRENCY,
+            NOTES,
+            VERSION,
+            CREATED_AT,
+            UPDATED_AT,
+            READ_AT
+        )
+        .select(
+            dsl.select(
+                    column(BUSINESS_ID.getDataType(), tempTable, BUSINESS_ID.getName()),
+                    column(VALUE.getDataType(), tempTable, VALUE.getName()),
+                    column(CURRENCY.getDataType(), tempTable, CURRENCY.getName()),
+                    column(NOTES.getDataType(), tempTable, NOTES.getName()),
+                    val(1L).as(VERSION),
+                    column(CREATED_AT.getDataType(), tempTable, CREATED_AT.getName()),
+                    column(UPDATED_AT.getDataType(), tempTable, UPDATED_AT.getName()),
+                    column(READ_AT.getDataType(), tempTable, READ_AT.getName())
+                )
+                .from(table(tempTable))
+        )
+        .onConflict(BUSINESS_ID)
+        .doUpdate()
+        .setAllToExcluded()
+        .set(VERSION, VERSION.plus(1))
+        .where(UPDATED_AT.lt(excluded(UPDATED_AT)))
+        .returning(ALL_COLUMNS)
+        .fetchSize(properties.size())
+        .fetchLazy()
+        .stream()
+        .map(OrderSchema::toOrder);
   }
 }
 
@@ -88,4 +142,8 @@ interface OrderSchema {
   Field<?>[] ALL_COLUMNS = new Field[]{
       ID, BUSINESS_ID, VALUE, CURRENCY, NOTES, VERSION, CREATED_AT, UPDATED_AT, READ_AT
   };
+}
+
+@ConfigurationProperties(prefix = "app.order.batch")
+record OrderBatchProperties(int size) {
 }
