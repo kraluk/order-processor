@@ -12,7 +12,6 @@ plugins {
 
   alias(libs.plugins.versions)
   alias(libs.plugins.spotless)
-    kotlin("jvm")
 }
 
 group = "io.kraluk"
@@ -71,7 +70,6 @@ dependencies {
   integrationTestImplementation("org.testcontainers:localstack")
   integrationTestImplementation("io.awspring.cloud:spring-cloud-aws-test")
   integrationTestImplementation("io.awspring.cloud:spring-cloud-aws-testcontainers")
-    implementation(kotlin("stdlib-jdk8"))
 }
 
 tasks.test {
