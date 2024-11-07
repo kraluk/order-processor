@@ -1,5 +1,7 @@
 # order-processor
 
+[![CI](https://github.com/kraluk/order-processor/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/kraluk/order-processor/actions/workflows/ci.yaml)
+
 `order-processor` is a service that process orders in the following way:
 
 * reads data from a `*.csv` file provided by an external service in an AWS S3 bucket
