@@ -1,5 +1,10 @@
 package io.kraluk.orderprocessor.test.aws.client;
 
+import static java.lang.String.format;
+import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
+
+import java.net.URI;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.localstack.LocalStackContainer;
@@ -9,12 +14,6 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.Message;
 import software.amazon.awssdk.services.sqs.model.ReceiveMessageRequest;
-
-import java.net.URI;
-import java.util.List;
-
-import static java.lang.String.format;
-import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
 public class SqsTestClient {
   private static final Logger log = LoggerFactory.getLogger(SqsTestClient.class);
@@ -26,14 +25,10 @@ public class SqsTestClient {
   public SqsTestClient(final LocalStackContainer localstack, final String queueName) {
     this.queueName = queueName;
     this.endpointUrl = localstack.getEndpointOverride(SQS);
-    this.client = SqsClient
-        .builder()
+    this.client = SqsClient.builder()
         .endpointOverride(localstack.getEndpoint())
-        .credentialsProvider(
-            StaticCredentialsProvider.create(
-                AwsBasicCredentials.create(localstack.getAccessKey(), localstack.getSecretKey())
-            )
-        )
+        .credentialsProvider(StaticCredentialsProvider.create(
+            AwsBasicCredentials.create(localstack.getAccessKey(), localstack.getSecretKey())))
         .region(Region.of(localstack.getRegion()))
         .build();
   }
@@ -50,7 +45,11 @@ public class SqsTestClient {
 
     final var response = client.receiveMessage(request);
     final var result = response.messages();
-    log.debug("Received '{}' messages from queue '{}' with result '{}'", result.size(), queueName, response);
+    log.debug(
+        "Received '{}' messages from queue '{}' with result '{}'",
+        result.size(),
+        queueName,
+        response);
     return result;
   }
 

@@ -1,11 +1,10 @@
 package io.kraluk.orderprocessor.shared.contract.http;
 
-import io.kraluk.orderprocessor.test.domain.order.entity.TestOrderBuilder;
-import org.junit.jupiter.api.Test;
-
-import java.util.Objects;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import io.kraluk.orderprocessor.test.domain.order.entity.TestOrderBuilder;
+import java.util.Objects;
+import org.junit.jupiter.api.Test;
 
 class OrderHttpTest {
 

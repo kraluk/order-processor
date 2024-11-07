@@ -130,18 +130,17 @@ tasks.jacocoTestReport {
 
 tasks.check { dependsOn(integrationTest) }
 
-/*spotless { // TODO: temporarily disabled
+spotless {
   java {
-    eclipse()
-      .configFile(rootProject.file("codeformat.xml"))
-    formatAnnotations()
-    trimTrailingWhitespace()
-    removeUnusedImports()
-    indentWithSpaces(2)
     toggleOffOn()
-    importOrder()
+    palantirJavaFormat()
+      .style("GOOGLE")
+      .formatJavadoc(true)
+    removeUnusedImports()
+    trimTrailingWhitespace()
+    endWithNewline()
   }
-}*/
+}
 
 pmd {
   toolVersion = toolLibs.versions.pmd.get()

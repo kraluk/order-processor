@@ -1,12 +1,11 @@
 package io.kraluk.orderprocessor.configuration;
 
+import java.time.Clock;
+import java.time.ZoneOffset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.time.Clock;
-import java.time.ZoneOffset;
 
 @Configuration
 class ClockConfiguration {

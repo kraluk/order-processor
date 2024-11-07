@@ -1,13 +1,12 @@
 package io.kraluk.orderprocessor.test.db.order;
 
 import io.kraluk.orderprocessor.domain.order.entity.Order;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.UUID;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 public class OrderTestDatabase {
 
@@ -18,26 +17,16 @@ public class OrderTestDatabase {
   }
 
   public TestOrder findById(final Long id) {
-    return jdbc.queryForObject(
-        "SELECT * FROM orders WHERE id = ?",
-        new TestOrderRowMapper(),
-        id
-    );
+    return jdbc.queryForObject("SELECT * FROM orders WHERE id = ?", new TestOrderRowMapper(), id);
   }
 
   public TestOrder findByBusinessId(final UUID businessId) {
     return jdbc.queryForObject(
-        "SELECT * FROM orders WHERE business_id = ?",
-        new TestOrderRowMapper(),
-        businessId
-    );
+        "SELECT * FROM orders WHERE business_id = ?", new TestOrderRowMapper(), businessId);
   }
 
   public Long count() {
-    return jdbc.queryForObject(
-        "SELECT COUNT(1) FROM orders",
-        Long.class
-    );
+    return jdbc.queryForObject("SELECT COUNT(1) FROM orders", Long.class);
   }
 
   public void save(final Order order) {
@@ -52,8 +41,7 @@ public class OrderTestDatabase {
         order.getNotes(),
         order.getCreatedAt() != null ? Timestamp.from(order.getCreatedAt()) : null,
         Timestamp.from(order.getUpdatedAt()),
-        order.getReadAt() != null ? Timestamp.from(order.getReadAt()) : null
-    );
+        order.getReadAt() != null ? Timestamp.from(order.getReadAt()) : null);
   }
 }
 
@@ -70,8 +58,6 @@ class TestOrderRowMapper implements RowMapper<TestOrder> {
         rs.getLong("version"),
         rs.getTimestamp("created_at").toInstant(),
         rs.getTimestamp("updated_at").toInstant(),
-        rs.getTimestamp("read_at").toInstant()
-    );
+        rs.getTimestamp("read_at").toInstant());
   }
 }
-

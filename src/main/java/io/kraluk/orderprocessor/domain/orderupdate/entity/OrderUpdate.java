@@ -1,10 +1,10 @@
 package io.kraluk.orderprocessor.domain.orderupdate.entity;
 
+import static java.util.Objects.requireNonNull;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
-
-import static java.util.Objects.requireNonNull;
 
 public class OrderUpdate {
 
@@ -14,7 +14,12 @@ public class OrderUpdate {
   private final String notes;
   private final Instant updatedAt;
 
-  public OrderUpdate(final UUID businessId, final BigDecimal value, final String currency, final String notes, final Instant updatedAt) {
+  public OrderUpdate(
+      final UUID businessId,
+      final BigDecimal value,
+      final String currency,
+      final String notes,
+      final Instant updatedAt) {
     this.businessId = requireNonNull(businessId);
     this.value = requireNonNull(value);
     this.currency = requireNonNull(currency);

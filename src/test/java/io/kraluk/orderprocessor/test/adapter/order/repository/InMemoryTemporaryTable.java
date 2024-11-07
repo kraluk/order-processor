@@ -1,7 +1,6 @@
 package io.kraluk.orderprocessor.test.adapter.order.repository;
 
 import io.kraluk.orderprocessor.domain.shared.TemporaryTable;
-
 import java.util.ArrayList;
 import java.util.List;
 

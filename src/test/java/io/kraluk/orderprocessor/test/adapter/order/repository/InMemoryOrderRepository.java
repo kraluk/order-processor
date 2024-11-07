@@ -3,9 +3,6 @@ package io.kraluk.orderprocessor.test.adapter.order.repository;
 import io.kraluk.orderprocessor.domain.order.entity.Order;
 import io.kraluk.orderprocessor.domain.order.port.OrderRepository;
 import io.kraluk.orderprocessor.domain.shared.TemporaryTable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +10,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class InMemoryOrderRepository implements OrderRepository {
   private static final Logger log = LoggerFactory.getLogger(InMemoryOrderRepository.class);
@@ -37,10 +36,12 @@ public final class InMemoryOrderRepository implements OrderRepository {
   public Stream<Order> upsertFromTempTable(final TemporaryTable temporaryTable) {
     if (temporaryTable instanceof InMemoryTemporaryTable) {
       final var table = (InMemoryTemporaryTable<Order>) temporaryTable;
-      log.debug("Upserting '{}' Orders from temporary table '{}'", table.getData().size(), table.getName());
+      log.debug(
+          "Upserting '{}' Orders from temporary table '{}'",
+          table.getData().size(),
+          table.getName());
 
-      return table.getData()
-          .stream()
+      return table.getData().stream()
           .map(InMemoryOrderRepository::withId)
           .peek(order -> orders.put(order.getId(), order));
 
@@ -67,7 +68,6 @@ public final class InMemoryOrderRepository implements OrderRepository {
         given.getVersion(),
         given.getCreatedAt(),
         given.getUpdatedAt(),
-        given.getReadAt()
-    );
+        given.getReadAt());
   }
 }

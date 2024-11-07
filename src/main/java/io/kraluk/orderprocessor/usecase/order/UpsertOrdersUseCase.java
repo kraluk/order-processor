@@ -4,9 +4,8 @@ import io.kraluk.orderprocessor.domain.order.entity.Order;
 import io.kraluk.orderprocessor.domain.order.port.OrderRepository;
 import io.kraluk.orderprocessor.domain.order.port.OrderTemporaryRepository;
 import io.kraluk.orderprocessor.domain.shared.SessionId;
-import org.springframework.stereotype.Component;
-
 import java.util.stream.Stream;
+import org.springframework.stereotype.Component;
 
 @Component
 public class UpsertOrdersUseCase {
@@ -14,7 +13,8 @@ public class UpsertOrdersUseCase {
   private final OrderRepository repository;
   private final OrderTemporaryRepository temporaryRepository;
 
-  public UpsertOrdersUseCase(final OrderRepository repository, final OrderTemporaryRepository temporaryRepository) {
+  public UpsertOrdersUseCase(
+      final OrderRepository repository, final OrderTemporaryRepository temporaryRepository) {
     this.repository = repository;
     this.temporaryRepository = temporaryRepository;
   }

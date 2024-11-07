@@ -2,9 +2,8 @@ package io.kraluk.orderprocessor.usecase.order;
 
 import io.kraluk.orderprocessor.domain.order.entity.Order;
 import io.kraluk.orderprocessor.domain.order.port.OrderRepository;
-import org.springframework.stereotype.Component;
-
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
 @Component
 public class FindOrderByIdUseCase {

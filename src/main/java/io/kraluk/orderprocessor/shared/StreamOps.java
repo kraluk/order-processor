@@ -12,13 +12,16 @@ public class StreamOps {
 
   public static <T> Stream<List<T>> fixedWindow(final Stream<T> stream, final int windowSize) {
     final Iterator<T> streamIterator = stream.iterator();
-    final Iterator<List<T>> windowIterator = new FixedWindowStreamIterator<>(streamIterator, windowSize);
+    final Iterator<List<T>> windowIterator =
+        new FixedWindowStreamIterator<>(streamIterator, windowSize);
 
-    return StreamSupport.stream(Spliterators.spliteratorUnknownSize(windowIterator, Spliterator.ORDERED), false);
+    return StreamSupport.stream(
+        Spliterators.spliteratorUnknownSize(windowIterator, Spliterator.ORDERED), false);
   }
 
   public static <T> Stream<T> toStream(final Iterator<T> iterator) {
-    return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED), false);
+    return StreamSupport.stream(
+        Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED), false);
   }
 
   private static class FixedWindowStreamIterator<T> implements Iterator<List<T>> {

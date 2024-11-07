@@ -1,15 +1,14 @@
 package io.kraluk.orderprocessor.adapter.orderupdate.repository;
 
-import io.kraluk.orderprocessor.test.aws.AwsIntegrationTest;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import static io.kraluk.orderprocessor.test.TestOps.pathTo;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import io.kraluk.orderprocessor.test.aws.AwsIntegrationTest;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
-
-import static io.kraluk.orderprocessor.test.TestOps.pathTo;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 class S3OrderUpdateRepositoryIntegrationTest extends AwsIntegrationTest {
 
@@ -29,7 +28,8 @@ class S3OrderUpdateRepositoryIntegrationTest extends AwsIntegrationTest {
     assertThat(result.toList())
         .hasSize(1)
         .first()
-        .matches(u -> u.getBusinessId().equals(UUID.fromString("10000000-0000-0000-0000-000000000000")))
+        .matches(
+            u -> u.getBusinessId().equals(UUID.fromString("10000000-0000-0000-0000-000000000000")))
         .matches(u -> u.getValue().compareTo(BigDecimal.valueOf(100)) == 0)
         .matches(u -> u.getCurrency().equals("PLN"))
         .matches(u -> u.getNotes().equals("note1"))

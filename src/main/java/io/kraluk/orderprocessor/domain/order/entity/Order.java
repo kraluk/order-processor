@@ -1,9 +1,8 @@
 package io.kraluk.orderprocessor.domain.order.entity;
 
-import org.javamoney.moneta.Money;
-
 import java.time.Instant;
 import java.util.UUID;
+import org.javamoney.moneta.Money;
 
 public final class Order {
 
@@ -18,7 +17,15 @@ public final class Order {
   private Instant updatedAt;
   private Instant readAt;
 
-  public Order(Long id, UUID businessId, Money value, String notes, Long version, Instant createdAt, Instant updatedAt, Instant readAt) {
+  public Order(
+      Long id,
+      UUID businessId,
+      Money value,
+      String notes,
+      Long version,
+      Instant createdAt,
+      Instant updatedAt,
+      Instant readAt) {
     this.id = id;
     this.businessId = businessId;
     this.value = value;
@@ -61,7 +68,8 @@ public final class Order {
     return readAt;
   }
 
-  public static Order fromUpdate(UUID businessId, Money value, String notes, Instant updatedAt, Instant readAt) {
+  public static Order fromUpdate(
+      UUID businessId, Money value, String notes, Instant updatedAt, Instant readAt) {
     return new Order(null, businessId, value, notes, null, null, updatedAt, readAt);
   }
 }

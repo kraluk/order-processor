@@ -13,7 +13,8 @@ public final class NoOpTransactionManager extends AbstractPlatformTransactionMan
   }
 
   @Override
-  protected void doBegin(final Object transaction, final TransactionDefinition definition) throws TransactionException {
+  protected void doBegin(final Object transaction, final TransactionDefinition definition)
+      throws TransactionException {
     // noop
   }
 

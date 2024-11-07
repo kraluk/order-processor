@@ -11,8 +11,7 @@ public final class TestOps {
 
   public static Path pathTo(final String resource) {
     return Path.of(
-        Objects.requireNonNull(
-            Thread.currentThread().getContextClassLoader().getResource(resource)).getPath()
-    );
+        Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource(resource))
+            .getPath());
   }
 }

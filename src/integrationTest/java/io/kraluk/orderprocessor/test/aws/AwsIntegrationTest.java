@@ -1,8 +1,12 @@
 package io.kraluk.orderprocessor.test.aws;
 
+import static java.lang.String.format;
+
 import io.kraluk.orderprocessor.test.IntegrationTest;
 import io.kraluk.orderprocessor.test.aws.client.S3TestClient;
 import io.kraluk.orderprocessor.test.aws.client.SqsTestClient;
+import java.io.IOException;
+import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,18 +15,14 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 
-import java.io.IOException;
-import java.util.UUID;
-
-import static java.lang.String.format;
-
 /**
- * @see <a href="https://rieckpil.de/amazon-sqs-listener-testing-with-sqstest-spring-cloud-aws/">examples</a>
- * @see <a href="https://docs.awspring.io/spring-cloud-aws/docs/3.2.0/reference/html/index.html#testing">spring cloud aws testing</a>
+ * @see <a
+ *     href="https://rieckpil.de/amazon-sqs-listener-testing-with-sqstest-spring-cloud-aws/">examples</a>
+ * @see <a
+ *     href="https://docs.awspring.io/spring-cloud-aws/docs/3.2.0/reference/html/index.html#testing">spring
+ *     cloud aws testing</a>
  */
-@Import({
-    LocalStackTestConfiguration.class
-})
+@Import({LocalStackTestConfiguration.class})
 public abstract class AwsIntegrationTest extends IntegrationTest {
   private static final String BUCKET_NAME = format("order-updates-bucket-%s", UUID.randomUUID());
   private static final String QUEUE_NAME = format("order-updated-queue-%s", UUID.randomUUID());

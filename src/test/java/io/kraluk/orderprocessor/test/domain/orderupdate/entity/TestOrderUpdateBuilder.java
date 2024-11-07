@@ -1,7 +1,6 @@
 package io.kraluk.orderprocessor.test.domain.orderupdate.entity;
 
 import io.kraluk.orderprocessor.domain.orderupdate.entity.OrderUpdate;
-
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Random;
@@ -16,8 +15,7 @@ public final class TestOrderUpdateBuilder {
   private String notes = "some notes";
   private Instant updatedAt = Instant.parse("2024-11-05T18:00:00.000Z");
 
-  private TestOrderUpdateBuilder() {
-  }
+  private TestOrderUpdateBuilder() {}
 
   public TestOrderUpdateBuilder businessId(UUID businessId) {
     this.businessId = businessId;

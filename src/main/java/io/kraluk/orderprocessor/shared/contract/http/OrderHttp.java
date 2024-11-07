@@ -1,7 +1,6 @@
 package io.kraluk.orderprocessor.shared.contract.http;
 
 import io.kraluk.orderprocessor.domain.order.entity.Order;
-
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
@@ -13,8 +12,7 @@ public record OrderHttp(
     String notes,
     Long version,
     Instant createdAt,
-    Instant updatedAt
-) {
+    Instant updatedAt) {
   public static OrderHttp from(Order order) {
     return new OrderHttp(
         order.getBusinessId(),
@@ -23,7 +21,6 @@ public record OrderHttp(
         order.getNotes(),
         order.getVersion(),
         order.getCreatedAt(),
-        order.getUpdatedAt()
-    );
+        order.getUpdatedAt());
   }
 }

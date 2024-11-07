@@ -1,7 +1,9 @@
 package io.kraluk.orderprocessor.test.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.util.Map;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.LocalHostUriTemplateHandler;
 import org.springframework.context.annotation.Bean;
@@ -14,30 +16,23 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriBuilder;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.util.Map;
-
 @TestConfiguration
 public class TestRestClientTestConfiguration {
 
   @Bean(name = "testRestClient")
-  public RestClient testRestClient(
-      final Environment environment,
-      final ObjectMapper mapper) {
+  public RestClient testRestClient(final Environment environment, final ObjectMapper mapper) {
     final var uriBuilderFactory = new LocalHostUriBuilderFactory(environment);
 
-    final var httpClient = HttpClient
-        .newBuilder()
+    final var httpClient = HttpClient.newBuilder()
         .version(HttpClient.Version.HTTP_1_1)
         .followRedirects(HttpClient.Redirect.NEVER)
         .build();
 
     return RestClient.builder()
-        .messageConverters(converters -> converters
-            .stream()
+        .messageConverters(converters -> converters.stream()
             .filter(MappingJackson2HttpMessageConverter.class::isInstance)
-            .forEach(converter -> ((MappingJackson2HttpMessageConverter) converter).setObjectMapper(mapper)))
+            .forEach(converter ->
+                ((MappingJackson2HttpMessageConverter) converter).setObjectMapper(mapper)))
         .uriBuilderFactory(uriBuilderFactory)
         .defaultStatusHandler(new NoOpErrorStatusHandler())
         .requestFactory(new JdkClientHttpRequestFactory(httpClient))
@@ -65,14 +60,12 @@ class LocalHostUriBuilderFactory extends DefaultUriBuilderFactory {
 
   @Override
   public UriBuilder uriString(final String uriTemplate) {
-    return new DefaultUriBuilderFactory(delegate.getRootUri())
-        .uriString(uriTemplate);
+    return new DefaultUriBuilderFactory(delegate.getRootUri()).uriString(uriTemplate);
   }
 
   @Override
   public UriBuilder builder() {
-    return new DefaultUriBuilderFactory(delegate.getRootUri())
-        .uriString("");
+    return new DefaultUriBuilderFactory(delegate.getRootUri()).uriString("");
   }
 }
 

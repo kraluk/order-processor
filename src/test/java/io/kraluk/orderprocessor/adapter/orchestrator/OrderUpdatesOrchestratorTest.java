@@ -1,5 +1,8 @@
 package io.kraluk.orderprocessor.adapter.orchestrator;
 
+import static io.kraluk.orderprocessor.test.TestClockOps.fixedClock;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.kraluk.orderprocessor.domain.order.entity.Order;
 import io.kraluk.orderprocessor.test.NoOpTransactionManager;
 import io.kraluk.orderprocessor.test.adapter.order.outbox.InMemoryOrderTransactionOutbox;
@@ -9,6 +12,7 @@ import io.kraluk.orderprocessor.test.adapter.orderupdate.repository.InMemoryOrde
 import io.kraluk.orderprocessor.test.domain.orderupdate.entity.TestOrderUpdateBuilder;
 import io.kraluk.orderprocessor.usecase.order.UpsertOrdersUseCase;
 import io.kraluk.orderprocessor.usecase.orderupdate.FindOrderUpdatesFromFileUseCase;
+import java.util.List;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -17,17 +21,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import java.util.List;
-
-import static io.kraluk.orderprocessor.test.TestClockOps.fixedClock;
-import static org.assertj.core.api.Assertions.assertThat;
-
 class OrderUpdatesOrchestratorTest {
 
   private static final Logger log = LoggerFactory.getLogger(OrderUpdatesOrchestratorTest.class);
-  private final InMemoryOrderUpdateRepository updateRepository = new InMemoryOrderUpdateRepository();
+  private final InMemoryOrderUpdateRepository updateRepository =
+      new InMemoryOrderUpdateRepository();
   private final InMemoryOrderRepository repository = new InMemoryOrderRepository();
-  private final InMemoryOrderTemporaryRepository temporaryRepository = new InMemoryOrderTemporaryRepository();
+  private final InMemoryOrderTemporaryRepository temporaryRepository =
+      new InMemoryOrderTemporaryRepository();
   private final InMemoryOrderTransactionOutbox outbox = new InMemoryOrderTransactionOutbox();
 
   private final OrderUpdatesOrchestrator orchestrator = orchestrator();
@@ -44,7 +45,12 @@ class OrderUpdatesOrchestratorTest {
     final var update4 = TestOrderUpdateBuilder.buildRandom();
     final var update5 = TestOrderUpdateBuilder.buildRandom();
 
-    final var expectedBusinessIds = List.of(update1.getBusinessId(), update2.getBusinessId(), update3.getBusinessId(), update4.getBusinessId(), update5.getBusinessId());
+    final var expectedBusinessIds = List.of(
+        update1.getBusinessId(),
+        update2.getBusinessId(),
+        update3.getBusinessId(),
+        update4.getBusinessId(),
+        update5.getBusinessId());
 
     // And given updates are available in the update repository
     updateRepository.save(source, List.of(update1, update2, update3, update4, update5));
@@ -73,18 +79,12 @@ class OrderUpdatesOrchestratorTest {
 
   private OrderUpdatesOrchestrator orchestrator() {
     return new OrderUpdatesOrchestrator(
-        new FindOrderUpdatesFromFileUseCase(
-            updateRepository
-        ),
-        new UpsertOrdersUseCase(
-            repository,
-            temporaryRepository
-        ),
+        new FindOrderUpdatesFromFileUseCase(updateRepository),
+        new UpsertOrdersUseCase(repository, temporaryRepository),
         new OrderFactory(fixedClock()),
         outbox,
         new TransactionTemplate(new NoOpTransactionManager()),
         new SimpleAsyncTaskExecutor("tests-"),
-        new OrderUpdatesOrchestratorProperties(2)
-    );
+        new OrderUpdatesOrchestratorProperties(2));
   }
 }

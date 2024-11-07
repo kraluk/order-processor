@@ -1,30 +1,25 @@
 package io.kraluk.orderprocessor.test.domain.order.entity;
 
 import io.kraluk.orderprocessor.domain.order.entity.Order;
-import org.javamoney.moneta.Money;
-
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Random;
 import java.util.UUID;
+import org.javamoney.moneta.Money;
 
 public final class TestOrderBuilder {
   private static final Random RANDOM = new Random();
 
   private Long id = RANDOM.nextLong(1_000_000_000);
   private UUID businessId = UUID.randomUUID();
-  private Money value = Money.of(
-      BigDecimal.valueOf(RANDOM.nextDouble(1_000)),
-      "PLN"
-  );
+  private Money value = Money.of(BigDecimal.valueOf(RANDOM.nextDouble(1_000)), "PLN");
   private String notes = "Some notes";
   private Long version = 1L;
   private Instant createdAt = Instant.parse("2024-01-01T00:00:00Z");
   private Instant updatedAt = Instant.parse("2024-01-01T00:00:00Z");
   private Instant readAt = Instant.parse("2024-11-04T00:00:00Z");
 
-  private TestOrderBuilder() {
-  }
+  private TestOrderBuilder() {}
 
   public TestOrderBuilder id(final Long id) {
     this.id = id;
@@ -82,5 +77,4 @@ public final class TestOrderBuilder {
   public static Order buildRandom() {
     return new TestOrderBuilder().build();
   }
-
 }

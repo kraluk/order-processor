@@ -1,5 +1,7 @@
 package io.kraluk.orderprocessor.adapter.order.outbox;
 
+import static org.springframework.transaction.annotation.Propagation.MANDATORY;
+
 import com.gruelbox.transactionoutbox.TransactionOutbox;
 import io.kraluk.orderprocessor.adapter.order.event.OrderEventPublisher;
 import io.kraluk.orderprocessor.domain.order.entity.Order;
@@ -8,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.springframework.transaction.annotation.Propagation.MANDATORY;
 
 public interface OrderTransactionOutbox {
   void add(Order order);
@@ -22,7 +22,8 @@ class DefaultOrderTransactionOutbox implements OrderTransactionOutbox {
   private final TransactionOutbox outbox;
   private final OrderEventPublisher publisher;
 
-  public DefaultOrderTransactionOutbox(final TransactionOutbox outbox, final OrderEventPublisher publisher) {
+  public DefaultOrderTransactionOutbox(
+      final TransactionOutbox outbox, final OrderEventPublisher publisher) {
     this.outbox = outbox;
     this.publisher = publisher;
   }
@@ -32,14 +33,14 @@ class DefaultOrderTransactionOutbox implements OrderTransactionOutbox {
   public void add(final Order order) {
     final var event = OrderUpdatedEvent.from(order);
 
-    outbox.with()
-        .schedule(this.getClass())
-        .publish(event);
+    outbox.with().schedule(this.getClass()).publish(event);
   }
 
   public void publish(final OrderUpdatedEvent event) { // has to be public due to outbox proxies
-    log.debug("Publishing event related to Order with business id '{}' - '{}'", event.businessId(), event);
+    log.debug(
+        "Publishing event related to Order with business id '{}' - '{}'",
+        event.businessId(),
+        event);
     publisher.publish(event);
   }
 }
-

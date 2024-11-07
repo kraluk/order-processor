@@ -2,11 +2,10 @@ package io.kraluk.orderprocessor.test.adapter.order.outbox;
 
 import io.kraluk.orderprocessor.adapter.order.outbox.OrderTransactionOutbox;
 import io.kraluk.orderprocessor.domain.order.entity.Order;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class InMemoryOrderTransactionOutbox implements OrderTransactionOutbox {
   private static final Logger log = LoggerFactory.getLogger(InMemoryOrderTransactionOutbox.class);

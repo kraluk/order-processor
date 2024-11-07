@@ -28,9 +28,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ActiveProfiles("integration")
 @Testcontainers
 @Import({
-    TestRestClientTestConfiguration.class,
-    NoAwsTestConfiguration.class,
-    OrderDatabaseTestConfiguration.class
+  TestRestClientTestConfiguration.class,
+  NoAwsTestConfiguration.class,
+  OrderDatabaseTestConfiguration.class
 })
 @ExtendWith(ClearDatabaseExtension.class)
 public abstract class IntegrationTest {
@@ -57,22 +57,14 @@ public abstract class IntegrationTest {
 class NoAwsTestConfiguration {
   private static final Logger log = LoggerFactory.getLogger(NoAwsTestConfiguration.class);
 
-  @ConditionalOnProperty(
-      prefix = "spring.cloud.aws.sqs",
-      name = "enabled",
-      havingValue = "false"
-  )
+  @ConditionalOnProperty(prefix = "spring.cloud.aws.sqs", name = "enabled", havingValue = "false")
   @Bean
   OrderEventPublisher orderEventPublisher() {
     log.warn("Using logging OrderEventPublisher for tests");
     return new LoggingOrderEventPublisher();
   }
 
-  @ConditionalOnProperty(
-      prefix = "spring.cloud.aws.s3",
-      name = "enabled",
-      havingValue = "false"
-  )
+  @ConditionalOnProperty(prefix = "spring.cloud.aws.s3", name = "enabled", havingValue = "false")
   @Bean
   OrderUpdateDownloader orderUpdateDownloader() {
     log.warn("Using static OrderUpdateDownloader for tests");

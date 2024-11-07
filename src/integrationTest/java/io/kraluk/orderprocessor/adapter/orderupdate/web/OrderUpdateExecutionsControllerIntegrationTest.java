@@ -1,18 +1,19 @@
 package io.kraluk.orderprocessor.adapter.orderupdate.web;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.kraluk.orderprocessor.shared.contract.http.OrderUpdateExecutionHttp;
 import io.kraluk.orderprocessor.test.InMemoryTestConfiguration;
 import io.kraluk.orderprocessor.test.IntegrationTest;
+import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatusCode;
 
-import java.util.Objects;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-@Import(InMemoryTestConfiguration.class) // just to not test the whole orchestration machinery in this particular test
+@Import(
+    InMemoryTestConfiguration
+        .class) // just to not test the whole orchestration machinery in this particular test
 class OrderUpdateExecutionsControllerIntegrationTest extends IntegrationTest {
 
   @Test
@@ -21,7 +22,8 @@ class OrderUpdateExecutionsControllerIntegrationTest extends IntegrationTest {
     final var source = "test-source";
 
     // When
-    final var result = updateExecutionsTestClient().executeProcess(source, OrderUpdateExecutionHttp.class);
+    final var result =
+        updateExecutionsTestClient().executeProcess(source, OrderUpdateExecutionHttp.class);
 
     // Then
     assertThat(result)

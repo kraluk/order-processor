@@ -1,5 +1,7 @@
 package io.kraluk.orderprocessor.configuration;
 
+import java.lang.reflect.Method;
+import java.util.concurrent.Executor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
@@ -10,17 +12,13 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-import java.lang.reflect.Method;
-import java.util.concurrent.Executor;
-
 @Configuration
 @EnableAsync(proxyTargetClass = true)
 class AsyncConfiguration {
 
   @Bean
   SimpleAsyncTaskExecutor asyncTaskExecutor(final SimpleAsyncTaskExecutorBuilder builder) {
-    return builder
-        .build();
+    return builder.build();
   }
 
   @Bean
@@ -55,10 +53,13 @@ class AsyncSupportConfiguration implements AsyncConfigurer {
 
 // FEATURE: better default exception handling for async methods
 class LoggingAsyncUncaughtExceptionHandler implements AsyncUncaughtExceptionHandler {
-  private static final Logger log = LoggerFactory.getLogger(LoggingAsyncUncaughtExceptionHandler.class);
+  private static final Logger log =
+      LoggerFactory.getLogger(LoggingAsyncUncaughtExceptionHandler.class);
 
   @Override
-  public void handleUncaughtException(final Throwable throwable, final Method method, final Object... params) {
-    log.error("Uncaught exception in async method '{}' with parameters '{}'", method, params, throwable);
+  public void handleUncaughtException(
+      final Throwable throwable, final Method method, final Object... params) {
+    log.error(
+        "Uncaught exception in async method '{}' with parameters '{}'", method, params, throwable);
   }
 }

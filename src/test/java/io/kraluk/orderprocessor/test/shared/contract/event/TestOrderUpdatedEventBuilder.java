@@ -1,12 +1,11 @@
 package io.kraluk.orderprocessor.test.shared.contract.event;
 
-import io.kraluk.orderprocessor.shared.contract.event.OrderUpdatedEvent;
+import static io.kraluk.orderprocessor.test.TestClockOps.ARBITRARY_NOW;
 
+import io.kraluk.orderprocessor.shared.contract.event.OrderUpdatedEvent;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
-
-import static io.kraluk.orderprocessor.test.TestClockOps.ARBITRARY_NOW;
 
 public final class TestOrderUpdatedEventBuilder {
   private UUID businessId = UUID.randomUUID();
@@ -16,8 +15,7 @@ public final class TestOrderUpdatedEventBuilder {
   private Instant createdAt = ARBITRARY_NOW;
   private Instant updatedAt = ARBITRARY_NOW;
 
-  private TestOrderUpdatedEventBuilder() {
-  }
+  private TestOrderUpdatedEventBuilder() {}
 
   public TestOrderUpdatedEventBuilder businessId(UUID businessId) {
     this.businessId = businessId;

@@ -1,7 +1,6 @@
 package io.kraluk.orderprocessor.shared.contract.event;
 
 import io.kraluk.orderprocessor.domain.order.entity.Order;
-
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
@@ -12,8 +11,7 @@ public record OrderUpdatedEvent(
     String currency,
     String notes,
     Instant createdAt,
-    Instant updatedAt
-) {
+    Instant updatedAt) {
   public static OrderUpdatedEvent from(Order order) {
     return new OrderUpdatedEvent(
         order.getBusinessId(),
@@ -21,7 +19,6 @@ public record OrderUpdatedEvent(
         order.getValue().getCurrency().getCurrencyCode(),
         order.getNotes(),
         order.getCreatedAt(),
-        order.getUpdatedAt()
-    );
+        order.getUpdatedAt());
   }
 }

@@ -1,22 +1,21 @@
 package io.kraluk.orderprocessor.adapter.order.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.kraluk.orderprocessor.domain.order.port.OrderRepository;
 import io.kraluk.orderprocessor.domain.order.port.OrderTemporaryRepository;
 import io.kraluk.orderprocessor.domain.shared.SessionId;
 import io.kraluk.orderprocessor.test.IntegrationTest;
 import io.kraluk.orderprocessor.test.domain.order.entity.TestOrderBuilder;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.UUID;
+import java.util.stream.Stream;
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.UUID;
-import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @Sql(scripts = "classpath:order/db/initial.sql")
 class JooqOrderRepositoryIntegrationTest extends IntegrationTest {
@@ -33,7 +32,8 @@ class JooqOrderRepositoryIntegrationTest extends IntegrationTest {
     // Given
     final var update = TestOrderBuilder.builder()
         .withoutId()
-        .businessId(UUID.fromString("16eb25dd-a5ee-4e16-b7de-9fb3d4d94e11")) // based on the `initial.sql` script
+        .businessId(UUID.fromString(
+            "16eb25dd-a5ee-4e16-b7de-9fb3d4d94e11")) // based on the `initial.sql` script
         .value(Money.of(BigDecimal.valueOf(999.99), "PLN"))
         .updatedAt(Instant.parse("2024-11-07T23:00:00Z"))
         .build();
@@ -51,11 +51,11 @@ class JooqOrderRepositoryIntegrationTest extends IntegrationTest {
 
     // When & Then
     try (final var results = repository.upsertFromTempTable(tempTable)) {
-      final var complete = assertThat(results.toList())
-          .hasSize(2);
+      final var complete = assertThat(results.toList()).hasSize(2);
 
       // And then check the updated order
-      complete.filteredOn(o -> update.getBusinessId().equals(o.getBusinessId()))
+      complete
+          .filteredOn(o -> update.getBusinessId().equals(o.getBusinessId()))
           .hasSize(1)
           .first()
           .matches(o -> o.getId() != null)
@@ -68,7 +68,8 @@ class JooqOrderRepositoryIntegrationTest extends IntegrationTest {
           .matches(o -> o.getReadAt() != null);
 
       // And then check the newly created order
-      complete.filteredOn(o -> create.getBusinessId().equals(o.getBusinessId()))
+      complete
+          .filteredOn(o -> create.getBusinessId().equals(o.getBusinessId()))
           .hasSize(1)
           .first()
           .matches(o -> o.getId() != null)
@@ -88,7 +89,8 @@ class JooqOrderRepositoryIntegrationTest extends IntegrationTest {
     // Given
     final var create = TestOrderBuilder.builder()
         .withoutId()
-        .businessId(UUID.fromString("00eb25dd-a5ee-4e16-b7de-9fb3d4d94e00")) // based on the `initial.sql` script
+        .businessId(UUID.fromString(
+            "00eb25dd-a5ee-4e16-b7de-9fb3d4d94e00")) // based on the `initial.sql` script
         .updatedAt(Instant.parse("2024-11-07T19:00:00Z"))
         .build();
 
@@ -98,7 +100,8 @@ class JooqOrderRepositoryIntegrationTest extends IntegrationTest {
     // And given Order update is prepared with older updatedAt timestamp
     final var update = TestOrderBuilder.builder()
         .withoutId()
-        .businessId(UUID.fromString("00eb25dd-a5ee-4e16-b7de-9fb3d4d94e00")) // based on the `initial.sql` script
+        .businessId(UUID.fromString(
+            "00eb25dd-a5ee-4e16-b7de-9fb3d4d94e00")) // based on the `initial.sql` script
         .updatedAt(Instant.parse("2024-10-07T19:00:00Z")) // older timestamp
         .build();
 
@@ -115,7 +118,6 @@ class JooqOrderRepositoryIntegrationTest extends IntegrationTest {
     // And then order's updated_at has not changed
     final var found = orderTestDatabase.findByBusinessId(create.getBusinessId());
 
-    assertThat(found)
-        .matches(p -> p.updatedAt().equals(create.getUpdatedAt()));
+    assertThat(found).matches(p -> p.updatedAt().equals(create.getUpdatedAt()));
   }
 }

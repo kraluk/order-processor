@@ -13,5 +13,4 @@ public record TestOrder(
     Long version,
     Instant createdAt,
     Instant updatedAt,
-    Instant readAt) {
-}
+    Instant readAt) {}

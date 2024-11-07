@@ -2,9 +2,8 @@ package io.kraluk.orderprocessor.usecase.orderupdate;
 
 import io.kraluk.orderprocessor.domain.orderupdate.entity.OrderUpdate;
 import io.kraluk.orderprocessor.domain.orderupdate.port.OrderUpdateRepository;
-import org.springframework.stereotype.Component;
-
 import java.util.stream.Stream;
+import org.springframework.stereotype.Component;
 
 @Component
 public class FindOrderUpdatesFromFileUseCase {

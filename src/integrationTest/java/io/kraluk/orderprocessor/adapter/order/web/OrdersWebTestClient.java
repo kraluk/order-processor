@@ -1,11 +1,10 @@
 package io.kraluk.orderprocessor.adapter.order.web;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestClient;
+import static java.util.Objects.requireNonNull;
 
 import java.util.UUID;
-
-import static java.util.Objects.requireNonNull;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClient;
 
 public class OrdersWebTestClient {
 
@@ -16,21 +15,18 @@ public class OrdersWebTestClient {
   }
 
   public <T> ResponseEntity<T> getById(final Long id, final Class<T> responseType) {
-    return client.get()
-        .uri(builder -> builder
-            .path("/v1/orders")
-            .pathSegment("{id}")
-            .build(id))
+    return client
+        .get()
+        .uri(builder -> builder.path("/v1/orders").pathSegment("{id}").build(id))
         .retrieve()
         .toEntity(responseType);
   }
 
   public <T> ResponseEntity<T> getByBusinessId(final UUID businessId, final Class<T> responseType) {
-    return client.get()
-        .uri(builder -> builder
-            .path("/v1/orders")
-            .queryParam("businessId", businessId)
-            .build())
+    return client
+        .get()
+        .uri(builder ->
+            builder.path("/v1/orders").queryParam("businessId", businessId).build())
         .retrieve()
         .toEntity(responseType);
   }

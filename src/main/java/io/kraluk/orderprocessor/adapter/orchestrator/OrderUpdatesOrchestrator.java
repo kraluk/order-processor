@@ -6,6 +6,10 @@ import io.kraluk.orderprocessor.domain.orderupdate.entity.OrderUpdate;
 import io.kraluk.orderprocessor.shared.StreamOps;
 import io.kraluk.orderprocessor.usecase.order.UpsertOrdersUseCase;
 import io.kraluk.orderprocessor.usecase.orderupdate.FindOrderUpdatesFromFileUseCase;
+import java.time.Clock;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
 import org.javamoney.moneta.Money;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +18,6 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import java.time.Clock;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Stream;
 
 @Component
 public class OrderUpdatesOrchestrator {
@@ -54,7 +53,8 @@ public class OrderUpdatesOrchestrator {
   public void process(final String source) {
     log.info("Attempting to start processing Order Updates from '{}'", source);
 
-    try (final var updates = findUseCase.invoke(FindOrderUpdatesFromFileUseCase.Command.of(source))) {
+    try (final var updates =
+        findUseCase.invoke(FindOrderUpdatesFromFileUseCase.Command.of(source))) {
       final var tasks = processInChunks(updates);
 
       tasks.forEach(CompletableFuture::join); // wait for all tasks to finish
@@ -65,33 +65,29 @@ public class OrderUpdatesOrchestrator {
   }
 
   private List<CompletableFuture<Long>> processInChunks(final Stream<OrderUpdate> updates) {
-    return StreamOps.fixedWindow(
-            updates.map(factory::from),
-            properties.chunkSize())
+    return StreamOps.fixedWindow(updates.map(factory::from), properties.chunkSize())
         .map(this::processChunk)
         .map(t -> t.exceptionally(OrderUpdatesOrchestrator::exceptionally)) // dummy error handling
         .toList();
   }
 
   private CompletableFuture<Long> processChunk(final List<Order> orders) {
-    return taskExecutor
-        .submitCompletable(() -> transaction
-            .execute(status -> executeChunk(orders)));
+    return taskExecutor.submitCompletable(
+        () -> transaction.execute(status -> executeChunk(orders)));
   }
 
   private long executeChunk(final List<Order> orders) {
     log.info("Processing chunk of '{}' Order Updates", orders.size());
 
-    try (final var updated = upsertUseCase.invoke(UpsertOrdersUseCase.Command.of(orders.stream()))) {
-      final var result = updated
-          .peek(outbox::add)
-          .map(o -> 1L)
-          .reduce(0L, Long::sum);
+    try (final var updated =
+        upsertUseCase.invoke(UpsertOrdersUseCase.Command.of(orders.stream()))) {
+      final var result = updated.peek(outbox::add).map(o -> 1L).reduce(0L, Long::sum);
 
       log.info("Processed '{}' Order Updates from initial chunk of '{}'", result, orders.size());
 
       if (result != orders.size()) {
-        log.warn("Not all Order Updates from the chunk were processed correctly as probably some of them were already processed");
+        log.warn(
+            "Not all Order Updates from the chunk were processed correctly as probably some of them were already processed");
       }
 
       return result;
@@ -99,9 +95,7 @@ public class OrderUpdatesOrchestrator {
   }
 
   private static long finalize(final List<CompletableFuture<Long>> tasks) {
-    return tasks.stream()
-        .map(CompletableFuture::join)
-        .reduce(0L, Long::sum);
+    return tasks.stream().map(CompletableFuture::join).reduce(0L, Long::sum);
   }
 
   // FEATURE: better error handling
@@ -120,19 +114,18 @@ class OrderFactory {
   }
 
   Order from(final OrderUpdate update) {
-    // FEATURE: potentially, depending on the requirements, we could firstly get Order from the database,
-    // then this instance update with the data from the data - it will cause that we will have complete Order in place, including data that
-    // is not available in the update object
+    // FEATURE: potentially, depending on the requirements, we could firstly get Order from the
+    // database, then this instance update with the data from the data - it will cause that we
+    // will have complete Order in place, including data that is not available in
+    // the update object
     return Order.fromUpdate(
         update.getBusinessId(),
         Money.of(update.getValue(), update.getCurrency()),
         update.getNotes(),
         update.getUpdatedAt(),
-        clock.instant()
-    );
+        clock.instant());
   }
 }
 
 @ConfigurationProperties(prefix = "app.order.orchestrator")
-record OrderUpdatesOrchestratorProperties(int chunkSize) {
-}
+record OrderUpdatesOrchestratorProperties(int chunkSize) {}

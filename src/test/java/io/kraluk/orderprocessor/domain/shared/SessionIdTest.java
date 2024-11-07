@@ -1,13 +1,13 @@
 package io.kraluk.orderprocessor.domain.shared;
 
+import static java.util.function.Predicate.not;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import static java.util.function.Predicate.not;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class SessionIdTest {
 
@@ -17,9 +17,7 @@ class SessionIdTest {
     final var result = SessionId.random();
 
     // Then
-    assertThat(result)
-        .isNotNull()
-        .matches(not(id -> id.value().isBlank()));
+    assertThat(result).isNotNull().matches(not(id -> id.value().isBlank()));
   }
 
   @ParameterizedTest

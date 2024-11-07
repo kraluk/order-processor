@@ -1,13 +1,12 @@
 package io.kraluk.orderprocessor.usecase.order;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.kraluk.orderprocessor.test.adapter.order.repository.InMemoryOrderRepository;
 import io.kraluk.orderprocessor.test.domain.order.entity.TestOrderBuilder;
 import io.kraluk.orderprocessor.usecase.order.FindOrderByBusinessIdUseCase.Command;
-import org.junit.jupiter.api.Test;
-
 import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class FindOrderByBusinessIdUseCaseTest {
 
@@ -26,10 +25,7 @@ class FindOrderByBusinessIdUseCaseTest {
     final var result = useCase.invoke(Command.of(order.getBusinessId()));
 
     // Then
-    assertThat(result)
-        .isPresent()
-        .containsSame(order)
-        .usingRecursiveAssertion();
+    assertThat(result).isPresent().containsSame(order).usingRecursiveAssertion();
   }
 
   @Test
@@ -41,7 +37,6 @@ class FindOrderByBusinessIdUseCaseTest {
     final var result = useCase.invoke(Command.of(UUID.randomUUID()));
 
     // Then
-    assertThat(result)
-        .isNotPresent();
+    assertThat(result).isNotPresent();
   }
 }

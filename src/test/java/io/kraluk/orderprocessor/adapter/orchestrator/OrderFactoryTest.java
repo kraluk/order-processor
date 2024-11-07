@@ -1,14 +1,13 @@
 package io.kraluk.orderprocessor.adapter.orchestrator;
 
-import io.kraluk.orderprocessor.test.domain.orderupdate.entity.TestOrderUpdateBuilder;
-import org.javamoney.moneta.Money;
-import org.junit.jupiter.api.Test;
-
-import java.time.Clock;
-
 import static io.kraluk.orderprocessor.test.TestClockOps.ARBITRARY_NOW;
 import static io.kraluk.orderprocessor.test.TestClockOps.fixedClock;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import io.kraluk.orderprocessor.test.domain.orderupdate.entity.TestOrderUpdateBuilder;
+import java.time.Clock;
+import org.javamoney.moneta.Money;
+import org.junit.jupiter.api.Test;
 
 class OrderFactoryTest {
 

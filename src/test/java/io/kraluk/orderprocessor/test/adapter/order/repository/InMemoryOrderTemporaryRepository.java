@@ -4,11 +4,10 @@ import io.kraluk.orderprocessor.domain.order.entity.Order;
 import io.kraluk.orderprocessor.domain.order.port.OrderTemporaryRepository;
 import io.kraluk.orderprocessor.domain.shared.SessionId;
 import io.kraluk.orderprocessor.domain.shared.TemporaryTable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Collections;
 import java.util.stream.Stream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class InMemoryOrderTemporaryRepository implements OrderTemporaryRepository {
   private static final Logger log = LoggerFactory.getLogger(InMemoryOrderTemporaryRepository.class);

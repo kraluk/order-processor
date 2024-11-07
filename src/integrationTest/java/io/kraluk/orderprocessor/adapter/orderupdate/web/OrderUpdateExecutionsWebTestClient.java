@@ -1,9 +1,9 @@
 package io.kraluk.orderprocessor.adapter.orderupdate.web;
 
+import static java.util.Objects.requireNonNull;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClient;
-
-import static java.util.Objects.requireNonNull;
 
 public final class OrderUpdateExecutionsWebTestClient {
 
@@ -14,11 +14,10 @@ public final class OrderUpdateExecutionsWebTestClient {
   }
 
   public <T> ResponseEntity<T> executeProcess(final String source, final Class<T> responseType) {
-    return client.post()
-        .uri(builder -> builder
-            .path("/v1/orders/update-executions")
-            .pathSegment("{source}")
-            .build(source))
+    return client
+        .post()
+        .uri(builder ->
+            builder.path("/v1/orders/update-executions").pathSegment("{source}").build(source))
         .retrieve()
         .toEntity(responseType);
   }

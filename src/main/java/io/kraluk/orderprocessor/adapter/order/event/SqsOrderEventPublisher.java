@@ -22,9 +22,7 @@ class SqsOrderEventPublisher implements OrderEventPublisher {
 
   @Override
   public void publish(final OrderUpdatedEvent event) {
-    final var result = template.send(to -> to
-        .queue(properties.queueName())
-        .payload(event));
+    final var result = template.send(to -> to.queue(properties.queueName()).payload(event));
 
     log.debug("Published with the result - '{}'", result);
   }
@@ -34,20 +32,16 @@ class SqsOrderEventPublisher implements OrderEventPublisher {
 class OrderEventPublisherConfiguration {
   private static final Logger log = LoggerFactory.getLogger(OrderEventPublisherConfiguration.class);
 
-  @ConditionalOnProperty(
-      prefix = "spring.cloud.aws.sqs",
-      name = "enabled",
-      havingValue = "true"
-  )
+  @ConditionalOnProperty(prefix = "spring.cloud.aws.sqs", name = "enabled", havingValue = "true")
   @Bean
-  OrderEventPublisher orderEventPublisher(final SqsTemplate template, final SqsOrderEventProperties properties) {
-    log.info("Using SQS implementation of the Order Event Publisher with the following properties - '{}'", properties);
+  OrderEventPublisher orderEventPublisher(
+      final SqsTemplate template, final SqsOrderEventProperties properties) {
+    log.info(
+        "Using SQS implementation of the Order Event Publisher with the following properties - '{}'",
+        properties);
     return new SqsOrderEventPublisher(template, properties);
   }
 }
 
 @ConfigurationProperties(prefix = "app.order.event.sqs")
-record SqsOrderEventProperties(
-    String queueName) {
-}
-
+record SqsOrderEventProperties(String queueName) {}

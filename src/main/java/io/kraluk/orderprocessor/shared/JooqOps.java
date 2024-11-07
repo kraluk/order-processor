@@ -1,15 +1,15 @@
 package io.kraluk.orderprocessor.shared;
 
+import static java.lang.String.format;
+import static org.jooq.impl.DSL.field;
+import static org.jooq.impl.DSL.name;
+import static org.jooq.impl.DSL.table;
+
 import io.kraluk.orderprocessor.domain.shared.SessionId;
 import org.jooq.DataType;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Table;
-
-import static java.lang.String.format;
-import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.name;
-import static org.jooq.impl.DSL.table;
 
 public final class JooqOps {
 

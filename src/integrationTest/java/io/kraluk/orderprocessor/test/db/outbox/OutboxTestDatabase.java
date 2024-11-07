@@ -11,9 +11,6 @@ public class OutboxTestDatabase {
   }
 
   public Long count() {
-    return jdbc.queryForObject(
-        "SELECT COUNT(1) FROM transaction_outbox",
-        Long.class
-    );
+    return jdbc.queryForObject("SELECT COUNT(1) FROM transaction_outbox", Long.class);
   }
 }

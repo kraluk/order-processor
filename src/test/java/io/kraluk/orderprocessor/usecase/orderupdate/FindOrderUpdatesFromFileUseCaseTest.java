@@ -1,18 +1,18 @@
 package io.kraluk.orderprocessor.usecase.orderupdate;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.kraluk.orderprocessor.domain.orderupdate.entity.OrderUpdate;
 import io.kraluk.orderprocessor.test.adapter.orderupdate.repository.InMemoryOrderUpdateRepository;
 import io.kraluk.orderprocessor.test.domain.orderupdate.entity.TestOrderUpdateBuilder;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class FindOrderUpdatesFromFileUseCaseTest {
 
   private final InMemoryOrderUpdateRepository repository = new InMemoryOrderUpdateRepository();
-  private final FindOrderUpdatesFromFileUseCase useCase = new FindOrderUpdatesFromFileUseCase(repository);
+  private final FindOrderUpdatesFromFileUseCase useCase =
+      new FindOrderUpdatesFromFileUseCase(repository);
 
   @Test
   void shouldGetOrderUpdatesWhenTheyAreAvailableForGivenSource() {
@@ -45,7 +45,6 @@ class FindOrderUpdatesFromFileUseCaseTest {
     final var result = useCase.invoke(FindOrderUpdatesFromFileUseCase.Command.of(source));
 
     // Then
-    assertThat(result.toList())
-        .isEmpty();
+    assertThat(result.toList()).isEmpty();
   }
 }
