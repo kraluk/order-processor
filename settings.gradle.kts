@@ -15,7 +15,6 @@ dependencyResolutionManagement {
       version("javaMoney", "1.4.4")
     }
     create("testLibs") {
-      version("springCloudContractWiremock", "4.1.4")
       version("awaitility", "4.2.2")
       version("mockito", "5.4.0")
     }
