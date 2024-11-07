@@ -89,6 +89,11 @@ public class OrderUpdatesOrchestrator {
           .reduce(0L, Long::sum);
 
       log.info("Processed '{}' Order Updates from initial chunk of '{}'", result, orders.size());
+
+      if (result != orders.size()) {
+        log.warn("Not all Order Updates from the chunk were processed correctly as probably some of them were already processed");
+      }
+
       return result;
     }
   }

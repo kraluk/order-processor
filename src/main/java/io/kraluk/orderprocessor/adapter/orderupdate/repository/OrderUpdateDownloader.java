@@ -53,6 +53,7 @@ class S3OrderUpdateDownloader implements OrderUpdateDownloader {
       if (exists) {
         return Optional.of(downloadFile(source));
       } else {
+        log.warn("File '{}' does not exist in the S3 bucket '{}'", source, properties.bucketName());
         return Optional.empty();
       }
     } catch (IOException e) {

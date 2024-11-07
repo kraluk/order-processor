@@ -2,8 +2,7 @@ spring:
   application.name: order-processor
   main:
     web-application-type: servlet
-  profiles:
-    active: prod
+  profiles.active: ${ENVIRONMENT:local}
   threads:
     virtual.enabled: true
   datasource:

@@ -1,0 +1,49 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.17 Chrome/128.0.6613.36 Electron/32.0.1 Safari/537.36" version="24.7.17">
+  <diagram name="Page-1" id="5avYYgAVS55QWZhdKo1x">
+    <mxGraphModel dx="1114" dy="999" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="3O2t7WUCunoK4PQ4PzE2-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="3O2t7WUCunoK4PQ4PzE2-2" target="3O2t7WUCunoK4PQ4PzE2-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3O2t7WUCunoK4PQ4PzE2-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="3O2t7WUCunoK4PQ4PzE2-2" target="3O2t7WUCunoK4PQ4PzE2-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3O2t7WUCunoK4PQ4PzE2-2" value="order-processor" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="210" y="220" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="3O2t7WUCunoK4PQ4PzE2-7" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.sqs;fillColor=#D9A741;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="231.75" y="370" width="76.5" height="93" as="geometry" />
+        </mxCell>
+        <mxCell id="3O2t7WUCunoK4PQ4PzE2-8" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.s3;fillColor=#E05243;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="231.75" y="30" width="76.5" height="93" as="geometry" />
+        </mxCell>
+        <mxCell id="3O2t7WUCunoK4PQ4PzE2-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="3O2t7WUCunoK4PQ4PzE2-2" target="3O2t7WUCunoK4PQ4PzE2-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3O2t7WUCunoK4PQ4PzE2-11" value="Gets order data from" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="270" y="150" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="3O2t7WUCunoK4PQ4PzE2-13" value="Publishes order updated events to" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="270" y="310" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="3O2t7WUCunoK4PQ4PzE2-14" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/databases/Azure_Database_PostgreSQL_Server.svg;" vertex="1" parent="1">
+          <mxGeometry x="470" y="199" width="76.5" height="102" as="geometry" />
+        </mxCell>
+        <mxCell id="3O2t7WUCunoK4PQ4PzE2-16" value="Stores data in" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="350" y="220" width="86" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="3O2t7WUCunoK4PQ4PzE2-17" value="S3" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="191.75" y="60.75" width="40" height="31.5" as="geometry" />
+        </mxCell>
+        <mxCell id="3O2t7WUCunoK4PQ4PzE2-18" value="SQS" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="191.75" y="400.75" width="40" height="31.5" as="geometry" />
+        </mxCell>
+        <mxCell id="3O2t7WUCunoK4PQ4PzE2-19" value="PostgreSQL" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="546.5" y="230" width="73.5" height="35.75" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -16,7 +16,7 @@ public final class OrderUpdateExecutionsWebTestClient {
   public <T> ResponseEntity<T> executeProcess(final String source, final Class<T> responseType) {
     return client.post()
         .uri(builder -> builder
-            .path("/v1/orders/update-invocations")
+            .path("/v1/orders/update-executions")
             .pathSegment("{source}")
             .build(source))
         .retrieve()

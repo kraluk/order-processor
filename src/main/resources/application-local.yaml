@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/order_processor
+    username: order_processor
+    password: order_processor
+  cloud:
+    aws:
+      s3:
+        enabled: true
+        endpoint: http://s3.localhost.localstack.cloud:4566
+        region: eu-central-1
+      sqs:
+        enabled: true
+        endpoint: http://sqs.localhost.localstack.cloud:4566
+        region: eu-central-1
+      credentials:
+        access-key: none
+        secret-key: none
+      region:
+        static: eu-central-1
+
+logging:
+  level:
+    io.kraluk.orderprocessor: DEBUG
+    org.jooq.Constants: WARN
+    org.javamoney.moneta: WARN
+    com.gruelbox.transactionoutbox.TransactionOutboxImpl: WARN
+
+app:
+  order:
+    event:
+      sqs:
+        queue-name: order-updated-events-local
+    update:
+      s3:
+        bucket-name: order-updates-local

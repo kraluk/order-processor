@@ -22,7 +22,7 @@ class OrderUpdateExecutionsController {
   }
 
   @PostMapping(
-      value = "/v1/orders/update-invocations/{source}",
+      value = "/v1/orders/update-executions/{source}",
       produces = MediaType.APPLICATION_JSON_VALUE)
   ResponseEntity<?> initiateProcess(
       @PathVariable("source") final String source) {
