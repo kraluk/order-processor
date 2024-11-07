@@ -16,14 +16,11 @@ import java.util.List;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.transaction.support.TransactionTemplate;
 
 class OrderUpdatesOrchestratorTest {
 
-  private static final Logger log = LoggerFactory.getLogger(OrderUpdatesOrchestratorTest.class);
   private final InMemoryOrderUpdateRepository updateRepository =
       new InMemoryOrderUpdateRepository();
   private final InMemoryOrderRepository repository = new InMemoryOrderRepository();
@@ -33,7 +30,6 @@ class OrderUpdatesOrchestratorTest {
 
   private final OrderUpdatesOrchestrator orchestrator = orchestrator();
 
-  // @RepeatedTest(10_000)
   @Test
   void shouldProcessUpdatesCreatingBrandNewOrdersFromGivenSource() {
     // Given

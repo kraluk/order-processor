@@ -3,6 +3,7 @@ package io.kraluk.orderprocessor.test.adapter.orderupdate.repository;
 import io.kraluk.orderprocessor.adapter.orderupdate.repository.OrderUpdateDownloader;
 import io.kraluk.orderprocessor.domain.orderupdate.entity.OrderUpdateContent;
 import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 public final class StaticOrderUpdateDownloader implements OrderUpdateDownloader {
@@ -19,7 +20,7 @@ public final class StaticOrderUpdateDownloader implements OrderUpdateDownloader 
 
   @Override
   public Optional<OrderUpdateContent> download(String source) {
-    return Optional.of(
-        new OrderUpdateContent(source, new ByteArrayInputStream(STATIC_CONTENT.getBytes())));
+    return Optional.of(new OrderUpdateContent(
+        source, new ByteArrayInputStream(STATIC_CONTENT.getBytes(StandardCharsets.UTF_8))));
   }
 }

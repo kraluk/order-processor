@@ -2,7 +2,7 @@ package io.kraluk.orderprocessor.configuration;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import org.junit.jupiter.api.Test;
 
 class ClockConfigurationTest {
@@ -15,6 +15,6 @@ class ClockConfigurationTest {
     final var clock = configuration.clock();
 
     // Then
-    assertThat(clock.getZone()).isEqualTo(ZoneId.of("Z"));
+    assertThat(clock.getZone()).isEqualTo(ZoneOffset.UTC);
   }
 }

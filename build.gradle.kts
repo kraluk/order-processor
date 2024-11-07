@@ -5,13 +5,13 @@ plugins {
   java
 
   jacoco
-  pmd
 
   alias(libs.plugins.spring.boot)
   alias(libs.plugins.spring.dependencyManagement)
 
   alias(libs.plugins.versions)
   alias(libs.plugins.spotless)
+  alias(libs.plugins.errorprone)
 }
 
 group = "io.kraluk"
@@ -70,6 +70,8 @@ dependencies {
   integrationTestImplementation("org.testcontainers:localstack")
   integrationTestImplementation("io.awspring.cloud:spring-cloud-aws-test")
   integrationTestImplementation("io.awspring.cloud:spring-cloud-aws-testcontainers")
+
+  errorprone("com.google.errorprone:error_prone_core:${toolLibs.versions.errorprone.get()}")
 }
 
 tasks.test {
@@ -140,11 +142,4 @@ spotless {
     trimTrailingWhitespace()
     endWithNewline()
   }
-}
-
-pmd {
-  toolVersion = toolLibs.versions.pmd.get()
-  isIgnoreFailures = false
-  isConsoleOutput = true
-  maxFailures = 99999 // TODO: temporary workaround before introducing final ruleset
 }

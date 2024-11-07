@@ -22,6 +22,7 @@ import io.kraluk.orderprocessor.domain.order.port.OrderRepository;
 import io.kraluk.orderprocessor.domain.shared.TemporaryTable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -31,14 +32,11 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Table;
 import org.jooq.impl.SQLDataType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class JooqOrderRepository implements OrderRepository {
-  private static final Logger log = LoggerFactory.getLogger(JooqOrderRepository.class);
 
   private final DSLContext dsl;
   private final OrderBatchProperties properties;
@@ -123,9 +121,8 @@ interface OrderSchema {
   Field<Instant> UPDATED_AT = column(SQLDataType.INSTANT, ORDER_TABLE.getName(), "updated_at");
   Field<Instant> READ_AT = column(SQLDataType.INSTANT, ORDER_TABLE.getName(), "read_at");
 
-  Field<?>[] ALL_COLUMNS =
-      new Field[] {ID, BUSINESS_ID, VALUE, CURRENCY, NOTES, VERSION, CREATED_AT, UPDATED_AT, READ_AT
-      };
+  List<Field<?>> ALL_COLUMNS =
+      List.of(ID, BUSINESS_ID, VALUE, CURRENCY, NOTES, VERSION, CREATED_AT, UPDATED_AT, READ_AT);
 }
 
 @ConfigurationProperties(prefix = "app.order.batch")

@@ -8,6 +8,7 @@ dependencyResolutionManagement {
 
       plugin("versions", "com.github.ben-manes.versions").version("0.51.0")
       plugin("spotless", "com.diffplug.spotless").version("7.0.0.BETA4")
+      plugin("errorprone", "net.ltgt.errorprone").version("4.1.0")
 
       version("springCloudAws", "3.2.1")
       version("transactionoutbox", "5.5.447") // BE AWARE: check migration scripts before bumping the version up
@@ -19,9 +20,7 @@ dependencyResolutionManagement {
       version("mockito", "5.4.0")
     }
     create("toolLibs") {
-      version("googleJavaFormat", "1.21.0")
-      version("checkstyle", "10.20.0")
-      version("pmd", "7.7.0")
+      version("errorprone", "2.35.1")
     }
   }
 }
