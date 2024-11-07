@@ -17,7 +17,7 @@ jobs:
       - name: Set up JVM
         uses: actions/setup-java@v4
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: '21'
       - name: Check
         run: ./gradlew check --no-daemon
