@@ -2,11 +2,11 @@ package io.kraluk.orderprocessor.usecase.orderupdate;
 
 import io.kraluk.orderprocessor.domain.orderupdate.entity.OrderUpdate;
 import io.kraluk.orderprocessor.test.adapter.orderupdate.repository.InMemoryOrderUpdateRepository;
+import io.kraluk.orderprocessor.test.domain.orderupdate.entity.TestOrderUpdateBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static io.kraluk.orderprocessor.domain.orderupdate.OrderUpdateFixtures.completeOrderUpdate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class FindOrderUpdatesFromFileUseCaseTest {
@@ -18,8 +18,8 @@ class FindOrderUpdatesFromFileUseCaseTest {
   void shouldGetOrderUpdatesWhenTheyAreAvailableForGivenSource() {
     // Given
     final var source = "source1";
-    final var update1 = completeOrderUpdate();
-    final var update2 = completeOrderUpdate();
+    final var update1 = TestOrderUpdateBuilder.buildRandom();
+    final var update2 = TestOrderUpdateBuilder.buildRandom();
 
     // And given data are saved
     repository.save(source, List.of(update1, update2));

@@ -4,16 +4,18 @@ import io.kraluk.orderprocessor.domain.order.port.OrderRepository;
 import io.kraluk.orderprocessor.domain.order.port.OrderTemporaryRepository;
 import io.kraluk.orderprocessor.domain.shared.SessionId;
 import io.kraluk.orderprocessor.test.IntegrationTest;
+import io.kraluk.orderprocessor.test.domain.order.entity.TestOrderBuilder;
+import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static io.kraluk.orderprocessor.domain.order.entity.OrderFixtures.orderWithBusinessId;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Sql(scripts = "classpath:order/db/initial.sql")
@@ -27,14 +29,25 @@ class JooqOrderRepositoryIntegrationTest extends IntegrationTest {
 
   @Transactional
   @Test
-  void shouldUpsertOrderUsingTemporaryTable() {
+  void shouldUpsertOrdersBasedOnBusinessIdUsingTemporaryTable() {
     // Given
-    final var updated = orderWithBusinessId(UUID.fromString("16eb25dd-a5ee-4e16-b7de-9fb3d4d94e11"), BigDecimal.valueOf(999.99));
-    final var newest = orderWithBusinessId(UUID.fromString("96eb25dd-a5ee-4e16-b7de-9fb3d4d94e11"), BigDecimal.valueOf(111.11));
+    final var update = TestOrderBuilder.builder()
+        .withoutId()
+        .businessId(UUID.fromString("16eb25dd-a5ee-4e16-b7de-9fb3d4d94e11")) // based on the `initial.sql` script
+        .value(Money.of(BigDecimal.valueOf(999.99), "PLN"))
+        .updatedAt(Instant.now())
+        .build();
+
+    final var create = TestOrderBuilder.builder()
+        .withoutId()
+        .businessId(UUID.fromString("96eb25dd-a5ee-4e16-b7de-9fb3d4d94e11"))
+        .value(Money.of(BigDecimal.valueOf(111.11), "PLN"))
+        .updatedAt(Instant.now())
+        .build();
 
     // And given order is in temporary table
     final var tempTable = temporaryRepository.createTemporaryTable(SessionId.random());
-    temporaryRepository.saveInto(Stream.of(updated, newest), tempTable);
+    temporaryRepository.saveInto(Stream.of(update, create), tempTable);
 
     // When & Then
     try (final var results = repository.upsertFromTempTable(tempTable)) {
@@ -42,19 +55,19 @@ class JooqOrderRepositoryIntegrationTest extends IntegrationTest {
           .hasSize(2);
 
       // And then check the updated order
-      complete.filteredOn(o -> updated.getBusinessId().equals(o.getBusinessId()))
+      complete.filteredOn(o -> update.getBusinessId().equals(o.getBusinessId()))
           .hasSize(1)
           .first()
-          .matches(o -> o.getBusinessId().equals(updated.getBusinessId()))
-          .matches(o -> o.getValue().equals(updated.getValue()))
-          .matches(o -> o.getVersion() == updated.getVersion() + 1);
+          .matches(o -> o.getBusinessId().equals(update.getBusinessId()))
+          .matches(o -> o.getValue().equals(update.getValue()))
+          .matches(o -> o.getVersion() == update.getVersion() + 1);
 
       // And then check the newly created order
-      complete.filteredOn(o -> newest.getBusinessId().equals(o.getBusinessId()))
+      complete.filteredOn(o -> create.getBusinessId().equals(o.getBusinessId()))
           .hasSize(1)
           .first()
-          .matches(o -> o.getBusinessId().equals(newest.getBusinessId()))
-          .matches(o -> o.getValue().equals(newest.getValue()))
+          .matches(o -> o.getBusinessId().equals(create.getBusinessId()))
+          .matches(o -> o.getValue().equals(create.getValue()))
           .matches(o -> o.getVersion() == 1);
     }
   }

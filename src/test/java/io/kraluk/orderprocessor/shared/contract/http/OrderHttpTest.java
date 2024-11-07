@@ -1,10 +1,10 @@
 package io.kraluk.orderprocessor.shared.contract.http;
 
+import io.kraluk.orderprocessor.test.domain.order.entity.TestOrderBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
 
-import static io.kraluk.orderprocessor.domain.order.entity.OrderFixtures.completeOrder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class OrderHttpTest {
@@ -12,7 +12,7 @@ class OrderHttpTest {
   @Test
   void shouldCreateFromDomain() {
     // Given
-    final var domain = completeOrder();
+    final var domain = TestOrderBuilder.buildRandom();
 
     // When
     final var http = OrderHttp.from(domain);

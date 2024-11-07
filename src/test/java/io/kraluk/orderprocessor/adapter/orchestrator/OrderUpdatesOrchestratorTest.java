@@ -6,6 +6,7 @@ import io.kraluk.orderprocessor.test.adapter.order.outbox.InMemoryOrderTransacti
 import io.kraluk.orderprocessor.test.adapter.order.repository.InMemoryOrderRepository;
 import io.kraluk.orderprocessor.test.adapter.order.repository.InMemoryOrderTemporaryRepository;
 import io.kraluk.orderprocessor.test.adapter.orderupdate.repository.InMemoryOrderUpdateRepository;
+import io.kraluk.orderprocessor.test.domain.orderupdate.entity.TestOrderUpdateBuilder;
 import io.kraluk.orderprocessor.usecase.order.UpsertOrdersUseCase;
 import io.kraluk.orderprocessor.usecase.orderupdate.FindOrderUpdatesFromFileUseCase;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
 
-import static io.kraluk.orderprocessor.domain.orderupdate.OrderUpdateFixtures.completeOrderUpdate;
 import static io.kraluk.orderprocessor.test.TestClockOps.fixedClock;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,11 +32,11 @@ class OrderUpdatesOrchestratorTest {
     // Given
     final var source = "update_source_file.csv";
 
-    final var update1 = completeOrderUpdate();
-    final var update2 = completeOrderUpdate();
-    final var update3 = completeOrderUpdate();
-    final var update4 = completeOrderUpdate();
-    final var update5 = completeOrderUpdate();
+    final var update1 = TestOrderUpdateBuilder.buildRandom();
+    final var update2 = TestOrderUpdateBuilder.buildRandom();
+    final var update3 = TestOrderUpdateBuilder.buildRandom();
+    final var update4 = TestOrderUpdateBuilder.buildRandom();
+    final var update5 = TestOrderUpdateBuilder.buildRandom();
 
     final var expectedBusinessIds = List.of(update1.getBusinessId(), update2.getBusinessId(), update3.getBusinessId(), update4.getBusinessId(), update5.getBusinessId());
 

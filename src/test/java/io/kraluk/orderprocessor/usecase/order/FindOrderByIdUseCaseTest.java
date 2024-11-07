@@ -1,10 +1,10 @@
 package io.kraluk.orderprocessor.usecase.order;
 
 import io.kraluk.orderprocessor.test.adapter.order.repository.InMemoryOrderRepository;
+import io.kraluk.orderprocessor.test.domain.order.entity.TestOrderBuilder;
 import io.kraluk.orderprocessor.usecase.order.FindOrderByIdUseCase.Command;
 import org.junit.jupiter.api.Test;
 
-import static io.kraluk.orderprocessor.domain.order.entity.OrderFixtures.completeOrder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class FindOrderByIdUseCaseTest {
@@ -15,7 +15,7 @@ class FindOrderByIdUseCaseTest {
   @Test
   void shouldFindById() {
     // Given
-    final var order = completeOrder();
+    final var order = TestOrderBuilder.buildRandom();
 
     // And given order is saved
     repository.save(order);
