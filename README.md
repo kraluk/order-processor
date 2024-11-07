@@ -3,14 +3,14 @@
 `order-processor` is a service that process orders in the following way:
 
 * reads data from a `*.csv` file provided by an external service in an AWS S3 bucket
-* processes it using batching techniques (not loading all data to the memory) and transforms it to orders entities that are stored in a
-  PostgreSQL database
+* processes it using batching techniques (not loading all data to the memory) and transforms it to orders entities that
+  are stored in a PostgreSQL database
 * using transaction outbox pattern, sends messages to an AWS SQS queue as order updated events
 
-The application is written in Java 21 using Gradle 8 and Spring Boot 3 with enabled Virtual Threads support. The project is using jOOQ,
-liquibase, and Spring Cloud AWS too.
+The application is written in Java 21 using Gradle 8 and Spring Boot 3 with enabled Virtual Threads support. The project
+is using jOOQ, liquibase, and Spring Cloud AWS as well.
 
-Some kind of variation of the Clean Architecture has been used in the project as well.
+Some kind of variation of the Clean Architecture has been used in the project to organise the code.
 
 ## Architecture diagram
 
@@ -28,6 +28,7 @@ Some kind of variation of the Clean Architecture has been used in the project as
 * run unit tests with `./gradlew test`
 * run integration and acceptance tests with `./gradlew integrationTest`
 * check dependencies with `./gradlew dependencyUpdates`
+* reformat code base `./gradlew spotlessApply`
 
 ## Configuration
 
@@ -38,8 +39,8 @@ Some kind of variation of the Clean Architecture has been used in the project as
 
 ### testcontainers with Colima
 
-To use properly `testcontainers` with Colima, Add following environment variables to your shell profile (e.g. `~/.bash_profile` or
-`~/.zprofile`):
+To use properly `testcontainers` with Colima, Add following environment variables to your shell profile (e.g.
+`~/.bash_profile` or `~/.zprofile`):
 
 ```bash
 export DOCKER_HOST="unix:///Users/$USER/.colima/default/docker.sock"
@@ -58,16 +59,17 @@ To process orders, a `*.csv` file with the following structure is needed:
 "10000000-0000-0000-0000-000000000000","100.00","PLN","note1","2024-01-01T00:00:00.001Z"
 ```
 
-Such file has to uploaded to the proper S3 bucket.
+Such file has to be to uploaded to the proper S3 bucket.
 
-The update process of such a file can be executed by sending a POST request to the `/v1/orders/updation-executions/{fileName}` endpoint:
+The update process of such a file can be executed by sending a POST request to the
+`/v1/orders/updation-executions/{fileName}` endpoint:
 
 ```bash
 curl -XPOST 'localhost:8080/v1/orders/update-invocations/orders.csv'
 ```
 
-After the file is processed, the application sends messages to the SQS queue with the order updated events and those updates can be checked
-using the `/v1/orders/` endpoint:
+After the file is processed, the application sends messages to the SQS queue with the order updated events and those
+updates can be checked using the `/v1/orders/` endpoint:
 
 ```bash
 curl -XGET 'localhost:8080/v1/orders?businessId=10000000-0000-0000-0000-000000000000'
@@ -78,9 +80,10 @@ curl -XGET 'localhost:8080/v1/orders?businessId=10000000-0000-0000-0000-00000000
 ### Issues
 
 1. limit Spring context reloads during integration tests to decrease their execution time
-    * consider using [singleton containers](https://java.testcontainers.org/test_framework_integration/manual_lifecycle_control/)
-    * potentially [reusable containers](https://java.testcontainers.org/features/reuse/) can be used as well but only for the local
-      development
+    * consider
+      using [singleton containers](https://java.testcontainers.org/test_framework_integration/manual_lifecycle_control/)
+    * potentially [reusable containers](https://java.testcontainers.org/features/reuse/) can be used as well but only
+      for the local development
 2. add more metrics via Micrometer
 3. consider dividing the project into multiple modules (like i.e. `domain`, `contracts`, `application`)
 4. introduce better configuration of `hikaricp` to handle PostgreSQL batch queries in a more efficient way
