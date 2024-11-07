@@ -6,14 +6,19 @@ import io.kraluk.orderprocessor.domain.shared.TemporaryTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.security.SecureRandom;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 public final class InMemoryOrderRepository implements OrderRepository {
   private static final Logger log = LoggerFactory.getLogger(InMemoryOrderRepository.class);
-  private static final Random RANDOM = new Random();
+  private static final SecureRandom RANDOM = new SecureRandom();
 
-  private final Map<Long, Order> orders = new HashMap<>();
+  private final Map<Long, Order> orders = new ConcurrentHashMap<>();
 
   @Override
   public Optional<Order> findById(final Long id) {
@@ -55,7 +60,7 @@ public final class InMemoryOrderRepository implements OrderRepository {
 
   private static Order withId(final Order given) {
     return new Order(
-        RANDOM.nextLong(1_000_000_000),
+        RANDOM.nextLong(),
         given.getBusinessId(),
         given.getValue(),
         given.getNotes(),

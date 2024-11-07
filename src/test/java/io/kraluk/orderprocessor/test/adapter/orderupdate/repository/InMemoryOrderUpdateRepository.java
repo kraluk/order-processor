@@ -5,13 +5,17 @@ import io.kraluk.orderprocessor.domain.orderupdate.port.OrderUpdateRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 public class InMemoryOrderUpdateRepository implements OrderUpdateRepository {
   private static final Logger log = LoggerFactory.getLogger(InMemoryOrderUpdateRepository.class);
 
-  private final Map<String, List<OrderUpdate>> updates = new HashMap<>();
+  private final Map<String, List<OrderUpdate>> updates = new ConcurrentHashMap<>();
 
   @Override
   public Stream<OrderUpdate> findAllFrom(final String source) {

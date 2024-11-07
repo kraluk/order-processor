@@ -9,7 +9,11 @@ import io.kraluk.orderprocessor.test.adapter.orderupdate.repository.InMemoryOrde
 import io.kraluk.orderprocessor.test.domain.orderupdate.entity.TestOrderUpdateBuilder;
 import io.kraluk.orderprocessor.usecase.order.UpsertOrdersUseCase;
 import io.kraluk.orderprocessor.usecase.orderupdate.FindOrderUpdatesFromFileUseCase;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -20,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class OrderUpdatesOrchestratorTest {
 
+  private static final Logger log = LoggerFactory.getLogger(OrderUpdatesOrchestratorTest.class);
   private final InMemoryOrderUpdateRepository updateRepository = new InMemoryOrderUpdateRepository();
   private final InMemoryOrderRepository repository = new InMemoryOrderRepository();
   private final InMemoryOrderTemporaryRepository temporaryRepository = new InMemoryOrderTemporaryRepository();
@@ -27,6 +32,7 @@ class OrderUpdatesOrchestratorTest {
 
   private final OrderUpdatesOrchestrator orchestrator = orchestrator();
 
+  // @RepeatedTest(10_000)
   @Test
   void shouldProcessUpdatesCreatingBrandNewOrdersFromGivenSource() {
     // Given
@@ -57,6 +63,12 @@ class OrderUpdatesOrchestratorTest {
         .hasSize(5)
         .extracting(Order::getBusinessId)
         .containsAll(expectedBusinessIds);
+  }
+
+  @Disabled("Due to the time it takes to run this test, it is disabled by default")
+  @RepeatedTest(10_000)
+  void shouldProcessUpdatesCreatingBrandNewOrdersFromGivenSourceManyManyTimes() {
+    shouldProcessUpdatesCreatingBrandNewOrdersFromGivenSource();
   }
 
   private OrderUpdatesOrchestrator orchestrator() {

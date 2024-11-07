@@ -58,17 +58,64 @@ class JooqOrderRepositoryIntegrationTest extends IntegrationTest {
       complete.filteredOn(o -> update.getBusinessId().equals(o.getBusinessId()))
           .hasSize(1)
           .first()
+          .matches(o -> o.getId() != null)
           .matches(o -> o.getBusinessId().equals(update.getBusinessId()))
           .matches(o -> o.getValue().equals(update.getValue()))
-          .matches(o -> o.getVersion() == update.getVersion() + 1);
+          .matches(o -> o.getNotes().equals(update.getNotes()))
+          .matches(o -> o.getVersion() == update.getVersion() + 1)
+          .matches(o -> o.getCreatedAt() != null)
+          .matches(o -> o.getUpdatedAt().equals(update.getUpdatedAt()))
+          .matches(o -> o.getReadAt() != null);
 
       // And then check the newly created order
       complete.filteredOn(o -> create.getBusinessId().equals(o.getBusinessId()))
           .hasSize(1)
           .first()
+          .matches(o -> o.getId() != null)
           .matches(o -> o.getBusinessId().equals(create.getBusinessId()))
           .matches(o -> o.getValue().equals(create.getValue()))
-          .matches(o -> o.getVersion() == 1);
+          .matches(o -> o.getNotes().equals(create.getNotes()))
+          .matches(o -> o.getVersion() == 1)
+          .matches(o -> o.getCreatedAt() != null)
+          .matches(o -> o.getUpdatedAt().equals(create.getUpdatedAt()))
+          .matches(o -> o.getReadAt() != null);
     }
+  }
+
+  @Transactional
+  @Test
+  void shouldUpdateOnlyThoseOffersWithGreaterUpdateAtThanTheOneAlreadyPresentInDatabase() {
+    // Given
+    final var create = TestOrderBuilder.builder()
+        .withoutId()
+        .businessId(UUID.fromString("00eb25dd-a5ee-4e16-b7de-9fb3d4d94e00")) // based on the `initial.sql` script
+        .updatedAt(Instant.parse("2024-11-07T19:00:00Z"))
+        .build();
+
+    // And given order is saved
+    orderTestDatabase.save(create);
+
+    // And given Order update is prepared with older updatedAt timestamp
+    final var update = TestOrderBuilder.builder()
+        .withoutId()
+        .businessId(UUID.fromString("00eb25dd-a5ee-4e16-b7de-9fb3d4d94e00")) // based on the `initial.sql` script
+        .updatedAt(Instant.parse("2024-10-07T19:00:00Z")) // older timestamp
+        .build();
+
+    // And given order updated is in temporary table
+    final var tempTable = temporaryRepository.createTemporaryTable(SessionId.random());
+    temporaryRepository.saveInto(Stream.of(update), tempTable);
+
+    // When
+    try (final var results = repository.upsertFromTempTable(tempTable)) {
+      // Then order has not been updated
+      assertThat(results.toList()).isEmpty();
+    }
+
+    // And then order's updated_at has not changed
+    final var found = orderTestDatabase.findByBusinessId(create.getBusinessId());
+
+    assertThat(found)
+        .matches(p -> p.updatedAt().equals(create.getUpdatedAt()));
   }
 }

@@ -22,3 +22,5 @@ export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE="/var/run/docker.sock"
 ## Issues
 
 1. limit Spring context reloads during integration tests to decrease their execution time
+2. add more metrics via Micrometer
+3. consider all `FEATURE` notes from the code

@@ -5,13 +5,13 @@ import io.kraluk.orderprocessor.domain.order.entity.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public final class InMemoryOrderTransactionOutbox implements OrderTransactionOutbox {
   private static final Logger log = LoggerFactory.getLogger(InMemoryOrderTransactionOutbox.class);
 
-  private final List<Order> orders = new ArrayList<>();
+  private final List<Order> orders = new CopyOnWriteArrayList<>();
 
   @Override
   public void add(final Order order) {

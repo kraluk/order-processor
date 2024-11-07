@@ -56,9 +56,10 @@ public class OrderUpdatesOrchestrator {
 
     try (final var updates = findUseCase.invoke(FindOrderUpdatesFromFileUseCase.Command.of(source))) {
       final var tasks = processInChunks(updates);
-      waitForAll(tasks);
-      final var result = finalize(tasks);
 
+      tasks.forEach(CompletableFuture::join); // wait for all tasks to finish
+
+      final var result = finalize(tasks);
       log.info("Processed successfully '{}' Order Updates", result);
     }
   }
@@ -90,10 +91,6 @@ public class OrderUpdatesOrchestrator {
       log.info("Processed '{}' Order Updates from initial chunk of '{}'", result, orders.size());
       return result;
     }
-  }
-
-  private static void waitForAll(final List<CompletableFuture<Long>> tasks) {
-    CompletableFuture.allOf(tasks.toArray(CompletableFuture[]::new)).join();
   }
 
   private static long finalize(final List<CompletableFuture<Long>> tasks) {

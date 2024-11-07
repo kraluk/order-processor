@@ -7,15 +7,15 @@ import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
 
-class OrdersWebTestClient {
+public class OrdersWebTestClient {
 
   private final RestClient client;
 
-  OrdersWebTestClient(final RestClient client) {
+  public OrdersWebTestClient(final RestClient client) {
     this.client = requireNonNull(client);
   }
 
-  <T> ResponseEntity<T> getById(final Long id, final Class<T> responseType) {
+  public <T> ResponseEntity<T> getById(final Long id, final Class<T> responseType) {
     return client.get()
         .uri(builder -> builder
             .path("/v1/orders")
@@ -25,7 +25,7 @@ class OrdersWebTestClient {
         .toEntity(responseType);
   }
 
-  <T> ResponseEntity<T> getByBusinessId(final UUID businessId, final Class<T> responseType) {
+  public <T> ResponseEntity<T> getByBusinessId(final UUID businessId, final Class<T> responseType) {
     return client.get()
         .uri(builder -> builder
             .path("/v1/orders")
