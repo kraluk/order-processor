@@ -35,14 +35,14 @@ class JooqOrderRepositoryIntegrationTest extends IntegrationTest {
         .withoutId()
         .businessId(UUID.fromString("16eb25dd-a5ee-4e16-b7de-9fb3d4d94e11")) // based on the `initial.sql` script
         .value(Money.of(BigDecimal.valueOf(999.99), "PLN"))
-        .updatedAt(Instant.now())
+        .updatedAt(Instant.parse("2024-11-07T23:00:00Z"))
         .build();
 
     final var create = TestOrderBuilder.builder()
         .withoutId()
         .businessId(UUID.fromString("96eb25dd-a5ee-4e16-b7de-9fb3d4d94e11"))
         .value(Money.of(BigDecimal.valueOf(111.11), "PLN"))
-        .updatedAt(Instant.now())
+        .updatedAt(Instant.parse("2024-11-07T22:55:00Z"))
         .build();
 
     // And given order is in temporary table
