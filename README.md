@@ -52,6 +52,16 @@ export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE="/var/run/docker.sock"
 For more details see [docs](https://java.testcontainers.org/supported_docker_environment/)
 and [this issue](https://github.com/testcontainers/testcontainers-java/issues/5034)
 
+## Open API docs
+
+The API is documented using OpenAPI and can be accessed under `/api-docs` path.
+
+There is also a Swagger UI available under `/swagger-ui/` path.
+
+For local development they can be accessed via:
+* `http://localhost:8080/api-docs/`
+* `http://localhost:8080/swagger-ui/`
+
 ## Regular process execution
 
 To process orders, a `*.csv` file with the following structure is needed:
@@ -94,5 +104,5 @@ curl -XGET 'localhost:8080/v1/orders?businessId=10000000-0000-0000-0000-00000000
 
 1. add registry of processed files
 2. consider all `FEATURE` notes from the code
-3. add [springdoc](https://springdoc.org/) to provide OpenAPI documentation
+3. ~~add [springdoc](https://springdoc.org/) to provide OpenAPI documentation~~
 4. generate [jOOQ's metamodel](https://www.jooq.org/doc/latest/manual/code-generation/codegen-gradle/) of the database

@@ -26,6 +26,10 @@ logging:
     org.javamoney.moneta: WARN
     com.gruelbox.transactionoutbox.TransactionOutboxImpl: WARN
 
+springdoc:
+    api-docs:
+      path: /api-docs
+
 app:
   order:
     event:

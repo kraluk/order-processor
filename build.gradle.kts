@@ -58,6 +58,9 @@ dependencies {
   implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv")
   implementation("org.javamoney:moneta:${libs.versions.javaMoney.get()}")
 
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-api:${libs.versions.springDoc.get()}")
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${libs.versions.springDoc.get()}")
+
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
   testImplementation("org.assertj:assertj-core")
   testImplementation("org.mockito:mockito-core")
