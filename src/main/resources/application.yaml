@@ -9,6 +9,9 @@ spring:
     url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
+    hikari:
+      data-source-properties:
+        re-write-batched-inserts: true
   liquibase:
     enabled: true
     change-log: classpath:liquibase/changelog.xml
