@@ -10,8 +10,10 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
     hikari:
-      data-source-properties:
-        re-write-batched-inserts: true
+      minimum-idle: 15
+      maximum-pool-size: 15
+      # data-source-properties:
+        # re-write-batched-inserts: true
   liquibase:
     enabled: true
     change-log: classpath:liquibase/changelog.xml
