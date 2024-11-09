@@ -1,6 +1,5 @@
 package io.kraluk.orderprocessor.adapter.order.web;
 
-import static io.kraluk.orderprocessor.adapter.order.web.ProblemDetailOps.orderNotFound;
 import static java.lang.String.format;
 
 import io.kraluk.orderprocessor.shared.contract.http.OrderHttp;
@@ -162,7 +161,7 @@ final class OrdersControllerDelegate {
         byIdUseCase.invoke(new FindOrderByIdUseCase.Command(id)).map(OrderHttp::from);
 
     if (result.isEmpty()) {
-      return orderNotFound(id);
+      return OrderProblem.notFoundOf(id);
     } else {
       return ResponseEntity.of(result);
     }
@@ -174,23 +173,23 @@ final class OrdersControllerDelegate {
         .map(OrderHttp::from);
 
     if (result.isEmpty()) {
-      return orderNotFound(businessId);
+      return OrderProblem.notFoundOf(businessId);
     } else {
       return ResponseEntity.of(result);
     }
   }
 }
 
-final class ProblemDetailOps {
+final class OrderProblem {
 
-  private ProblemDetailOps() {}
+  private OrderProblem() {}
 
-  static ResponseEntity<ProblemDetail> orderNotFound(final Long id) {
+  static ResponseEntity<ProblemDetail> notFoundOf(final Long id) {
     return notFound(ProblemDetail.forStatusAndDetail(
         HttpStatus.NOT_FOUND, format("Order with id '%d' does not exist!", id)));
   }
 
-  static ResponseEntity<ProblemDetail> orderNotFound(final UUID businessId) {
+  static ResponseEntity<ProblemDetail> notFoundOf(final UUID businessId) {
     return notFound(ProblemDetail.forStatusAndDetail(
         HttpStatus.NOT_FOUND, format("Order with businessId '%s' does not exist!", businessId)));
   }
