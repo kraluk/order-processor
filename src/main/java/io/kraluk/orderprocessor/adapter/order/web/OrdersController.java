@@ -5,6 +5,7 @@ import static java.lang.String.format;
 import io.kraluk.orderprocessor.shared.contract.http.OrderHttp;
 import io.kraluk.orderprocessor.usecase.order.FindOrderByBusinessIdUseCase;
 import io.kraluk.orderprocessor.usecase.order.FindOrderByIdUseCase;
+import io.micrometer.observation.annotation.Observed;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,6 +14,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
@@ -146,6 +150,8 @@ class OrdersController {
 }
 
 final class OrdersControllerDelegate {
+  private static final Logger log = LoggerFactory.getLogger(OrdersControllerDelegate.class);
+
   private final FindOrderByIdUseCase byIdUseCase;
   private final FindOrderByBusinessIdUseCase byBusinessIdUseCase;
 
@@ -161,6 +167,7 @@ final class OrdersControllerDelegate {
         byIdUseCase.invoke(new FindOrderByIdUseCase.Command(id)).map(OrderHttp::from);
 
     if (result.isEmpty()) {
+      log.debug("Order with id '{}' not found", id);
       return OrderProblem.notFoundOf(id);
     } else {
       return ResponseEntity.of(result);
@@ -173,6 +180,7 @@ final class OrdersControllerDelegate {
         .map(OrderHttp::from);
 
     if (result.isEmpty()) {
+      log.debug("Order with businessId '{}' not found", businessId);
       return OrderProblem.notFoundOf(businessId);
     } else {
       return ResponseEntity.of(result);
