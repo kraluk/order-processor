@@ -84,7 +84,7 @@ dependencies {
   jooqGenerator("org.jooq:jooq-meta-extensions-liquibase:${dependencyManagement.importedProperties["jooq.version"]}")
   jooqGenerator(files("src/main/resources"))
   jooqGenerator("org.liquibase:liquibase-core")
-  jooqGenerator("org.slf4j:slf4j-reload4j")
+  jooqGenerator("org.slf4j:slf4j-jdk14")
 }
 
 tasks.test {
@@ -183,7 +183,7 @@ jooq {
                     o -> o.toInstant(),
                     i -> i.atOffset(java.time.ZoneOffset.UTC))
                 """.trimIndent())
-                .withTypes("timestamp\\ with\\ time\\ zone")
+                .withIncludeTypes("timestamp\\ with\\ time\\ zone")
             )
           }
 
