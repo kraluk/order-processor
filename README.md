@@ -105,4 +105,4 @@ curl -XGET 'localhost:8080/v1/orders?businessId=10000000-0000-0000-0000-00000000
 1. add registry of processed files
 2. consider all `FEATURE` notes from the code
 3. ~~add [springdoc](https://springdoc.org/) to provide OpenAPI documentation~~
-4. generate [jOOQ's metamodel](https://www.jooq.org/doc/latest/manual/code-generation/codegen-gradle/) of the database
+4. ~~generate [jOOQ's metamodel](https://www.jooq.org/doc/latest/manual/code-generation/codegen-gradle/) of the database~~
