@@ -124,10 +124,10 @@ class OrderFactory {
   }
 
   Order from(final OrderUpdate update) {
-    // FEATURE: potentially, depending on the requirements, we could firstly get Order from the
-    // database, then this instance update with the data from the data - it will cause that we
-    // will have complete Order in place, including data that is not available in
-    // the update object
+    // FEATURE: potentially, depending on the requirements, we could firstly get an Order from the
+    // database, then this instance update with the data from a received update - it will cause that
+    // we will have complete Order in place, including data that is potentially not available in
+    // an update object
     return Order.fromUpdate(
         update.getBusinessId(),
         Money.of(update.getValue(), update.getCurrency()),
