@@ -29,6 +29,35 @@ logging:
     org.javamoney.moneta: WARN
     com.gruelbox.transactionoutbox.TransactionOutboxImpl: WARN
 
+management:
+endpoints:
+  web:
+    exposure:
+      include: health, info, prometheus, openapi, swagger-ui
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+      environment: ${spring.profiles.active}
+    distribution:
+      percentiles:
+        http:
+          server:
+            requests: [ 0.99, 0.95, 0.75, 0.50 ]
+          client:
+            requests: [ 0.99, 0.95, 0.75, 0.50 ]
+  observations:
+    annotations:
+      enabled: true
+
 springdoc:
     api-docs:
       path: /api-docs

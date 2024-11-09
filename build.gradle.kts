@@ -46,6 +46,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-logging")
   implementation("org.springframework.boot:spring-boot-starter-jdbc")
   implementation("org.springframework.boot:spring-boot-starter-jooq")
+  implementation("org.springframework.boot:spring-boot-starter-aop")
   implementation("io.awspring.cloud:spring-cloud-aws-starter-s3")
   implementation("io.awspring.cloud:spring-cloud-aws-starter-sqs")
 
@@ -63,6 +64,7 @@ dependencies {
 
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-api:${libs.versions.springDoc.get()}")
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${libs.versions.springDoc.get()}")
+  implementation("io.micrometer:micrometer-core")
 
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
   testImplementation("org.assertj:assertj-core")

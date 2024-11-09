@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.time.Clock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -17,8 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.Clock;
 
 @Tag(name = "Order Update Executions API")
 @RestController
@@ -34,17 +33,17 @@ class OrderUpdateExecutionsController {
       summary = "Executes the Order update process",
       description = "Executes the Order update process",
       responses = {
-          @ApiResponse(
-              responseCode = "202",
-              description = "Accepted request of the Order update process's start",
-              content =
-              @Content(
-                  mediaType = MediaType.APPLICATION_JSON_VALUE,
-                  schema = @Schema(implementation = OrderHttp.class),
-                  examples =
-                  @ExampleObject(
-                      value =
-                          """
+        @ApiResponse(
+            responseCode = "202",
+            description = "Accepted request of the Order update process's start",
+            content =
+                @Content(
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = OrderHttp.class),
+                    examples =
+                        @ExampleObject(
+                            value =
+                                """
                               {
                                 "source": "orders.csv",
                                 "message": "Order update process has been accepted.",
@@ -57,15 +56,17 @@ class OrderUpdateExecutionsController {
       produces = MediaType.APPLICATION_JSON_VALUE)
   ResponseEntity<?> initiateProcess(
       @Parameter(
-          description = "Source (file name) of the Order to be processed",
-          example = "orders.csv")
-      @PathVariable("source") final String source) {
+              description = "Source (file name) of the Order to be processed",
+              example = "orders.csv")
+          @PathVariable("source")
+          final String source) {
     return delegate.initiateProcess(source);
   }
 }
 
 final class OrderUpdateExecutionsControllerDelegate {
-  private static final Logger log = LoggerFactory.getLogger(OrderUpdateExecutionsControllerDelegate.class);
+  private static final Logger log =
+      LoggerFactory.getLogger(OrderUpdateExecutionsControllerDelegate.class);
 
   private final OrderUpdatesOrchestrator orchestrator;
   private final Clock clock;

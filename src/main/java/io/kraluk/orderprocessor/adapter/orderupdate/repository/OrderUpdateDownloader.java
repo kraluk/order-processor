@@ -94,7 +94,8 @@ class S3OrderUpdateDownloader implements OrderUpdateDownloader, Closeable {
   @Override
   public void close() throws IOException {
     final var result = FileSystemUtils.deleteRecursively(tempDirectory);
-    log.debug("Temporary directory '{}' has been deleted with result - '{}'", tempDirectory, result);
+    log.debug(
+        "Temporary directory '{}' has been deleted with result - '{}'", tempDirectory, result);
   }
 }
 

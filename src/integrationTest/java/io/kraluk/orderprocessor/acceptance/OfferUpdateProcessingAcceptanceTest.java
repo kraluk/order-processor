@@ -7,7 +7,9 @@ import static org.awaitility.Awaitility.await;
 
 import io.kraluk.orderprocessor.shared.contract.event.OrderUpdatedEvent;
 import io.kraluk.orderprocessor.test.AcceptanceTest;
+import io.micrometer.core.instrument.Timer;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -46,6 +48,9 @@ class OfferUpdateProcessingAcceptanceTest extends AcceptanceTest {
           .extracting(OrderUpdatedEvent::businessId)
           .contains(EXPECTED_NEW_BUSINESS_IDS);
     });
+
+    // And then metrics are published
+    asserThatMetricsArePublishedFor(source);
   }
 
   @Test
@@ -80,6 +85,26 @@ class OfferUpdateProcessingAcceptanceTest extends AcceptanceTest {
           .extracting(OrderUpdatedEvent::businessId)
           .contains(EXPECTED_EXISTING_BUSINESS_IDS);
     });
+
+    // And then metrics are published
+    asserThatMetricsArePublishedFor(source);
+  }
+
+  private void asserThatMetricsArePublishedFor(final String source) {
+    // Spring add a lot of tags to the metrics, therefore such filtering is required to get
+    // the correct one without knowing those tags
+    final var processTime = ((Timer) meterRegistry.getMeters().stream()
+            .filter(m -> m instanceof Timer)
+            .filter(m -> m.getId().getName().equals("order_updates_process"))
+            .findFirst()
+            .orElseThrow())
+        .totalTime(TimeUnit.MILLISECONDS);
+    assertThat(processTime).isGreaterThan(0);
+
+    final var completeCount = meterRegistry
+        .counter("order_updates_processed_complete", "source", source)
+        .count();
+    assertThat(completeCount).isGreaterThan(0);
   }
 
   private void uploadUpdates(final String source) {

@@ -6,6 +6,10 @@ import io.kraluk.orderprocessor.domain.orderupdate.entity.OrderUpdate;
 import io.kraluk.orderprocessor.shared.StreamOps;
 import io.kraluk.orderprocessor.usecase.order.UpsertOrdersUseCase;
 import io.kraluk.orderprocessor.usecase.orderupdate.FindOrderUpdatesFromFileUseCase;
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.aop.MeterTag;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import java.time.Clock;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -27,6 +31,7 @@ public class OrderUpdatesOrchestrator {
   private final UpsertOrdersUseCase upsertUseCase;
   private final OrderFactory factory;
   private final OrderTransactionOutbox outbox;
+  private final OrderMetrics metrics;
   private final TransactionTemplate transaction;
   private final SimpleAsyncTaskExecutor taskExecutor;
   private final OrderUpdatesOrchestratorProperties properties;
@@ -36,6 +41,7 @@ public class OrderUpdatesOrchestrator {
       final UpsertOrdersUseCase upsertUseCase,
       final OrderFactory factory,
       final OrderTransactionOutbox outbox,
+      final OrderMetrics metrics,
       final TransactionTemplate transaction,
       final SimpleAsyncTaskExecutor taskExecutor,
       final OrderUpdatesOrchestratorProperties properties) {
@@ -43,6 +49,7 @@ public class OrderUpdatesOrchestrator {
     this.upsertUseCase = upsertUseCase;
     this.factory = factory;
     this.outbox = outbox;
+    this.metrics = metrics;
     this.transaction = transaction;
     this.taskExecutor = taskExecutor;
     this.properties = properties;
@@ -50,7 +57,8 @@ public class OrderUpdatesOrchestrator {
 
   // FEATURE: add metrics
   @Async
-  public void process(final String source) {
+  @Timed(value = "order_updates_process", description = "Processing Order Updates")
+  public void process(@MeterTag("source") final String source) {
     log.info("Attempting to start processing Order Updates from '{}'", source);
 
     try (final var updates =
@@ -60,6 +68,7 @@ public class OrderUpdatesOrchestrator {
       tasks.forEach(CompletableFuture::join); // wait for all tasks to finish
 
       final var result = finalize(tasks);
+      metrics.measureCompletionOf(source, result);
       log.info("Processed successfully '{}' Order Updates", result);
     }
   }
@@ -81,7 +90,8 @@ public class OrderUpdatesOrchestrator {
 
     try (final var updated =
         upsertUseCase.invoke(UpsertOrdersUseCase.Command.of(orders.stream()))) {
-      final var result = updated.peek(outbox::add).map(o -> 1L).reduce(0L, Long::sum);
+      final var result =
+          updated.peek(outbox::add).peek(metrics::measure).map(o -> 1L).reduce(0L, Long::sum);
 
       log.info("Processed '{}' Order Updates from initial chunk of '{}'", result, orders.size());
 
@@ -129,3 +139,30 @@ class OrderFactory {
 
 @ConfigurationProperties(prefix = "app.order.orchestrator")
 record OrderUpdatesOrchestratorProperties(int chunkSize) {}
+
+@Component
+class OrderMetrics {
+
+  private final MeterRegistry registry;
+  private final Counter processed;
+  private final Counter illegal;
+
+  OrderMetrics(final MeterRegistry registry) {
+    this.registry = registry;
+    this.processed = registry.counter("order_updates_processed");
+    this.illegal = registry.counter("order_updates_illegal");
+  }
+
+  void measure(final Order order) {
+    processed.increment();
+
+    if (order.hasIllegalValue()) {
+      illegal.increment();
+    }
+  }
+
+  void measureCompletionOf(final String source, final long count) {
+    registry.counter("order_updates_processed_complete", "source", source).increment((double)
+        count);
+  }
+}

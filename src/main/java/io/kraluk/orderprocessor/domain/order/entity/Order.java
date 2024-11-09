@@ -36,6 +36,10 @@ public final class Order {
     this.readAt = readAt;
   }
 
+  public boolean hasIllegalValue() {
+    return value.isNegativeOrZero();
+  }
+
   public Long getId() {
     return id;
   }

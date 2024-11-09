@@ -5,7 +5,6 @@ import static java.lang.String.format;
 import io.kraluk.orderprocessor.shared.contract.http.OrderHttp;
 import io.kraluk.orderprocessor.usecase.order.FindOrderByBusinessIdUseCase;
 import io.kraluk.orderprocessor.usecase.order.FindOrderByIdUseCase;
-import io.micrometer.observation.annotation.Observed;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,7 +13,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

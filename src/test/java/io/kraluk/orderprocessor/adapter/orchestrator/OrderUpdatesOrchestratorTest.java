@@ -12,6 +12,7 @@ import io.kraluk.orderprocessor.test.adapter.orderupdate.repository.InMemoryOrde
 import io.kraluk.orderprocessor.test.domain.orderupdate.entity.TestOrderUpdateBuilder;
 import io.kraluk.orderprocessor.usecase.order.UpsertOrdersUseCase;
 import io.kraluk.orderprocessor.usecase.orderupdate.FindOrderUpdatesFromFileUseCase;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import java.util.List;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
@@ -79,6 +80,7 @@ class OrderUpdatesOrchestratorTest {
         new UpsertOrdersUseCase(repository, temporaryRepository),
         new OrderFactory(fixedClock()),
         outbox,
+        new OrderMetrics(new SimpleMeterRegistry()),
         new TransactionTemplate(new NoOpTransactionManager()),
         new SimpleAsyncTaskExecutor("tests-"),
         new OrderUpdatesOrchestratorProperties(2));
