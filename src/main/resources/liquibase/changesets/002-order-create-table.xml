@@ -16,7 +16,7 @@
                 <constraints primaryKey="true"/>
             </column>
 
-            <column name="value" type="decimal">
+            <column name="value" type="decimal(12,2)">
                 <constraints nullable="false"/>
             </column>
             <column name="currency" type="varchar(3)">
@@ -29,13 +29,13 @@
             <column name="version" type="bigint" defaultValue="1">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_at" type="timestamptz" defaultValueComputed="now()"> <!-- https://github.com/jOOQ/jOOQ/issues/10802 -->
+            <column name="created_at" type="timestamp with time zone" defaultValueComputed="now()"> <!-- https://github.com/jOOQ/jOOQ/issues/10802 -->
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="timestamptz">
+            <column name="updated_at" type="timestamp with time zone">
                 <constraints nullable="false"/>
             </column>
-            <column name="read_at" type="timestamptz" defaultValueComputed="now()">
+            <column name="read_at" type="timestamp with time zone" defaultValueComputed="now()">
                 <constraints nullable="false"/>
             </column>
 

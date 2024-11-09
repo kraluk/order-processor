@@ -32,7 +32,7 @@ class SqsOrderEventPublisherIntegrationTest extends AwsIntegrationTest {
           .first()
           .extracting(m -> deserialize(m.body()))
           .matches(e -> e.businessId().equals(event.businessId()))
-          .matches(e -> e.value().equals(event.value()))
+          .matches(e -> e.value().compareTo(event.value()) == 0)
           .matches(e -> e.currency().equals(event.currency()))
           .matches(e -> e.createdAt().equals(event.createdAt()))
           .matches(e -> e.updatedAt().equals(event.updatedAt()));

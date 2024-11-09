@@ -1,4 +1,6 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.jooq.meta.jaxb.ForcedType
+import org.jooq.meta.jaxb.Property
 
 plugins {
   idea
@@ -8,6 +10,7 @@ plugins {
 
   alias(libs.plugins.spring.boot)
   alias(libs.plugins.spring.dependencyManagement)
+  alias(libs.plugins.jooq)
 
   alias(libs.plugins.versions)
   alias(libs.plugins.spotless)
@@ -75,6 +78,11 @@ dependencies {
   integrationTestImplementation("io.awspring.cloud:spring-cloud-aws-testcontainers")
 
   errorprone("com.google.errorprone:error_prone_core:${toolLibs.versions.errorprone.get()}")
+
+  jooqGenerator("org.jooq:jooq-meta-extensions-liquibase:${dependencyManagement.importedProperties["jooq.version"]}")
+  jooqGenerator(files("src/main/resources"))
+  jooqGenerator("org.liquibase:liquibase-core")
+  jooqGenerator("org.slf4j:slf4j-reload4j")
 }
 
 tasks.test {
@@ -135,8 +143,65 @@ tasks.jacocoTestReport {
 
 tasks.check { dependsOn(integrationTest) }
 
+jooq {
+  version.set("${dependencyManagement.importedProperties["jooq.version"]}")
+  edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)
+
+  configurations {
+    create("main") {
+      generateSchemaSourceOnCompilation.set(true)
+
+      jooqConfiguration.apply {
+        logging = org.jooq.meta.jaxb.Logging.WARN
+
+        generator.apply {
+          name = "org.jooq.codegen.DefaultGenerator"
+
+          target.packageName = "io.kraluk.orderprocessor.jooq"
+
+          database.apply {
+            name = "org.jooq.meta.extensions.liquibase.LiquibaseDatabase"
+            properties.addAll(
+              listOf(
+                Property()
+                  .withKey("scripts")
+                  .withValue("liquibase/changelog.xml"),
+                Property()
+                  .withKey("includeLiquibaseTables")
+                  .withValue("false")
+              )
+            )
+            forcedTypes.add(
+              ForcedType()
+                .withUserType("java.time.Instant")
+                .withConverter("""
+                  org.jooq.Converter.ofNullable(
+                    java.time.OffsetDateTime.class,
+                    java.time.Instant.class,
+                    o -> o.toInstant(),
+                    i -> i.atOffset(java.time.ZoneOffset.UTC))
+                """.trimIndent())
+                .withTypes("timestamp\\ with\\ time\\ zone")
+            )
+          }
+
+          generate.apply {
+            isDeprecated = false
+            isRecords = true
+            isImmutablePojos = false
+            isFluentSetters = true
+          }
+
+          strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
+        }
+      }
+    }
+  }
+}
+
 spotless {
   java {
+    targetExclude("**/generated-src/**/*.java")
     toggleOffOn()
     palantirJavaFormat()
       .style("GOOGLE")

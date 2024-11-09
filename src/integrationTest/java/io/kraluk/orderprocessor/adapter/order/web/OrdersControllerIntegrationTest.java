@@ -31,7 +31,7 @@ class OrdersControllerIntegrationTest extends IntegrationTest {
         .extracting(HttpEntity::getBody)
         .matches(b ->
             Objects.equals(b.businessId(), UUID.fromString("16eb25dd-a5ee-4e16-b7de-9fb3d4d94e11")))
-        .matches(b -> Objects.equals(b.value(), BigDecimal.valueOf(100)));
+        .matches(b -> b.value().compareTo(BigDecimal.valueOf(100)) == 0);
   }
 
   @Test
@@ -49,7 +49,7 @@ class OrdersControllerIntegrationTest extends IntegrationTest {
         .extracting(HttpEntity::getBody)
         .matches(b ->
             Objects.equals(b.businessId(), UUID.fromString("16eb25dd-a5ee-4e16-b7de-9fb3d4d94e11")))
-        .matches(b -> Objects.equals(b.value(), BigDecimal.valueOf(100)));
+        .matches(b -> b.value().compareTo(BigDecimal.valueOf(100)) == 0);
   }
 
   @Test

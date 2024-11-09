@@ -5,6 +5,7 @@ dependencyResolutionManagement {
     create("libs") {
       plugin("spring.boot", "org.springframework.boot").version("3.3.5")
       plugin("spring.dependencyManagement", "io.spring.dependency-management").version("1.1.6")
+      plugin("jooq", "nu.studer.jooq").version("9.0")
 
       plugin("versions", "com.github.ben-manes.versions").version("0.51.0")
       plugin("spotless", "com.diffplug.spotless").version("7.0.0.BETA4")

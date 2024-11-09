@@ -21,7 +21,7 @@ class OfferUpdateProcessingAcceptanceTest extends AcceptanceTest {
     uploadUpdates(source);
 
     // When the update is executed
-    final var executionResult = updateExecutionTestClient().executeProcess(source, String.class);
+    final var executionResult = updateExecutionsTestClient().executeProcess(source, String.class);
 
     // Then result is successful
     assertThat(executionResult).matches(r -> r.getStatusCode().is2xxSuccessful());
@@ -55,7 +55,7 @@ class OfferUpdateProcessingAcceptanceTest extends AcceptanceTest {
     uploadUpdates(source);
 
     // When the update is executed
-    final var executionResult = updateExecutionTestClient().executeProcess(source, String.class);
+    final var executionResult = updateExecutionsTestClient().executeProcess(source, String.class);
 
     // Then result is successful
     assertThat(executionResult).matches(r -> r.getStatusCode().is2xxSuccessful());

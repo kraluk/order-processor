@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 
 @Component
-public class OrderUpdatesOrchestrator {
+class OrderUpdatesOrchestrator {
   private static final Logger log = LoggerFactory.getLogger(OrderUpdatesOrchestrator.class);
 
   private final FindOrderUpdatesFromFileUseCase findUseCase;

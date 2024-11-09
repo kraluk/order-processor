@@ -29,7 +29,7 @@ class OrdersController {
 
   private final OrdersControllerDelegate delegate;
 
-  public OrdersController(
+  OrdersController(
       final FindOrderByIdUseCase byIdUseCase,
       final FindOrderByBusinessIdUseCase byBusinessIdUseCase) {
     this.delegate = new OrdersControllerDelegate(byIdUseCase, byBusinessIdUseCase);
@@ -50,16 +50,16 @@ class OrdersController {
                         @ExampleObject(
                             value =
                                 """
-                          {
-                            "businessId": "f1b9b3b4-3b3b-4b3b-8b3b-3b3b3b3b3b3b",
-                            "value": 100.0,
-                            "currency": "USD",
-                            "notes": "Order notes",
-                            "version": 1,
-                            "createdAt": "2021-09-01T00:00:00Z",
-                            "updatedAt": "2021-09-01T00:00:00Z"
-                          }
-                          """))),
+                              {
+                                "businessId": "f1b9b3b4-3b3b-4b3b-8b3b-3b3b3b3b3b3b",
+                                "value": 100.0,
+                                "currency": "USD",
+                                "notes": "Order notes",
+                                "version": 1,
+                                "createdAt": "2021-09-01T00:00:00Z",
+                                "updatedAt": "2021-09-01T00:00:00Z"
+                              }
+                              """))),
         @ApiResponse(
             responseCode = "404",
             description = "Order not found",
@@ -71,14 +71,14 @@ class OrdersController {
                         @ExampleObject(
                             value =
                                 """
-                          {
-                            "type": "about:blank",
-                            "title": "Not Found",
-                            "status": 404,
-                            "detail": "Order with id '2' does not exist!",
-                            "instance": "/v1/orders/2"
-                          }
-                          """)))
+                              {
+                                "type": "about:blank",
+                                "title": "Not Found",
+                                "status": 404,
+                                "detail": "Order with id '2' does not exist!",
+                                "instance": "/v1/orders/2"
+                              }
+                              """)))
       })
   @GetMapping(value = "/v1/orders/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   ResponseEntity<?> findById(
@@ -102,16 +102,16 @@ class OrdersController {
                         @ExampleObject(
                             value =
                                 """
-                          {
-                            "businessId": "f1b9b3b4-3b3b-4b3b-8b3b-3b3b3b3b3b3b",
-                            "value": 100.0,
-                            "currency": "USD",
-                            "notes": "Order notes",
-                            "version": 1,
-                            "createdAt": "2021-09-01T00:00:00Z",
-                            "updatedAt": "2021-09-01T00:00:00Z"
-                          }
-                          """))),
+                              {
+                                "businessId": "f1b9b3b4-3b3b-4b3b-8b3b-3b3b3b3b3b3b",
+                                "value": 100.0,
+                                "currency": "USD",
+                                "notes": "Order notes",
+                                "version": 1,
+                                "createdAt": "2021-09-01T00:00:00Z",
+                                "updatedAt": "2021-09-01T00:00:00Z"
+                              }
+                              """))),
         @ApiResponse(
             responseCode = "404",
             description = "Order not found",
@@ -123,14 +123,14 @@ class OrdersController {
                         @ExampleObject(
                             value =
                                 """
-                          {
-                            "type": "about:blank",
-                            "title": "Not Found",
-                            "status": 404,
-                            "detail": "Order with businessId '50000000-0000-0000-0000-000000000000' does not exist!",
-                            "instance": "/v1/orders"
-                          }
-                          """)))
+                              {
+                                "type": "about:blank",
+                                "title": "Not Found",
+                                "status": 404,
+                                "detail": "Order with businessId '50000000-0000-0000-0000-000000000000' does not exist!",
+                                "instance": "/v1/orders"
+                              }
+                              """)))
       })
   @GetMapping(
       value = "/v1/orders",
@@ -150,7 +150,7 @@ final class OrdersControllerDelegate {
   private final FindOrderByIdUseCase byIdUseCase;
   private final FindOrderByBusinessIdUseCase byBusinessIdUseCase;
 
-  public OrdersControllerDelegate(
+  OrdersControllerDelegate(
       final FindOrderByIdUseCase byIdUseCase,
       final FindOrderByBusinessIdUseCase byBusinessIdUseCase) {
     this.byIdUseCase = byIdUseCase;
