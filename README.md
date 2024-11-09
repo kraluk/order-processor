@@ -97,9 +97,10 @@ curl -XGET 'localhost:8080/v1/orders?businessId=10000000-0000-0000-0000-00000000
       [singleton containers](https://java.testcontainers.org/test_framework_integration/manual_lifecycle_control/)
     * potentially [reusable containers](https://java.testcontainers.org/features/reuse/) can be used as well but only
       for the local development
-2. add more metrics via Micrometer
+2. ~~add more metrics via Micrometer~~
 3. consider dividing the project into multiple modules (like i.e. `domain`, `contracts`, `application`)
 4. ~~introduce better configuration of `hikaricp` to handle PostgreSQL batch queries in a more efficient way~~
+5. introduce tracing via Micrometer
 
 ### Ideas
 
