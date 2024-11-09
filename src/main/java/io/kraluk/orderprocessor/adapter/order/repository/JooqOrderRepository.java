@@ -2,7 +2,6 @@ package io.kraluk.orderprocessor.adapter.order.repository;
 
 import static io.kraluk.orderprocessor.jooq.tables.Orders.ORDERS;
 import static io.kraluk.orderprocessor.shared.JooqOps.column;
-import static org.jooq.impl.DSL.currentInstant;
 import static org.jooq.impl.DSL.excluded;
 import static org.jooq.impl.DSL.table;
 import static org.jooq.impl.DSL.val;
@@ -55,7 +54,6 @@ class JooqOrderRepository implements OrderRepository {
             ORDERS.CURRENCY,
             ORDERS.NOTES,
             ORDERS.VERSION,
-            ORDERS.CREATED_AT,
             ORDERS.UPDATED_AT,
             ORDERS.READ_AT)
         .select(dsl.select(
@@ -64,7 +62,6 @@ class JooqOrderRepository implements OrderRepository {
                 column(ORDERS.CURRENCY.getDataType(), tempTable, ORDERS.CURRENCY.getName()),
                 column(ORDERS.NOTES.getDataType(), tempTable, ORDERS.NOTES.getName()),
                 val(1L).as(ORDERS.VERSION),
-                currentInstant().as(ORDERS.CREATED_AT), // only for new records
                 column(ORDERS.UPDATED_AT.getDataType(), tempTable, ORDERS.UPDATED_AT.getName()),
                 column(ORDERS.READ_AT.getDataType(), tempTable, ORDERS.READ_AT.getName()))
             .from(table(tempTable)))
