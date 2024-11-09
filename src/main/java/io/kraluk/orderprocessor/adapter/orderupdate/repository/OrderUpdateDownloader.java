@@ -3,6 +3,7 @@ package io.kraluk.orderprocessor.adapter.orderupdate.repository;
 import io.awspring.cloud.s3.S3Template;
 import io.kraluk.orderprocessor.domain.orderupdate.entity.OrderUpdateContent;
 import java.io.BufferedInputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.util.FileSystemUtils;
 
 public interface OrderUpdateDownloader {
   Optional<OrderUpdateContent> download(final String source);
@@ -22,7 +24,7 @@ public interface OrderUpdateDownloader {
 
 @ConditionalOnProperty(prefix = "spring.cloud.aws.s3", name = "enabled", havingValue = "true")
 @Component
-class S3OrderUpdateDownloader implements OrderUpdateDownloader {
+class S3OrderUpdateDownloader implements OrderUpdateDownloader, Closeable {
   private static final Logger log = LoggerFactory.getLogger(S3OrderUpdateDownloader.class);
 
   private final S3Template template;
@@ -87,6 +89,12 @@ class S3OrderUpdateDownloader implements OrderUpdateDownloader {
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
+  }
+
+  @Override
+  public void close() throws IOException {
+    final var result = FileSystemUtils.deleteRecursively(tempDirectory);
+    log.debug("Temporary directory '{}' has been deleted with result - '{}'", tempDirectory, result);
   }
 }
 
