@@ -31,6 +31,7 @@ Some kind of variation of the Clean Architecture has been used in the project to
 * run integration and acceptance tests with `./gradlew integrationTest`
 * check dependencies with `./gradlew dependencyUpdates`
 * reformat code base `./gradlew spotlessApply`
+* generate jOOQ metamodel `./gradlew jooqGenerate`
 
 ## Configuration
 
@@ -92,8 +93,8 @@ curl -XGET 'localhost:8080/v1/orders?businessId=10000000-0000-0000-0000-00000000
 ### Issues
 
 1. limit Spring context reloads during integration tests to decrease their execution time
-    * consider
-      using [singleton containers](https://java.testcontainers.org/test_framework_integration/manual_lifecycle_control/)
+    * consider using 
+      [singleton containers](https://java.testcontainers.org/test_framework_integration/manual_lifecycle_control/)
     * potentially [reusable containers](https://java.testcontainers.org/features/reuse/) can be used as well but only
       for the local development
 2. add more metrics via Micrometer
