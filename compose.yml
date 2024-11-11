@@ -16,4 +16,4 @@ services:
       - DOCKER_HOST=unix:///var/run/docker.sock
     volumes:
       - ./.scripts/localstack:/etc/localstack/init/ready.d
-      - '/var/run/docker.sock:/var/run/docker.sock'
+      - /var/run/docker.sock:/var/run/docker.sock

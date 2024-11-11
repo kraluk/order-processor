@@ -19,7 +19,8 @@ public class LocalStackTestConfiguration {
   LocalStackContainer localStackContainer() {
     return new LocalStackContainer(
             DockerImageName.parse("localstack/localstack").withTag(LOCAL_STACK_VERSION))
-        .withServices(LocalStackContainer.Service.S3, LocalStackContainer.Service.SQS);
+        .withServices(LocalStackContainer.Service.S3, LocalStackContainer.Service.SQS)
+        .withReuse(true);
   }
 
   @Bean
