@@ -201,6 +201,8 @@ final class OrderProblem {
   }
 
   private static ResponseEntity<ProblemDetail> notFound(final ProblemDetail detail) {
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(detail);
+    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        .contentType(MediaType.APPLICATION_PROBLEM_JSON)
+        .body(detail);
   }
 }

@@ -10,6 +10,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -28,6 +29,7 @@ class OrdersControllerIntegrationTest extends IntegrationTest {
     assertThat(result)
         .isNotNull()
         .matches(d -> d.getStatusCode().is2xxSuccessful())
+        .matches(d -> Objects.equals(d.getHeaders().getContentType(), MediaType.APPLICATION_JSON))
         .extracting(HttpEntity::getBody)
         .matches(b ->
             Objects.equals(b.businessId(), UUID.fromString("16eb25dd-a5ee-4e16-b7de-9fb3d4d94e11")))
@@ -46,6 +48,7 @@ class OrdersControllerIntegrationTest extends IntegrationTest {
     assertThat(result)
         .isNotNull()
         .matches(d -> d.getStatusCode().is2xxSuccessful())
+        .matches(d -> Objects.equals(d.getHeaders().getContentType(), MediaType.APPLICATION_JSON))
         .extracting(HttpEntity::getBody)
         .matches(b ->
             Objects.equals(b.businessId(), UUID.fromString("16eb25dd-a5ee-4e16-b7de-9fb3d4d94e11")))
@@ -64,6 +67,8 @@ class OrdersControllerIntegrationTest extends IntegrationTest {
     assertThat(result)
         .isNotNull()
         .matches(d -> d.getStatusCode() == HttpStatusCode.valueOf(404))
+        .matches(d ->
+            Objects.equals(d.getHeaders().getContentType(), MediaType.APPLICATION_PROBLEM_JSON))
         .extracting(HttpEntity::getBody)
         .matches(b -> Objects.equals(b.getTitle(), "Not Found"))
         .matches(b ->
