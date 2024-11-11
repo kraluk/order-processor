@@ -57,11 +57,11 @@ and [this issue](https://github.com/testcontainers/testcontainers-java/issues/50
 
 The API is documented using OpenAPI and can be accessed under `/api-docs` path.
 
-There is also a Swagger UI available under `/swagger-ui/` path.
+There is also a Swagger UI available under `/swagger-ui/index.html` path.
 
 For local development they can be accessed via:
 * `http://localhost:8080/api-docs/`
-* `http://localhost:8080/swagger-ui/`
+* `http://localhost:8080/swagger-ui/index.html`
 
 ## Regular process execution
 
