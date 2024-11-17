@@ -41,7 +41,7 @@ class S3OrderUpdateDownloader implements OrderUpdateDownloader, Closeable {
   }
 
   @Autowired
-  S3OrderUpdateDownloader(final S3Template template, S3OrderUpdateProperties properties) {
+  S3OrderUpdateDownloader(final S3Template template, final S3OrderUpdateProperties properties) {
     this(template, properties, tempDirectory());
   }
 
@@ -83,19 +83,19 @@ class S3OrderUpdateDownloader implements OrderUpdateDownloader, Closeable {
     }
   }
 
+  @Override
+  public void close() throws IOException {
+    final var result = FileSystemUtils.deleteRecursively(tempDirectory);
+    log.debug(
+        "Temporary directory '{}' has been deleted with result - '{}'", tempDirectory, result);
+  }
+
   private static Path tempDirectory() {
     try {
       return Files.createTempDirectory("order-update");
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }
-  }
-
-  @Override
-  public void close() throws IOException {
-    final var result = FileSystemUtils.deleteRecursively(tempDirectory);
-    log.debug(
-        "Temporary directory '{}' has been deleted with result - '{}'", tempDirectory, result);
   }
 }
 

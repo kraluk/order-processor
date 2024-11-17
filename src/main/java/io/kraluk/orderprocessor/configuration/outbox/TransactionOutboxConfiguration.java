@@ -51,7 +51,7 @@ class TransactionOutboxConfiguration {
       final SpringTransactionManager springTransactionManager,
       final SpringInstantiator springInstantiator,
       final ObjectMapper mapper,
-      final @Qualifier("outboxExecutor") ExecutorService outboxExecutor,
+      @Qualifier("outboxExecutor") final ExecutorService outboxExecutor,
       final TransactionOutboxProperties properties,
       final MeterRegistry registry) {
     log.info("Creating TransactionOutbox with the following properties - '{}'", properties);

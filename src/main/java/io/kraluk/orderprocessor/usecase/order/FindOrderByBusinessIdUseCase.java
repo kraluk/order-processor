@@ -11,7 +11,7 @@ public class FindOrderByBusinessIdUseCase {
 
   private final OrderRepository repository;
 
-  public FindOrderByBusinessIdUseCase(OrderRepository repository) {
+  public FindOrderByBusinessIdUseCase(final OrderRepository repository) {
     this.repository = repository;
   }
 

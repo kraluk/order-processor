@@ -10,7 +10,7 @@ public class FindOrderByIdUseCase {
 
   private final OrderRepository repository;
 
-  public FindOrderByIdUseCase(OrderRepository repository) {
+  public FindOrderByIdUseCase(final OrderRepository repository) {
     this.repository = repository;
   }
 

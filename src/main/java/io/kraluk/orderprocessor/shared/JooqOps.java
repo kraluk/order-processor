@@ -17,15 +17,15 @@ public final class JooqOps {
     throw new UnsupportedOperationException("This class should not be instantiated");
   }
 
-  public static <T> Field<T> column(DataType<T> type, String... name) {
+  public static <T> Field<T> column(final DataType<T> type, final String... name) {
     return field(name(name), type);
   }
 
-  public static String temporaryTableName(SessionId sessionId) {
+  public static String temporaryTableName(final SessionId sessionId) {
     return format("temp_table_%s", sessionId.value());
   }
 
-  public static Table<Record> temporaryTable(SessionId sessionId) {
+  public static Table<Record> temporaryTable(final SessionId sessionId) {
     return table(temporaryTableName(sessionId));
   }
 }

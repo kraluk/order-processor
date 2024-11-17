@@ -6,8 +6,6 @@ import com.gruelbox.transactionoutbox.TransactionOutboxEntry;
 import com.gruelbox.transactionoutbox.TransactionOutboxListener;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Tag;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,26 +17,25 @@ class TransactionOutboxMetrics implements TransactionOutboxListener {
   private final Counter failureCounter;
   private final Counter blockedCounter;
 
-  TransactionOutboxMetrics(MeterRegistry registry) {
-    this.scheduledCounter =
-        registry.counter("outbox_status", List.of(Tag.of("outcome", "scheduled")));
-    this.successCounter = registry.counter("outbox_status", List.of(Tag.of("outcome", "success")));
-    this.failureCounter = registry.counter("outbox_status", List.of(Tag.of("outcome", "failure")));
-    this.blockedCounter = registry.counter("outbox_status", List.of(Tag.of("outcome", "blocked")));
+  TransactionOutboxMetrics(final MeterRegistry registry) {
+    this.scheduledCounter = registry.counter("outbox_status", "outcome", "scheduled");
+    this.successCounter = registry.counter("outbox_status", "outcome", "success");
+    this.failureCounter = registry.counter("outbox_status", "outcome", "failure");
+    this.blockedCounter = registry.counter("outbox_status", "outcome", "blocked");
   }
 
   @Override
-  public void scheduled(TransactionOutboxEntry entry) {
+  public void scheduled(final TransactionOutboxEntry entry) {
     scheduledCounter.increment();
   }
 
   @Override
-  public void success(TransactionOutboxEntry entry) {
+  public void success(final TransactionOutboxEntry entry) {
     successCounter.increment();
   }
 
   @Override
-  public void failure(TransactionOutboxEntry entry, Throwable cause) {
+  public void failure(final TransactionOutboxEntry entry, final Throwable cause) {
     failureCounter.increment();
     log.error(
         "Processing Transaction Outbox entry ended with failure - '{}'",
@@ -47,7 +44,7 @@ class TransactionOutboxMetrics implements TransactionOutboxListener {
   }
 
   @Override
-  public void blocked(TransactionOutboxEntry entry, Throwable cause) {
+  public void blocked(final TransactionOutboxEntry entry, final Throwable cause) {
     blockedCounter.increment();
     log.error(
         "Processing Transaction Outbox entry is blocked - '{}'",

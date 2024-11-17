@@ -12,7 +12,7 @@ public record OrderUpdatedEvent(
     String notes,
     Instant createdAt,
     Instant updatedAt) {
-  public static OrderUpdatedEvent from(Order order) {
+  public static OrderUpdatedEvent from(final Order order) {
     return new OrderUpdatedEvent(
         order.getBusinessId(),
         order.getValue().getNumber().numberValueExact(BigDecimal.class),

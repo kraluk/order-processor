@@ -24,7 +24,7 @@ class TransactionOutboxStaleJobResumer {
   @Scheduled(fixedDelayString = "${app.transaction-outbox.resumer-delay}")
   void flush() {
     try {
-      var result = outbox.flush();
+      final var result = outbox.flush();
       log.debug("Flushing outbox with result - '{}'", result);
     } catch (Exception e) {
       log.error("Unable to flush Transaction Outbox properly!", e);

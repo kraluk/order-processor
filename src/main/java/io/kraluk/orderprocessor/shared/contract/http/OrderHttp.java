@@ -13,7 +13,7 @@ public record OrderHttp(
     Long version,
     Instant createdAt,
     Instant updatedAt) {
-  public static OrderHttp from(Order order) {
+  public static OrderHttp from(final Order order) {
     return new OrderHttp(
         order.getBusinessId(),
         order.getValue().getNumber().numberValueExact(BigDecimal.class),
