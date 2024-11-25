@@ -3,7 +3,7 @@ rootProject.name = "order-processor"
 dependencyResolutionManagement {
   versionCatalogs {
     create("libs") {
-      plugin("spring.boot", "org.springframework.boot").version("3.3.5")
+      plugin("spring.boot", "org.springframework.boot").version("3.3.6")
       plugin("spring.dependencyManagement", "io.spring.dependency-management").version("1.1.6")
       plugin("jooq", "nu.studer.jooq").version("9.0")
 
@@ -12,13 +12,11 @@ dependencyResolutionManagement {
       plugin("errorprone", "net.ltgt.errorprone").version("4.1.0")
 
       version("springCloudAws", "3.2.1")
-      version("springDoc", "2.6.0")
+      version("springDoc", "2.7.0")
       version("transactionoutbox", "5.5.447") // BE AWARE: check migration scripts before bumping the version up
       version("javaMoney", "1.4.4")
     }
     create("testLibs") {
-      version("awaitility", "4.2.2")
-      version("mockito", "5.4.0")
     }
     create("toolLibs") {
       version("errorprone", "2.35.1")
