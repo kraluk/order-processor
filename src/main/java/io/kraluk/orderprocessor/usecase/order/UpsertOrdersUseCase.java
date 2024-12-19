@@ -4,6 +4,7 @@ import io.kraluk.orderprocessor.domain.order.entity.Order;
 import io.kraluk.orderprocessor.domain.order.port.OrderRepository;
 import io.kraluk.orderprocessor.domain.order.port.OrderTemporaryRepository;
 import io.kraluk.orderprocessor.domain.shared.SessionId;
+import java.util.List;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +31,10 @@ public class UpsertOrdersUseCase {
   public record Command(Stream<Order> orders) {
     public static Command of(final Stream<Order> orders) {
       return new Command(orders);
+    }
+
+    public static Command of(final List<Order> orders) {
+      return Command.of(orders.stream());
     }
   }
 }

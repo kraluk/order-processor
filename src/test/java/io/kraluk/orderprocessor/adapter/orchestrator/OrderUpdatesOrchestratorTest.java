@@ -83,6 +83,6 @@ class OrderUpdatesOrchestratorTest {
         new OrderMetrics(new SimpleMeterRegistry()),
         new TransactionTemplate(new NoOpTransactionManager()),
         new SimpleAsyncTaskExecutor("tests-"),
-        new OrderUpdatesOrchestratorProperties(2));
+        new OrderUpdatesOrchestratorProperties(2, 2));
   }
 }

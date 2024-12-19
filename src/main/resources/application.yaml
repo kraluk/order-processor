@@ -75,6 +75,7 @@ app:
       size: ${app.order.orchestrator.chunk-size}
     orchestrator:
       chunk-size: 500
+      parallel-consumers: 20
     update:
       s3:
         bucket-name: ${S3_BUCKET_ORDER_UPDATES}

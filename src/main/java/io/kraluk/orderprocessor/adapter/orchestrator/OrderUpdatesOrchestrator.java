@@ -63,21 +63,19 @@ public class OrderUpdatesOrchestrator {
 
     try (final var updates =
         findUseCase.invoke(FindOrderUpdatesFromFileUseCase.Command.of(source))) {
-      final var tasks = processInChunks(updates);
 
-      tasks.forEach(CompletableFuture::join); // wait for all tasks to finish
+      final var tasks = prepareTasks(updates);
+      final var result = executeTasks(tasks);
 
-      final var result = finalize(tasks);
       metrics.measureCompletionOf(source, result);
       log.info("Processed successfully '{}' Order Updates", result);
     }
   }
 
-  private List<CompletableFuture<Long>> processInChunks(final Stream<OrderUpdate> updates) {
+  private Stream<CompletableFuture<Long>> prepareTasks(final Stream<OrderUpdate> updates) {
     return StreamOps.fixedWindow(updates.map(factory::from), properties.chunkSize())
         .map(this::processChunk)
-        .map(t -> t.exceptionally(OrderUpdatesOrchestrator::exceptionally)) // dummy error handling
-        .toList();
+        .map(t -> t.exceptionally(this::exceptionally)); // dummy error handling
   }
 
   private CompletableFuture<Long> processChunk(final List<Order> orders) {
@@ -88,8 +86,7 @@ public class OrderUpdatesOrchestrator {
   private long executeChunk(final List<Order> orders) {
     log.info("Processing chunk of '{}' Order Updates", orders.size());
 
-    try (final var updated =
-        upsertUseCase.invoke(UpsertOrdersUseCase.Command.of(orders.stream()))) {
+    try (final var updated = upsertUseCase.invoke(UpsertOrdersUseCase.Command.of(orders))) {
       final var result =
           updated.peek(outbox::add).peek(metrics::measure).map(o -> 1L).reduce(0L, Long::sum);
 
@@ -104,12 +101,19 @@ public class OrderUpdatesOrchestrator {
     }
   }
 
-  private static long finalize(final List<CompletableFuture<Long>> tasks) {
+  private long executeTasks(final Stream<CompletableFuture<Long>> tasks) {
+    // chunking the whole work into kind of batches to limit parallelism
+    return StreamOps.fixedWindow(tasks, properties.parallelConsumers())
+        .map(this::finalize) // wait for all tasks in chunk to finish
+        .reduce(0L, Long::sum);
+  }
+
+  private long finalize(final List<CompletableFuture<Long>> tasks) {
     return tasks.stream().map(CompletableFuture::join).reduce(0L, Long::sum);
   }
 
   // FEATURE: better error handling
-  private static Long exceptionally(final Throwable e) {
+  private Long exceptionally(final Throwable e) {
     log.error("Error while processing chunk of Order Updates", e);
     return 0L;
   }
@@ -138,7 +142,7 @@ class OrderFactory {
 }
 
 @ConfigurationProperties(prefix = "app.order.orchestrator")
-record OrderUpdatesOrchestratorProperties(int chunkSize) {}
+record OrderUpdatesOrchestratorProperties(int chunkSize, int parallelConsumers) {}
 
 @Component
 class OrderMetrics {
