@@ -13,7 +13,7 @@ dependencyResolutionManagement {
 
       version("springCloudAws", "3.3.0")
       version("springDoc", "2.8.3")
-      version("transactionoutbox", "5.5.447") // BE AWARE: check migration scripts before bumping the version up
+      version("transactionoutbox", "6.0.553") // BE AWARE: check migration scripts before bumping the version up
       version("javaMoney", "1.4.4")
     }
     create("testLibs") {
