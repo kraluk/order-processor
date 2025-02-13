@@ -9,7 +9,7 @@ services:
       - POSTGRES_DB=order_processor
 
   localstack:
-    image: localstack/localstack:4.0.3
+    image: localstack/localstack:4.1.1
     ports:
       - '4566:4566' # LocalStack endpoint
     environment:
