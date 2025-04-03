@@ -42,6 +42,7 @@ class JooqOrderRepository implements OrderRepository {
     return dsl.selectFrom(ORDERS).where(ORDERS.BUSINESS_ID.equal(businessId)).fetchOptional(mapper);
   }
 
+  @SuppressWarnings("resource") // should be closed in a lower layer
   @Override
   public Stream<Order> upsertFromTempTable(final TemporaryTable temporaryTable) {
     final var tempTable = temporaryTable.getName();
