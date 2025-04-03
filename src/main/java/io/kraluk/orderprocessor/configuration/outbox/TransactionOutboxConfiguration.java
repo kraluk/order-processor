@@ -8,7 +8,6 @@ import com.gruelbox.transactionoutbox.TransactionOutbox;
 import com.gruelbox.transactionoutbox.jackson.JacksonInvocationSerializer;
 import com.gruelbox.transactionoutbox.spring.SpringInstantiator;
 import com.gruelbox.transactionoutbox.spring.SpringTransactionManager;
-import com.gruelbox.transactionoutbox.spring.SpringTransactionOutboxConfiguration;
 import io.micrometer.core.instrument.MeterRegistry;
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
@@ -18,26 +17,20 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 
 @Configuration
-@Import(SpringTransactionOutboxConfiguration.class)
+@Import({SpringTransactionManager.class, SpringInstantiator.class})
 class TransactionOutboxConfiguration {
   private static final Logger log = LoggerFactory.getLogger(TransactionOutboxConfiguration.class);
-
-  @Bean
-  SpringInstantiator springInstantiator(final ApplicationContext applicationContext) {
-    return new SpringInstantiator(applicationContext);
-  }
 
   @Lazy
   @Bean
   ExecutorService outboxExecutor() {
-    return Executors.newVirtualThreadPerTaskExecutor(); // bit new stuff, but should work well
+    return Executors.newVirtualThreadPerTaskExecutor(); // a bit of new stuff, but should work well
   }
 
   @Bean
