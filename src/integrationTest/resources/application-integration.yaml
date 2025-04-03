@@ -1,7 +1,7 @@
 spring:
   application.name: order-processor-tests
   datasource:
-    url: "jdbc:tc:postgresql:17.2-alpine:///order-processor?TC_REUSABLE=true"
+    url: "jdbc:tc:postgresql:17.4-alpine:///order-processor?TC_REUSABLE=true"
     hikari:
       minimum-idle: 2
       maximum-pool-size: 2
