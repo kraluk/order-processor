@@ -12,7 +12,7 @@ import org.testcontainers.utility.DockerImageName;
 @TestConfiguration
 public class LocalStackTestConfiguration {
 
-  private static final String LOCAL_STACK_VERSION = "4.1.1";
+  private static final String LOCAL_STACK_VERSION = "4.3.0";
 
   @ServiceConnection
   @Bean
