@@ -20,9 +20,9 @@ plugins {
 group = "io.kraluk"
 version = "0.0.1-SNAPSHOT"
 
-val integrationTestImplementation: Configuration = configurations.create("integrationTestImplementation")
+val testIntegrationImplementation: Configuration = configurations.create("testIntegrationImplementation")
   .extendsFrom(configurations.testImplementation.get())
-val integrationTestRuntimeOnly: Configuration = configurations.create("integrationTestRuntimeOnly")
+val testIntegrationRuntimeOnly: Configuration = configurations.create("testIntegrationRuntimeOnly")
   .extendsFrom(configurations.testRuntimeOnly.get())
 
 java {
@@ -71,12 +71,12 @@ dependencies {
   testImplementation("org.awaitility:awaitility")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-  integrationTestImplementation("org.springframework.boot:spring-boot-testcontainers")
-  integrationTestImplementation("org.testcontainers:junit-jupiter")
-  integrationTestImplementation("org.testcontainers:postgresql")
-  integrationTestImplementation("org.testcontainers:localstack")
-  integrationTestImplementation("io.awspring.cloud:spring-cloud-aws-test")
-  integrationTestImplementation("io.awspring.cloud:spring-cloud-aws-testcontainers")
+  testIntegrationImplementation("org.springframework.boot:spring-boot-testcontainers")
+  testIntegrationImplementation("org.testcontainers:junit-jupiter")
+  testIntegrationImplementation("org.testcontainers:postgresql")
+  testIntegrationImplementation("org.testcontainers:localstack")
+  testIntegrationImplementation("io.awspring.cloud:spring-cloud-aws-test")
+  testIntegrationImplementation("io.awspring.cloud:spring-cloud-aws-testcontainers")
 
   errorprone("com.google.errorprone:error_prone_core:${toolLibs.versions.errorprone.get()}")
 
@@ -104,13 +104,13 @@ tasks.test {
 }
 
 sourceSets {
-  create("integrationTest") {
+  create("testIntegration") {
     compileClasspath += sourceSets.main.get().output + sourceSets.test.get().output
     runtimeClasspath += sourceSets.main.get().output + sourceSets.test.get().output
   }
 }
 
-val integrationTest = tasks.register<Test>("integrationTest") {
+val testIntegration = tasks.register<Test>("testIntegration") {
   description = "Runs integration tests."
   group = "verification"
   defaultCharacterEncoding = "UTF-8"
@@ -129,8 +129,8 @@ val integrationTest = tasks.register<Test>("integrationTest") {
     )
   }
 
-  testClassesDirs = sourceSets["integrationTest"].output.classesDirs
-  classpath = sourceSets["integrationTest"].runtimeClasspath
+  testClassesDirs = sourceSets["testIntegration"].output.classesDirs
+  classpath = sourceSets["testIntegration"].runtimeClasspath
   shouldRunAfter(tasks.test)
 
   finalizedBy(tasks.jacocoTestReport)
@@ -139,10 +139,10 @@ val integrationTest = tasks.register<Test>("integrationTest") {
 // customize if needed: https://docs.gradle.org/current/userguide/jacoco_plugin.html
 // reports are in build/reports/jacoco as index.html
 tasks.jacocoTestReport {
-  dependsOn(integrationTest) // all tests are required to run before generating the report
+  dependsOn(testIntegration) // all tests are required to run before generating the report
 }
 
-tasks.check { dependsOn(integrationTest) }
+tasks.check { dependsOn(testIntegration) }
 
 jooq {
   version.set("${dependencyManagement.importedProperties["jooq.version"]}")

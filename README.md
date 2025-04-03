@@ -28,7 +28,7 @@ Some kind of variation of the Clean Architecture has been used in the project to
 
 * run all tests with `./gradlew check`
 * run unit tests with `./gradlew test`
-* run integration and acceptance tests with `./gradlew integrationTest`
+* run integration and acceptance tests with `./gradlew testIntegration`
 * check dependencies with `./gradlew dependencyUpdates`
 * reformat code base `./gradlew spotlessApply`
 * generate jOOQ metamodel `./gradlew jooqGenerate`
