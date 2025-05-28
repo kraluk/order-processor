@@ -1,9 +1,10 @@
 package io.kraluk.orderprocessor.adapter.orchestrator;
 
+import static java.util.stream.Gatherers.windowFixed;
+
 import io.kraluk.orderprocessor.adapter.order.outbox.OrderTransactionOutbox;
 import io.kraluk.orderprocessor.domain.order.entity.Order;
 import io.kraluk.orderprocessor.domain.orderupdate.entity.OrderUpdate;
-import io.kraluk.orderprocessor.shared.StreamOps;
 import io.kraluk.orderprocessor.usecase.order.UpsertOrdersUseCase;
 import io.kraluk.orderprocessor.usecase.orderupdate.FindOrderUpdatesFromFileUseCase;
 import io.micrometer.core.annotation.Timed;
@@ -73,7 +74,9 @@ public class OrderUpdatesOrchestrator {
   }
 
   private Stream<CompletableFuture<Long>> prepareTasks(final Stream<OrderUpdate> updates) {
-    return StreamOps.fixedWindow(updates.map(factory::from), properties.chunkSize())
+    return updates
+        .map(factory::from)
+        .gather(windowFixed(properties.chunkSize()))
         .map(this::processChunk)
         .map(t -> t.exceptionally(this::exceptionally)); // dummy error handling
   }
@@ -103,7 +106,8 @@ public class OrderUpdatesOrchestrator {
 
   private long executeTasks(final Stream<CompletableFuture<Long>> tasks) {
     // chunking the whole work into kind of batches to limit parallelism
-    return StreamOps.fixedWindow(tasks, properties.parallelConsumers())
+    return tasks
+        .gather(windowFixed(properties.parallelConsumers()))
         .map(this::finalize) // wait for all tasks in chunk to finish
         .reduce(0L, Long::sum);
   }
