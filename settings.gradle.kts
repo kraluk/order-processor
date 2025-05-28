@@ -19,7 +19,9 @@ dependencyResolutionManagement {
     create("testLibs") {
     }
     create("toolLibs") {
+      version("jspecify", "1.0.0")
       version("errorprone", "2.38.0")
+      version("nullaway", "0.12.7")
     }
   }
 }

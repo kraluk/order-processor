@@ -3,26 +3,31 @@ package io.kraluk.orderprocessor.domain.order.entity;
 import java.time.Instant;
 import java.util.UUID;
 import org.javamoney.moneta.Money;
+import org.jspecify.annotations.Nullable;
 
 public final class Order {
 
+  @Nullable
   private final Long id;
+
   private final UUID businessId;
 
   private Money value;
   private String notes;
 
+  @Nullable // TODO: should not be null
   private final Long version;
+
   private final Instant createdAt;
   private Instant updatedAt;
   private Instant readAt;
 
   public Order(
-      Long id,
+      @Nullable Long id,
       UUID businessId,
       Money value,
       String notes,
-      Long version,
+      @Nullable Long version,
       Instant createdAt,
       Instant updatedAt,
       Instant readAt) {
@@ -40,6 +45,7 @@ public final class Order {
     return value.isNegativeOrZero();
   }
 
+  @Nullable
   public Long getId() {
     return id;
   }
@@ -56,6 +62,7 @@ public final class Order {
     return notes;
   }
 
+  @Nullable
   public Long getVersion() {
     return version;
   }
@@ -74,6 +81,7 @@ public final class Order {
 
   public static Order fromUpdate(
       UUID businessId, Money value, String notes, Instant updatedAt, Instant readAt) {
-    return new Order(null, businessId, value, notes, null, null, updatedAt, readAt);
+    // TODO: createdAt should have its own value, temporary workaround
+    return new Order(null, businessId, value, notes, null, updatedAt, updatedAt, readAt);
   }
 }

@@ -31,6 +31,6 @@ class OrderFactoryTest {
         .matches(o -> o.getUpdatedAt().equals(update.getUpdatedAt()))
         .matches(o -> o.getReadAt().equals(ARBITRARY_NOW))
         .matches(o -> o.getId() == null)
-        .matches(o -> o.getCreatedAt() == null);
+        .matches(o -> o.getCreatedAt().equals(update.getUpdatedAt())); // temporary workaround
   }
 }

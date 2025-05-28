@@ -1,6 +1,9 @@
+import net.ltgt.gradle.errorprone.CheckSeverity
+import net.ltgt.gradle.errorprone.errorprone
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jooq.meta.jaxb.ForcedType
 import org.jooq.meta.jaxb.Property
+import java.util.Locale
 
 plugins {
   idea
@@ -78,12 +81,25 @@ dependencies {
   testIntegrationImplementation("io.awspring.cloud:spring-cloud-aws-test")
   testIntegrationImplementation("io.awspring.cloud:spring-cloud-aws-testcontainers")
 
+  compileOnly("org.jspecify:jspecify:${toolLibs.versions.jspecify.get()}")
   errorprone("com.google.errorprone:error_prone_core:${toolLibs.versions.errorprone.get()}")
+  errorprone("com.uber.nullaway:nullaway:${toolLibs.versions.nullaway.get()}")
 
   jooqGenerator("org.jooq:jooq-meta-extensions-liquibase:${dependencyManagement.importedProperties["jooq.version"]}")
   jooqGenerator(files("src/main/resources"))
   jooqGenerator("org.liquibase:liquibase-core")
   jooqGenerator("org.slf4j:slf4j-jdk14")
+}
+
+tasks.withType<JavaCompile>().configureEach {
+  options.errorprone.check("NullAway", CheckSeverity.ERROR)
+  options.errorprone.option("NullAway:AnnotatedPackages", "io.kraluk")
+
+  if (name.lowercase().contains("test")) {
+    options.errorprone {
+      disable("NullAway")
+    }
+  }
 }
 
 tasks.test {

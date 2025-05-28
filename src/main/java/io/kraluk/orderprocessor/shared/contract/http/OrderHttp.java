@@ -4,14 +4,15 @@ import io.kraluk.orderprocessor.domain.order.entity.Order;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 
 public record OrderHttp(
     UUID businessId,
     BigDecimal value,
     String currency,
     String notes,
-    Long version,
-    Instant createdAt,
+    @Nullable Long version,
+    @Nullable Instant createdAt,
     Instant updatedAt) {
   public static OrderHttp from(final Order order) {
     return new OrderHttp(
