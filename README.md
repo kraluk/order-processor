@@ -9,7 +9,7 @@
   are stored in a PostgreSQL database
 * using transaction outbox pattern, sends messages to an AWS SQS queue as order updated events
 
-The application is written in Java 21 using Gradle 8 and Spring Boot 3 with enabled Virtual Threads support. The project
+The application is written in Java 24 using Gradle 8 and Spring Boot 3 with enabled Virtual Threads support. The project
 is using jOOQ, liquibase, and Spring Cloud AWS as well.
 
 Some kind of variation of the Clean Architecture has been used in the project to organise the code.
