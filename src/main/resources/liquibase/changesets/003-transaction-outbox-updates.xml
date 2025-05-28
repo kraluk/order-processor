@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
+
+    <!--
+    Copy of the hardcoded migration scripts of com.gruelbox:transactionoutbox
+    https://github.com/gruelbox/transaction-outbox/blob/master/transactionoutbox-core/src/main/java/com/gruelbox/transactionoutbox/DefaultDialect.java
+    -->
+
+    <changeSet id="Migration script of transaction outbox for version 6.0.609 (#13)" author="Łukasz Krauzowicz">
+        <sql>
+            -- empty on purpose, enforce UTF8 collation for outbox messages
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

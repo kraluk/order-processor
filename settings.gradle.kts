@@ -3,17 +3,17 @@ rootProject.name = "order-processor"
 dependencyResolutionManagement {
   versionCatalogs {
     create("libs") {
-      plugin("spring.boot", "org.springframework.boot").version("3.4.5")
+      plugin("spring.boot", "org.springframework.boot").version("3.4.6")
       plugin("spring.dependencyManagement", "io.spring.dependency-management").version("1.1.7")
       plugin("jooq", "nu.studer.jooq").version("10.1")
 
       plugin("versions", "com.github.ben-manes.versions").version("0.52.0")
-      plugin("spotless", "com.diffplug.spotless").version("7.0.3")
+      plugin("spotless", "com.diffplug.spotless").version("7.0.4")
       plugin("errorprone", "net.ltgt.errorprone").version("4.2.0")
 
-      version("springCloudAws", "3.3.0")
+      version("springCloudAws", "3.3.1")
       version("springDoc", "2.8.8")
-      version("transactionoutbox", "6.0.585") // BE AWARE: check migration scripts before bumping the version up
+      version("transactionoutbox", "6.0.609") // BE AWARE: check migration scripts before bumping the version up
       version("javaMoney", "1.4.5")
     }
     create("testLibs") {
