@@ -2,6 +2,9 @@ rootProject.name = "order-processor"
 
 dependencyResolutionManagement {
   versionCatalogs {
+    create("jvm") {
+      version("java", "24")
+    }
     create("libs") {
       plugin("spring.boot", "org.springframework.boot").version("3.5.4")
       plugin("spring.dependencyManagement", "io.spring.dependency-management").version("1.1.7")
