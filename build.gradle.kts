@@ -3,7 +3,6 @@ import net.ltgt.gradle.errorprone.errorprone
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jooq.meta.jaxb.ForcedType
 import org.jooq.meta.jaxb.Property
-import java.util.Locale
 
 plugins {
   idea
@@ -23,15 +22,22 @@ plugins {
 group = "io.kraluk"
 version = "0.0.1-SNAPSHOT"
 
-val testIntegrationImplementation: Configuration = configurations.create("testIntegrationImplementation")
-  .extendsFrom(configurations.testImplementation.get())
-val testIntegrationRuntimeOnly: Configuration = configurations.create("testIntegrationRuntimeOnly")
-  .extendsFrom(configurations.testRuntimeOnly.get())
-
 java {
   toolchain {
     languageVersion = JavaLanguageVersion.of(jvm.versions.java.get().toInt())
   }
+}
+
+val testIntegration: SourceSet by sourceSets.creating {
+  compileClasspath += sourceSets.main.get().output + sourceSets.test.get().output
+  runtimeClasspath += sourceSets.main.get().output + sourceSets.test.get().output
+}
+
+val testIntegrationImplementation: Configuration by configurations.getting {
+  extendsFrom(configurations.testImplementation.get())
+}
+val testIntegrationRuntimeOnly: Configuration by configurations.getting {
+  extendsFrom(configurations.testRuntimeOnly.get())
 }
 
 repositories {
@@ -119,14 +125,7 @@ tasks.test {
   }
 }
 
-sourceSets {
-  create("testIntegration") {
-    compileClasspath += sourceSets.main.get().output + sourceSets.test.get().output
-    runtimeClasspath += sourceSets.main.get().output + sourceSets.test.get().output
-  }
-}
-
-val testIntegration = tasks.register<Test>("testIntegration") {
+val testIntegrationTask = tasks.register<Test>("testIntegration") {
   description = "Runs integration tests."
   group = "verification"
   defaultCharacterEncoding = "UTF-8"
@@ -155,10 +154,10 @@ val testIntegration = tasks.register<Test>("testIntegration") {
 // customize if needed: https://docs.gradle.org/current/userguide/jacoco_plugin.html
 // reports are in build/reports/jacoco as index.html
 tasks.jacocoTestReport {
-  dependsOn(testIntegration) // all tests are required to run before generating the report
+  dependsOn(testIntegrationTask) // all tests are required to run before generating the report
 }
 
-tasks.check { dependsOn(testIntegration) }
+tasks.check { dependsOn(testIntegrationTask) }
 
 jooq {
   version.set("${dependencyManagement.importedProperties["jooq.version"]}")
