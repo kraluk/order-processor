@@ -163,53 +163,53 @@ jooq {
   version.set("${dependencyManagement.importedProperties["jooq.version"]}")
   edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)
 
-  configurations {
-    create("main") {
-      generateSchemaSourceOnCompilation.set(true)
+  configurations.create("main") {
+    generateSchemaSourceOnCompilation.set(true)
 
-      jooqConfiguration.apply {
-        logging = org.jooq.meta.jaxb.Logging.WARN
+    jooqConfiguration.apply {
+      logging = org.jooq.meta.jaxb.Logging.WARN
 
-        generator.apply {
-          name = "org.jooq.codegen.DefaultGenerator"
+      generator.apply {
+        name = "org.jooq.codegen.DefaultGenerator"
 
-          target.packageName = "io.kraluk.orderprocessor.jooq"
+        target.packageName = "io.kraluk.orderprocessor.jooq"
 
-          database.apply {
-            name = "org.jooq.meta.extensions.liquibase.LiquibaseDatabase"
-            properties.addAll(
-              listOf(
-                Property()
-                  .withKey("scripts")
-                  .withValue("liquibase/changelog.xml"),
-                Property()
-                  .withKey("includeLiquibaseTables")
-                  .withValue("false")
-              )
+        database.apply {
+          name = "org.jooq.meta.extensions.liquibase.LiquibaseDatabase"
+          properties.addAll(
+            listOf(
+              Property()
+                .withKey("scripts")
+                .withValue("liquibase/changelog.xml"),
+              Property()
+                .withKey("includeLiquibaseTables")
+                .withValue("false")
             )
-            forcedTypes.add(
-              ForcedType()
-                .withUserType("java.time.Instant")
-                .withConverter("""
+          )
+          forcedTypes.add(
+            ForcedType()
+              .withUserType("java.time.Instant")
+              .withConverter(
+                """
                   org.jooq.Converter.ofNullable(
                     java.time.OffsetDateTime.class,
                     java.time.Instant.class,
                     o -> o.toInstant(),
                     i -> i.atOffset(java.time.ZoneOffset.UTC))
-                """.trimIndent())
-                .withIncludeTypes("timestamp\\ with\\ time\\ zone")
-            )
-          }
-
-          generate.apply {
-            isDeprecated = false
-            isRecords = true
-            isImmutablePojos = false
-            isFluentSetters = true
-          }
-
-          strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
+                """.trimIndent()
+              )
+              .withIncludeTypes("timestamp\\ with\\ time\\ zone")
+          )
         }
+
+        generate.apply {
+          isDeprecated = false
+          isRecords = true
+          isImmutablePojos = false
+          isFluentSetters = true
+        }
+
+        strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
       }
     }
   }
