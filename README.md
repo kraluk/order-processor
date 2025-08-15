@@ -2,17 +2,17 @@
 
 [![CI](https://github.com/kraluk/order-processor/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/kraluk/order-processor/actions/workflows/ci.yaml)
 
-`order-processor` is a service that process orders in the following way:
+`order-processor` is a service that processes orders in the following way:
 
 * reads data from a `*.csv` file provided by an external service in an AWS S3 bucket
 * processes it using batching techniques (not loading all data to the memory) and transforms it to orders entities that
   are stored in a PostgreSQL database
 * using transaction outbox pattern, sends messages to an AWS SQS queue as order updated events
 
-The application is written in Java 24 using Gradle 8 and Spring Boot 3 with enabled Virtual Threads support. The project
+The application is written in Java 24 using Gradle 9 and Spring Boot 3 with enabled Virtual Threads support. The project
 is using jOOQ, liquibase, and Spring Cloud AWS as well.
 
-Some kind of variation of the Clean Architecture has been used in the project to organise the code.
+Some kind of the Clean Architecture variation has been used in the project to organize the code.
 
 ## Architecture diagram
 
@@ -72,7 +72,7 @@ To process orders, a `*.csv` file with the following structure is needed:
 "10000000-0000-0000-0000-000000000000","100.00","PLN","note1","2024-01-01T00:00:00.001Z"
 ```
 
-Such file has to be to uploaded to the proper S3 bucket.
+Such a file has to be uploaded to the proper S3 bucket.
 
 The update process of such a file can be executed by sending a POST request to the
 `/v1/orders/updation-executions/{fileName}` endpoint:
