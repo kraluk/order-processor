@@ -15,7 +15,7 @@ dependencyResolutionManagement {
       plugin("errorprone", "net.ltgt.errorprone").version("4.3.0")
 
       version("springCloudAws", "3.4.0")
-      version("springDoc", "2.8.11")
+      version("springDoc", "2.8.13")
       version("transactionoutbox", "6.0.609") // BE AWARE: check migration scripts before bumping the version up
       version("javaMoney", "1.4.5")
     }
