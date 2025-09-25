@@ -9,7 +9,7 @@
   are stored in a PostgreSQL database
 * using transaction outbox pattern, sends messages to an AWS SQS queue as order updated events
 
-The application is written in Java 24 using Gradle 9 and Spring Boot 3 with enabled Virtual Threads support. The project
+The application is written in Java 25 using Gradle 9 and Spring Boot 3 with enabled Virtual Threads support. The project
 is using jOOQ, liquibase, and Spring Cloud AWS as well.
 
 Some kind of the Clean Architecture variation has been used in the project to organize the code.
@@ -20,7 +20,7 @@ Some kind of the Clean Architecture variation has been used in the project to or
 
 ## Requirements
 
-* Java 21 - preferable [Eclipse Temurin](https://adoptium.net/)
+* Java 25 - preferable [Eclipse Temurin](https://adoptium.net/)
 * Gradle - or use its wrapper `gradlew`
 * container runtime - preferable [Colima](https://github.com/abiosoft/colima)
 
