@@ -15,6 +15,9 @@ spring:
       sqs:
         enabled: false
 
+server:
+  shutdown: immediate
+
 management:
   metrics:
     enable:
