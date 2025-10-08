@@ -1,11 +1,11 @@
-FROM eclipse-temurin:24-jdk-alpine AS build
+FROM eclipse-temurin:25-jdk-alpine AS build
 
 WORKDIR /app
 COPY ./  /app
 
 RUN ./gradlew build -x check --no-daemon
 
-FROM eclipse-temurin:24-jre-alpine
+FROM eclipse-temurin:25-jre-alpine
 # maybe using 'jdk' can be beneficial at some specific moments
 
 RUN apk update
