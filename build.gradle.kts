@@ -46,6 +46,7 @@ repositories {
 
 dependencies {
   implementation(platform("io.awspring.cloud:spring-cloud-aws-dependencies:${libs.versions.springCloudAws.get()}"))
+  implementation(platform("software.amazon.awssdk:bom:${libs.versions.awsSdk.get()}"))
 
   annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
