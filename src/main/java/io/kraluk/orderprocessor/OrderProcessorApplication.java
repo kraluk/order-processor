@@ -8,9 +8,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @SpringBootApplication
 @EnableConfigurationProperties
 @ConfigurationPropertiesScan
-public class OrderProcessorApplication {
+class OrderProcessorApplication {
 
-  public static void main(final String[] args) {
+  static void main(final String[] args) {
     SpringApplication.run(OrderProcessorApplication.class, args);
   }
 }
