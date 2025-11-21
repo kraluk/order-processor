@@ -47,10 +47,7 @@ class OrdersController {
                 @Content(
                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = OrderHttp.class),
-                    examples =
-                        @ExampleObject(
-                            value =
-                                """
+                    examples = @ExampleObject(value = """
                               {
                                 "businessId": "f1b9b3b4-3b3b-4b3b-8b3b-3b3b3b3b3b3b",
                                 "value": 100.0,
@@ -68,10 +65,7 @@ class OrdersController {
                 @Content(
                     mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
                     schema = @Schema(implementation = ProblemDetail.class),
-                    examples =
-                        @ExampleObject(
-                            value =
-                                """
+                    examples = @ExampleObject(value = """
                               {
                                 "type": "about:blank",
                                 "title": "Not Found",
@@ -99,10 +93,7 @@ class OrdersController {
                 @Content(
                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = OrderHttp.class),
-                    examples =
-                        @ExampleObject(
-                            value =
-                                """
+                    examples = @ExampleObject(value = """
                               {
                                 "businessId": "f1b9b3b4-3b3b-4b3b-8b3b-3b3b3b3b3b3b",
                                 "value": 100.0,
@@ -120,10 +111,7 @@ class OrdersController {
                 @Content(
                     mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
                     schema = @Schema(implementation = ProblemDetail.class),
-                    examples =
-                        @ExampleObject(
-                            value =
-                                """
+                    examples = @ExampleObject(value = """
                               {
                                 "type": "about:blank",
                                 "title": "Not Found",

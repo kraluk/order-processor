@@ -40,10 +40,7 @@ class OrderUpdateExecutionsController {
                 @Content(
                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = OrderHttp.class),
-                    examples =
-                        @ExampleObject(
-                            value =
-                                """
+                    examples = @ExampleObject(value = """
                               {
                                 "source": "orders.csv",
                                 "message": "Order update process has been accepted.",

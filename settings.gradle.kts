@@ -11,7 +11,7 @@ dependencyResolutionManagement {
       plugin("jooq", "nu.studer.jooq").version("10.1.1")
 
       plugin("versions", "com.github.ben-manes.versions").version("0.53.0")
-      plugin("spotless", "com.diffplug.spotless").version("8.0.0")
+      plugin("spotless", "com.diffplug.spotless").version("8.1.0")
       plugin("errorprone", "net.ltgt.errorprone").version("4.3.0")
 
       version("springCloudAws", "3.4.1")

@@ -12,13 +12,11 @@ class CsvContentSourceTest {
   @Test
   void shouldReadValidData() {
     // Given
-    final var input =
-        """
+    final var input = """
         "id","name","price"
         "1","Product 1","100.00"
         "2","Product 2","200.00"
-        """
-            .trim();
+        """.trim();
 
     final var content = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
 
@@ -37,13 +35,11 @@ class CsvContentSourceTest {
   @Test
   void shouldIgnoreAndNullifyBadlyFormattedEntriesAndReadOnlyValidData() {
     // Given
-    final var input =
-        """
+    final var input = """
         "id","name","price"
         "1","Product 1","100.00"
         "XXX","Product 2","XXX"
-        """
-            .trim();
+        """.trim();
 
     final var content = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
 
