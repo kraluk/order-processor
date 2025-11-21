@@ -21,6 +21,7 @@ dependencyResolutionManagement {
       version("javaMoney", "1.4.5")
     }
     create("testLibs") {
+      version("testcontainers", "2.0.2")
     }
     create("toolLibs") {
       version("jspecify", "1.0.0")

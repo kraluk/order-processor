@@ -82,9 +82,9 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-test")
 
   testIntegrationImplementation("org.springframework.boot:spring-boot-testcontainers")
-  testIntegrationImplementation("org.testcontainers:junit-jupiter")
-  testIntegrationImplementation("org.testcontainers:postgresql")
-  testIntegrationImplementation("org.testcontainers:localstack")
+  testIntegrationImplementation("org.testcontainers:testcontainers-junit-jupiter:${testLibs.versions.testcontainers.get()}")
+  testIntegrationImplementation("org.testcontainers:testcontainers-postgresql:${testLibs.versions.testcontainers.get()}")
+  testIntegrationImplementation("org.testcontainers:testcontainers-localstack:${testLibs.versions.testcontainers.get()}")
   testIntegrationImplementation("io.awspring.cloud:spring-cloud-aws-test")
   testIntegrationImplementation("io.awspring.cloud:spring-cloud-aws-testcontainers")
 
