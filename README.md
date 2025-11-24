@@ -46,8 +46,9 @@ To use properly `testcontainers` with Colima, Add following environment variable
 `~/.bash_profile` or `~/.zprofile`):
 
 ```bash
-export DOCKER_HOST="unix:///Users/$USER/.colima/default/docker.sock"
-export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE="/var/run/docker.sock"
+export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock
+export TESTCONTAINERS_HOST_OVERRIDE=$(colima ls -j | jq -r '.address')
+export DOCKER_HOST="unix://${HOME}/.colima/default/docker.sock"
 ```
 
 For more details see [docs](https://java.testcontainers.org/supported_docker_environment/)
