@@ -6,20 +6,20 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
-import org.testcontainers.containers.localstack.LocalStackContainer;
+import org.testcontainers.localstack.LocalStackContainer;
 import org.testcontainers.utility.DockerImageName;
 
 @TestConfiguration
 public class LocalStackTestConfiguration {
 
-  private static final String LOCAL_STACK_VERSION = "4.9.2";
+  private static final String LOCAL_STACK_VERSION = "4.10.0";
 
   @ServiceConnection
   @Bean
   LocalStackContainer localStackContainer() {
     return new LocalStackContainer(
             DockerImageName.parse("localstack/localstack").withTag(LOCAL_STACK_VERSION))
-        .withServices(LocalStackContainer.Service.S3, LocalStackContainer.Service.SQS)
+        .withServices("s3", "sqs")
         .withReuse(true);
   }
 

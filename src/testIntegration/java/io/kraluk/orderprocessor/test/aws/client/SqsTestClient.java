@@ -1,13 +1,12 @@
 package io.kraluk.orderprocessor.test.aws.client;
 
 import static java.lang.String.format;
-import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
 import java.net.URI;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testcontainers.containers.localstack.LocalStackContainer;
+import org.testcontainers.localstack.LocalStackContainer;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
@@ -24,7 +23,7 @@ public class SqsTestClient {
 
   public SqsTestClient(final LocalStackContainer localstack, final String queueName) {
     this.queueName = queueName;
-    this.endpointUrl = localstack.getEndpointOverride(SQS);
+    this.endpointUrl = localstack.getEndpoint();
     this.client = SqsClient.builder()
         .endpointOverride(localstack.getEndpoint())
         .credentialsProvider(StaticCredentialsProvider.create(

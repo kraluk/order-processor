@@ -1,15 +1,14 @@
 package io.kraluk.orderprocessor.test.aws;
 
 import static java.lang.String.format;
-import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
 import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.Container;
-import org.testcontainers.containers.localstack.LocalStackContainer;
+import org.testcontainers.localstack.LocalStackContainer;
 
-public class LocalStackOps {
+public final class LocalStackOps {
   private static final Logger log = LoggerFactory.getLogger(LocalStackOps.class);
 
   private final LocalStackContainer localstack;
@@ -43,7 +42,7 @@ public class LocalStackOps {
   }
 
   private String queueUrl(final String queueName) {
-    return format("%s/000000000000/%s", localstack.getEndpointOverride(SQS), queueName);
+    return format("%s/000000000000/%s", localstack.getEndpoint(), queueName);
   }
 
   private void handleResult(
