@@ -14,9 +14,9 @@ dependencyResolutionManagement {
       plugin("spotless", "com.diffplug.spotless").version("8.1.0")
       plugin("errorprone", "net.ltgt.errorprone").version("4.3.0")
 
-      version("springCloudAws", "3.4.1")
+      version("springCloudAws", "3.4.2")
       version("springDoc", "2.8.14")
-      version("awsSdk", "2.39.1")
+      version("awsSdk", "2.40.3")
       version("transactionoutbox", "6.1.653") // BE AWARE: check migration scripts before bumping the version up
       version("javaMoney", "1.4.5")
     }
