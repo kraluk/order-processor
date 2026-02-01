@@ -108,7 +108,7 @@ dependencies {
 
 tasks.withType<JavaCompile>().configureEach {
   options.errorprone.check("NullAway", CheckSeverity.ERROR)
-  options.errorprone.option("NullAway:AnnotatedPackages", "io.kraluk")
+  options.errorprone.option("NullAway:AnnotatedPackages", "io.kraluk.orderprocessor")
 
   if (name.lowercase().contains("test")) {
     options.errorprone {
