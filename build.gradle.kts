@@ -52,16 +52,22 @@ dependencies {
 
   implementation("org.springframework.boot:spring-boot-starter")
   implementation("org.springframework.boot:spring-boot-starter-web")
+  implementation("org.springframework.boot:spring-boot-starter-restclient")
   implementation("org.springframework.boot:spring-boot-starter-actuator")
   implementation("org.springframework.boot:spring-boot-starter-logging")
   implementation("org.springframework.boot:spring-boot-starter-jdbc")
   implementation("org.springframework.boot:spring-boot-starter-jooq")
-  implementation("org.springframework.boot:spring-boot-starter-aop")
+  implementation("org.springframework.boot:spring-boot-starter-liquibase")
+  implementation("org.springframework.boot:spring-boot-starter-aspectj")
+  implementation("org.springframework.boot:spring-boot-starter-json") {
+    exclude("org.springframework.boot", "spring-boot-jackson") // exclude Jackson 3 due to issues with transaction-outbox
+  }
   implementation("io.awspring.cloud:spring-cloud-aws-starter-s3")
   implementation("io.awspring.cloud:spring-cloud-aws-starter-sqs")
 
+  implementation("org.springframework.boot", "spring-boot-jackson2") // temporary until the migration to version 3 will be done
+
   runtimeOnly("org.postgresql:postgresql")
-  implementation("org.liquibase:liquibase-core")
 
   implementation("com.gruelbox:transactionoutbox-core:${libs.versions.transactionoutbox.get()}")
   implementation("com.gruelbox:transactionoutbox-spring:${libs.versions.transactionoutbox.get()}")
@@ -82,10 +88,11 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-test")
 
   testIntegrationImplementation("org.springframework.boot:spring-boot-testcontainers")
-  testIntegrationImplementation("org.testcontainers:testcontainers:${testLibs.versions.testcontainers.get()}")
-  testIntegrationImplementation("org.testcontainers:testcontainers-junit-jupiter:${testLibs.versions.testcontainers.get()}")
-  testIntegrationImplementation("org.testcontainers:testcontainers-postgresql:${testLibs.versions.testcontainers.get()}")
-  testIntegrationImplementation("org.testcontainers:testcontainers-localstack:${testLibs.versions.testcontainers.get()}")
+  testIntegrationImplementation("org.springframework.boot:spring-boot-starter-restclient-test")
+  testIntegrationImplementation("org.testcontainers:testcontainers")
+  testIntegrationImplementation("org.testcontainers:testcontainers-junit-jupiter")
+  testIntegrationImplementation("org.testcontainers:testcontainers-postgresql")
+  testIntegrationImplementation("org.testcontainers:testcontainers-localstack")
   testIntegrationImplementation("io.awspring.cloud:spring-cloud-aws-test")
   testIntegrationImplementation("io.awspring.cloud:spring-cloud-aws-testcontainers")
 
