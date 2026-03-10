@@ -9,7 +9,7 @@
   are stored in a PostgreSQL database
 * using transaction outbox pattern, sends messages to an AWS SQS queue as order updated events
 
-The application is written in Java 25 using Gradle 9 and Spring Boot 3 with enabled Virtual Threads support. The project
+The application is written in Java 25 using Gradle 9 and Spring Boot 4 with enabled Virtual Threads support. The project
 is using jOOQ, liquibase, and Spring Cloud AWS as well.
 
 Some kind of the Clean Architecture variation has been used in the project to organize the code.
@@ -76,10 +76,10 @@ To process orders, a `*.csv` file with the following structure is needed:
 Such a file has to be uploaded to the proper S3 bucket.
 
 The update process of such a file can be executed by sending a POST request to the
-`/v1/orders/updation-executions/{fileName}` endpoint:
+`/v1/orders/update-executions/{source}` endpoint:
 
 ```bash
-curl -XPOST 'localhost:8080/v1/orders/update-invocations/orders.csv'
+curl -XPOST 'localhost:8080/v1/orders/update-executions/orders.csv'
 ```
 
 After the file is processed, the application sends messages to the SQS queue with the order updated events and those
