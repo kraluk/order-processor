@@ -17,7 +17,7 @@ dependencyResolutionManagement {
       version("springCloudAws", "4.0.0")
       version("springDoc", "3.0.2")
       version("awsSdk", "2.42.9")
-      version("transactionoutbox", "6.2.683") // BE AWARE: check migration scripts before bumping the version up
+      version("transactionoutbox", "7.0.707") // BE AWARE: check migration scripts before bumping the version up
       version("javaMoney", "1.4.5")
     }
     create("testLibs") {
